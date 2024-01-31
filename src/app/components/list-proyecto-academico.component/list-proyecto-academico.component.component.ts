@@ -21,13 +21,14 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 })
 export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
-    'id', 'facultad', 'nombre_proyecto', 'nivel_proyecto', 'codigo',
-    'cod_snies', 'activo', 'vencimiento_registro', 'vencimiento_alta_calidad', 'acciones'
+    'id', 'facultad', 'nombre_proyecto', 'nivel_proyecto', 'codigo', 'cod_snies', 'activo',
+    'vencimiento_registro', 'vencimiento_alta_calidad', 'acciones'
   ];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator = {} as MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatSort) sort: MatSort = {} as MatSort;
+  
 
   config!: ToasterConfig;
   settings: any;
@@ -87,6 +88,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
   proyecto_padre_id!: ProyectoAcademicoInstitucion;
 
   listaDatos: any[] = []
+
   //source: LocalDataSource;
 
   constructor(
@@ -143,9 +145,8 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           }, 1000);
-          
+          this.loading = false;
         });
-        this.loading = false;
       }
     },
       (error: HttpErrorResponse) => {
@@ -205,7 +206,6 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadproyectos();
     });
   }
 
@@ -270,7 +270,6 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.loadproyectos();
     });
   }
 

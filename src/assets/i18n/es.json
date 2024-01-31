@@ -2,7 +2,8 @@
     "GLOBAL": {
         "atencion": "Atención",
         "buscar":"Buscar",
-        "cancelar":"Cancelar"
+        "cancelar":"Cancelar",
+        "aceptar":"Aceptar"
     },
     "historial_registro": {
         "titulo": "Histórico de registros de acreditación y alta calidad del proyecto curricular",
@@ -132,7 +133,8 @@
         "fallo_informacion_en": "Ha habido un error al consultar la información sobre",
         "sin_informacion_en": "No se ha encontrado información sobre",
         "persiste_error_comunique_OAS": "Regrese e intente de nuevo más tarde. Si el error persiste, comuníquese con Oficina Asesora de Tecnologías e Información (OATI)",
-        "error_previsualizar_doc": "No se pudo visualizar el documento, no es un formato válido o no se ha encontrado."
+        "error_previsualizar_doc": "No se pudo visualizar el documento, no es un formato válido o no se ha encontrado.",
+        "undefined":"Indefinido"
     },
     "consultaproyecto": {
         "titulo": "Consulta de un proyecto curricular ",
@@ -166,7 +168,14 @@
         "proyecto_habilitado": "Proyecto curricular habilitado",
         "proyecto_no_habilitado": "Proyecto curricular no habilitado",
         "clonar_proyecto": "Clonar proyecto",
-        "buscar_en_toda_la_tabla":"Buscar en toda la tabla"
+        "buscar_en_toda_la_tabla":"Buscar en toda la tabla",
+        "acciones":"Acciones",
+        "no_se_encontro_informacion_con": "No se encontro información con",
+        "nombre_proyecto": "Nombre proyecto",
+        "nivel_proyecto": "Nivel proyecto",
+        "cod_snies": "Código SNIES",
+        "vencimiento_registro": "Vencimiento registro",
+        "vencimiento_alta_calidad": "Vencimiento alta calidad"
     },
     "lista": {
         "elementos_por_pagina": "Elementos por pagina"

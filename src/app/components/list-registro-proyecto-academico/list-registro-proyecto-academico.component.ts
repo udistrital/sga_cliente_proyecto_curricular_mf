@@ -79,7 +79,7 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
           width: '15%',
         },
         VencimientoActoAdministrativo: {
-          title: this.translate.instant('historial_registro.fecha_vencimiento'),
+          title: this.translate.instant('hisftorial_registro.fecha_vencimiento'),
           width: '18%',
         },
       },

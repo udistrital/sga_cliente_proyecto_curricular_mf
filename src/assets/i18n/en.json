@@ -1,8 +1,9 @@
-{   
-    "GLOBAL":{
+{
+    "GLOBAL": {
         "atencion": "Attention",
-        "buscar":"Search",
-        "cancelar":"Cancel"
+        "buscar": "Search",
+        "cancelar": "Cancel",
+        "aceptar": "Accept"
     },
     "historial_registro": {
         "titulo": "History of accreditation records and high quality of the Academic Project",
@@ -132,7 +133,8 @@
         "fallo_informacion_en": "There was an error querying the information about",
         "sin_informacion_en": "No information has been found about",
         "persiste_error_comunique_OAS": "Please return and try again later. If the error persists, contact the Technology and Information Advisory Office (Oficina Asesora de Tecnologías e Información)",
-        "error_previsualizar_doc": "The document could not be viewed, it is not a valid format, or it was not found."
+        "error_previsualizar_doc": "The document could not be viewed, it is not a valid format, or it was not found.",
+        "undefined": "Undefined"
     },
     "consultaproyecto": {
         "titulo": "Consultation of an Academic Project",
@@ -166,10 +168,17 @@
         "proyecto_habilitado": "Academic project enabled",
         "proyecto_no_habilitado": "Academic project not enabled",
         "clonar_proyecto": "Clone project",
-        "buscar_en_toda_la_tabla":"Search entire table"
+        "buscar_en_toda_la_tabla": "Search entire table",
+        "acciones": "Actions",
+        "no_se_encontro_informacion_con": "No information was found with",
+        "nombre_proyecto": "Project Name",
+        "nivel_proyecto": "Project Level",
+        "cod_snies": "SNIES Code",
+        "vencimiento_registro": "Registration Expiry",
+        "vencimiento_alta_calidad": "High Quality Expiry"
     },
-    "lista":{
-        "elementos_por_pagina":"Items per page"
+    "lista": {
+        "elementos_por_pagina": "Items per page"
     },
     "editarproyecto": {
         "coordinacion": "Coordination",
@@ -194,6 +203,4 @@
         "seguro_continuar_asignar": "Are you sure you assign this coordinator to this academic project?",
         "tag_asigcoordinador": "Coordinator Assignment"
     }
-
-
 }

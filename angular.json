@@ -32,7 +32,8 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+            ],
             "customWebpackConfig": {
               "path": "extra-webpack.config.js",
               "libraryName": "sga-cliente-proyecto-curricular-mf",

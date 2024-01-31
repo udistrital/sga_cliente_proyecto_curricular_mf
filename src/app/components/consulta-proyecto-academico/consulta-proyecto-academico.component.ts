@@ -153,6 +153,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       .get("dependencia_tipo_dependencia/?query=TipoDependenciaId:1&limit=0")
       .subscribe(
         (res: any) => {
+          console.log(res)
           const r = <any>res;
           if (res !== null && r.Type !== "error") {
             this.espacio = res.map((data: any) => data.DependenciaId);

@@ -5,9 +5,11 @@ import { EmptyRouteComponent } from "./components/empty-route/empty-route.compon
 import { RegistroProyectoAcademicoComponent } from "./components/registro-proyecto-academico/registro-proyecto-academico.component";
 import { ListRegistroProyectoAcademicoComponent } from "./components/list-registro-proyecto-academico/list-registro-proyecto-academico.component";
 import { ListProyectoAcademicoComponent } from "./components/list-proyecto-academico.component/list-proyecto-academico.component.component";
+import { ConsultaProyectoAcademicoComponent } from "./components/consulta-proyecto-academico/consulta-proyecto-academico.component";
 
 const routes: Routes = [
   { path: "lista", component: ListProyectoAcademicoComponent },
+  { path: "ver",  component: ConsultaProyectoAcademicoComponent}
 ];
 
 @NgModule({

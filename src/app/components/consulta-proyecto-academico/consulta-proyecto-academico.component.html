@@ -144,8 +144,26 @@
                             <form id="basicForm" [formGroup]="basicform">
                                 <div class="row">
                                     <div class="col-12">
-                                        <!-- <ng2-smart-table [settings]="settings_emphasys" [(source)]="source_emphasys">
-                                        </ng2-smart-table> -->
+                                        <!-- <table mat-table [dataSource]="dataSource">
+
+                                            <ng-container matColumnDef="nombre">
+                                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+                                                <td mat-cell *matCellDef="let row"> {{row.ProyectoAcademico.Id}} </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Activo">
+                                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Facultad </th>
+                                                <td mat-cell *matCellDef="let row"> {{row.NombreFacultad}} </td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                                            <tr class="mat-row" *matNoDataRow>
+                                                <td class="mat-cell" colspan="4">No data matching the filter
+                                                    "{{input.value}}"</td>
+                                            </tr>
+                                        </table> -->
                                     </div>
                                 </div>
                             </form>
@@ -153,7 +171,6 @@
                     </mat-card>
                 </div>
             </div>
-
 
             <div class="row">
                 <div class="col-xs-12 col-sm-4"> <button mat-button (click)="cloneProject(data)">{{
