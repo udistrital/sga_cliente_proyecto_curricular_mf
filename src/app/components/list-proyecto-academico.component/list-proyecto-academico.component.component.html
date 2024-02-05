@@ -1,16 +1,14 @@
 <mat-card *ngIf="!loading" class="mat-card">
-  <mat-card-header>
-    <mat-card-title>{{ 'consultaproyecto.titulo' | translate }}</mat-card-title>
+  <mat-card-header class="nb-card-header">{{ 'consultaproyecto.titulo' | translate }}
 
   </mat-card-header>
-  <br>
   <mat-card-content>
     <fieldset class="fieldseter border">
       <legend>
-        &nbsp; <b>{{ 'consultaproyecto.titulo' | translate }}</b> &nbsp;&nbsp;
+        <small class="small">&nbsp; {{ "consultaproyecto.titulo" | translate }} </small>
       </legend>
 
-      <div class="p-5 info">
+      <div class="p-3 info">
         <mat-icon class="info-icon">info</mat-icon> &nbsp;
         <span>{{ 'consultaproyecto.explicacacion' | translate }}</span>
       </div>
@@ -19,7 +17,7 @@
       <div class="search-container">
 
         <input matInput (keyup)="applyFilter($event)" type="text" class="search-input" placeholder="{{ 'consultaproyecto.buscar_en_toda_la_tabla' | translate }}..." #input>
-        <mat-icon class="icon-search" matPrefix>search</mat-icon>
+        <mat-icon class="icon-busqueda" matPrefix>search</mat-icon>
       </div>
 
 
@@ -95,8 +93,8 @@
               <mat-icon class="link icono" (click)="promesaid_modificar(row.ProyectoAcademico.Id)" aria-hidden="false"
                 title="{{'consultaproyecto.editar' | translate}}" fontIcon="edit_outline"></mat-icon>
 
-              <mat-icon class="link icono " (click)="inhabilitarProyecto(row.ProyectoAcademico.Id)" aria-hidden="false"
-                fontIcon="delete_outline" title="{{'consultaproyecto.inhabilitar' | translate}}"></mat-icon>
+              <mat-icon class="link icono " (click)="inhabilitarProyecto(row.ProyectoAcademico)" aria-hidden="false"
+                fontIcon="lock_outline" title="{{'consultaproyecto.inhabilitar' | translate}}"></mat-icon>
             </mat-cell>
           </ng-container>
 

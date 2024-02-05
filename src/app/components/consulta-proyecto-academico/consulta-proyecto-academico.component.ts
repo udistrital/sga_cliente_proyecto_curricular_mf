@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import { OikosService } from 'src/app/services/oikos.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-consulta-proyecto-academico',
@@ -31,6 +32,10 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
   opcionSeleccionadoEspacio: boolean = false; 
   opcionSeleccionadoEspacioString!: string;
   CampoControl_espacio = new FormControl("", [Validators.required]);
+  dataSource!: MatTableDataSource<any>;
+
+  displayedColumns: string[] = ['nombre', 'activo'];
+
 
 
   constructor(private translate: TranslateService,
@@ -42,7 +47,9 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
     private oikosService: OikosService,
     private newNuxeoService: NewNuxeoService,
     private formBuilder: FormBuilder) {
-      //this.source_emphasys.load(data.enfasis);
+
+
+    this.dataSource = new MatTableDataSource(data.enfasis);
       this.settings_emphasys = {
         actions: false,
         mode: 'external',
@@ -60,7 +67,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
             title: this.translate.instant('GLOBAL.activo'),
             // type: 'string;',
             valuePrepareFunction: (value: any) => {
-              return value ? translate.instant('GLOBAL.si') : translate.instant('GLOBAL.no');
+              return value ? translate.instant('GLOBAL.si') : translate.instant('GLOBAL.si');
             },
             width: '20%',
           },
@@ -150,7 +157,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
 
   loadespacio() {
     this.oikosService
-      .get("dependencia_tipo_dependencia/?query=TipoDependenciaId:1&limit=0")
+      .get("dependencia_tipo_dependencia/?query=TipoDependenciaId:"+this.data.Id+"&limit=0")
       .subscribe(
         (res: any) => {
           console.log(res)

@@ -1,10 +1,9 @@
 import { APP_BASE_HREF } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { EmptyRouteComponent } from "./components/empty-route/empty-route.component";
+import { ListProyectoAcademicoComponent } from "./components/list-proyecto-academico.component/list-proyecto-academico.component.component";
 import { RegistroProyectoAcademicoComponent } from "./components/registro-proyecto-academico/registro-proyecto-academico.component";
 import { ListRegistroProyectoAcademicoComponent } from "./components/list-registro-proyecto-academico/list-registro-proyecto-academico.component";
-import { ListProyectoAcademicoComponent } from "./components/list-proyecto-academico.component/list-proyecto-academico.component.component";
 import { ConsultaProyectoAcademicoComponent } from "./components/consulta-proyecto-academico/consulta-proyecto-academico.component";
 
 const routes: Routes = [

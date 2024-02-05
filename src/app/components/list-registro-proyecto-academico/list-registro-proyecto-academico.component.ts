@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { RegistroProyectoAcademicoComponent } from '../registro-proyecto-academico/registro-proyecto-academico.component';
 import * as momentTimezone from 'moment-timezone';
 import { ConsultaProyectoAcademicoComponent } from '../consulta-proyecto-academico/consulta-proyecto-academico.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-list-registro-proyecto-academico',
@@ -20,11 +21,12 @@ import { ConsultaProyectoAcademicoComponent } from '../consulta-proyecto-academi
 export class ListRegistroProyectoAcademicoComponent implements OnInit {
   config!: ToasterConfig;
   settings: any;
-  dataSource: any;
   index: any;
   idproyecto: any;
-  displayedColumns = ['Id', 'Registro', 'Vigencia', 'Tipo de registro', 'Documento', 'Tiempo de vigencia', 'Activo',
-    'Fecha Inicio Registro', 'Fecha Vencimiento Registro'];
+  displayedColumns = ['Id', 'Registro', 'Vigencia', 'Tipo de registro', 'Tiempo de vigencia', 'Activo',
+    'Fecha Inicio Registro', 'Fecha Vencimiento Registro', 'Documento'];
+    
+  dataSource!: MatTableDataSource<any>;
 
   //source: LocalDataSource = new LocalDataSource();
   listaDatos = [];
@@ -41,67 +43,9 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
     public dialog: MatDialog,
     private toasterService: ToasterService) {
     this.loadData();
-    this.cargarCampos();
-    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.cargarCampos();
-    });
   }
 
-  cargarCampos() {
-    this.settings = {
-      columns: {
-        Id: {
-          title: this.translate.instant('consultaproyecto.id'),
-          width: '5%',
-        },
-        NumeroActoAdministrativo: {
-          title: this.translate.instant('historial_registro.registro'),
-          width: '5%',
-        },
-        AnoActoAdministrativoId: {
-          title: this.translate.instant('historial_registro.vigencia'),
-          width: '5%',
-        },
-        TipoRegistroIdNombre: {
-          title: this.translate.instant('historial_registro.tipo_registro'),
-          width: '25%',
-        },
-        VigenciaActoAdministrativo: {
-          title: this.translate.instant('historial_registro.tiempo'),
-          width: '10%',
-        },
-        ActivoLetra: {
-          title: this.translate.instant('historial_registro.activo'),
-          width: '5%',
-        },
-        FechaCreacionActoAdministrativo: {
-          title: this.translate.instant('historial_registro.fecha_inicio'),
-          width: '15%',
-        },
-        VencimientoActoAdministrativo: {
-          title: this.translate.instant('hisftorial_registro.fecha_vencimiento'),
-          width: '18%',
-        },
-      },
-      mode: 'external',
-      actions: {
-        add: false,
-        edit: false,
-        delete: false,
-        position: 'right',
-        columnTitle: this.translate.instant('historial_registro.documento'),
-        custom: [
-          {
-            name: 'Documento',
-            title: '<i class="fa fa-cloud-download" title="' +
-              this.translate.instant('GLOBAL.tooltip_descargar') +
-              '"></i>',
-          },
-        ],
-      },
-    };
-    //this.source.load(this.listaDatos);
-  }
+  
 
   loadData(): void {
     const opt1: any = {
@@ -120,7 +64,8 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
             element.TipoRegistroIdNombre = element.TipoRegistroId.Nombre
             element.FechaCreacionActoAdministrativo = momentTimezone.tz(element.FechaCreacionActoAdministrativo, 'America/Bogota').format('DD-MM-YYYY')
             element.VencimientoActoAdministrativo = momentTimezone.tz(element.VencimientoActoAdministrativo, 'America/Bogota').format('DD-MM-YYYY')
-            //this.source.load(data)
+            console.log(data)
+            this.dataSource = new MatTableDataSource(data);
           });
         } else {
           Swal.fire(opt1)

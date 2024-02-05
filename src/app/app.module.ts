@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -37,6 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { TercerosService } from './services/terceros.service';
 import { CoreService } from './services/core.service';
 import {MatTabsModule} from '@angular/material/tabs';
+import { ListEnfasisComponent } from './components/list-enfasis/list-enfasis.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
@@ -50,10 +51,12 @@ export function createTranslateLoader(http: HttpClient) {
     ConsultaProyectoAcademicoComponent,
     ListProyectoAcademicoComponent,
     CrudProyectoAcademicoComponent,
-    ModificarProyectoAcademicoComponent
+    ModificarProyectoAcademicoComponent,
+    ListEnfasisComponent
   ],
   imports: [
     MatTabsModule,
+    MatDatepickerModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     BrowserModule,

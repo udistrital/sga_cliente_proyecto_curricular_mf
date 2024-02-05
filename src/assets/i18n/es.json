@@ -3,7 +3,11 @@
         "atencion": "Atención",
         "buscar":"Buscar",
         "cancelar":"Cancelar",
-        "aceptar":"Aceptar"
+        "aceptar":"Aceptar",
+        "nombre":"Nombre",
+        "activo":"Activo",
+        "archivo_seleccionado": "Archivo seleccionado",
+        "crear": "Crear"
     },
     "historial_registro": {
         "titulo": "Histórico de registros de acreditación y alta calidad del proyecto curricular",
@@ -11,10 +15,10 @@
         "vigencia": "Vigencia",
         "tipo_registro": "Tipo de registro",
         "documento": "Documento",
-        "tiempo": "Tiempo de vigencia",
+        "tiempo": "Vigencia",
         "activo": "Activo",
-        "fecha_inicio": "Fecha inicio registro",
-        "fecha_vencimiento": "Fecha vencimiento registro",
+        "fecha_inicio": "Inicio registro",
+        "fecha_vencimiento": "Vencimiento registro",
         "explicacacion": "Este módulo permite la consulta del histórico de los registros calificados y de alta calidad de un proyecto curricular existente en la Universidad Distrital.",
         "calificado": "Agregar nuevo registro calificado",
         "alta": "Agregar acreditación en alta calidad",
@@ -202,5 +206,20 @@
         "coordinador_asignado": "Coordinador asignado Correctamente!",
         "seguro_continuar_asignar": "¿Está seguro de asignar este coordinador a este proyecto curricular?",
         "tag_asigcoordinador": "Asignación de coordinador"
+    },
+    "enfasis": {
+        "enfasis": "Énfasis",
+        "seguro_continuar_registrar_enfasis": "¿Está seguro de registrar este énfasis?",
+        "enfasis_creado": "Énfasis creado",
+        "enfasis_no_creado": "Énfasis no creado",
+        "seguro_continuar_eliminar_enfasis": "¿Está seguro de eliminar este énfasis?",
+        "enfasis_eliminado": "Énfasis eliminado",
+        "enfasis_no_eliminado": "Énfasis no eliminado",
+        "seguro_continuar_actualizar_enfasis": "¿Está seguro de actualizar este énfasis?",
+        "enfasis_actualizado": "Énfasis actualizado",
+        "enfasis_no_actualizado": "Énfasis no actualizado",
+        "administrar_enfasis": "Administrar énfasis",
+        "error_enfasis_ya_existe": "El énfasis ya fue agregado",
+        "select_enfasis": "Seleccione el énfasis"
     }
 }

@@ -16,6 +16,7 @@ import { NewNuxeoService } from 'src/app/utils/services/new_nuxeo.service';
  
 import Swal from 'sweetalert2';
 import { ListRegistroProyectoAcademicoComponent } from '../list-registro-proyecto-academico/list-registro-proyecto-academico.component';
+import { NuxeoService } from 'src/app/services/nuxeo.service';
 
 @Component({
   selector: 'app-registro-proyecto-academico',
@@ -35,8 +36,8 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
   registro_califacado_acreditacion!: RegistroCalificadoAcreditacion;
   tipo_registro!: TipoRegistro;
   fecha_calculada_vencimiento!: string;
-  registro_nuevo!: NuevoRegistro
-  dpDayPickerConfig: any;
+  registro_nuevo!: NuevoRegistro;
+  picker: any;
 
 
   Campo11Control = new FormControl('', [Validators.required, Validators.maxLength(4)]);
@@ -47,7 +48,6 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
   @Output() eventChange = new EventEmitter();
 
   subscription!: Subscription;
-  //source_emphasys: LocalDataSource = new LocalDataSource();
   arr_enfasis_proyecto: InstitucionEnfasis[] = [];
   settings_emphasys: any;
 
@@ -55,24 +55,16 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
   uidDocumento!: string;
   idDocumento!: number;
 
-  constructor(
-    private translate: TranslateService,
-    public dialogRef: MatDialogRef<ListRegistroProyectoAcademicoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+  constructor(private translate: TranslateService,
+  @Inject(MAT_DIALOG_DATA) public data: any,
     private toasterService: ToasterService,
+    public dialogRef: MatDialogRef<ListRegistroProyectoAcademicoComponent>,
     private sgamidService: SgaMidService,
-    private nuxeoService: NewNuxeoService,
+    private nuxeoService: NuxeoService,
     private documentoService: DocumentoService,
     private sanitization: DomSanitizer,
     private newNuxeoService: NewNuxeoService,
     private formBuilder: FormBuilder) {
-      this.dpDayPickerConfig = {
-        locale: 'es',
-        format: 'YYYY-MM-DD HH:mm',
-        showTwentyFourHours: false,
-        showSeconds: false,
-        returnedValueType: 'String',
-      }
      this.resoluform = formBuilder.group({
       resolucion: ['', Validators.required],
       ano_resolucion: ['', [Validators.required, Validators.maxLength(4)]],
@@ -100,7 +92,8 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
   useLanguage(language: string) {
     this.translate.use(language);
   }
-  ngOnInit() {  
+  ngOnInit() {
+
   }
 
   registroproyecto() {
@@ -269,4 +262,3 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
     this.toasterService.popAsync(toast);
   }
 }
-

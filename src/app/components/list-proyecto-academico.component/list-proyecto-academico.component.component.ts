@@ -179,7 +179,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openDialogConsulta(): void {
+  openDialogConsulta(id:number): void {
     const dialogRef = this.dialog.open(ConsultaProyectoAcademicoComponent, {
       width: '1000px',
       height: '750px',
@@ -198,7 +198,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
         ciclos: this.ciclos,
         ofrece: this.oferta,
         enfasis: this.enfasis,
-        Id: this.idproyecto,
+        Id: id,
         id_documento_acto: this.id_documento_acto,
         proyecto_padre_id: this.proyecto_padre_id,
         iddependencia: this.iddependencia,
@@ -209,7 +209,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDialogModificar(): void {
+  openDialogModificar(id:number): void {
     const dialogRef = this.dialog.open(ModificarProyectoAcademicoComponent, {
       width: '1000px',
       height: '750px',
@@ -248,7 +248,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
         idproyecto: this.idproyecto,
         numero_acto: this.numero_acto,
         ano_acto: this.ano_acto,
-        Id: this.idproyecto,
+        Id: id,
         proyectoJson: this.proyectoJson,
         fechainiciocoordinador: this.fecha_inicio_coordinador,
         idcoordinador: this.id_coordinador,
@@ -389,7 +389,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
             this.proyecto_padre_id = res.map(
               (data: any) => data.ProyectoAcademico.ProyectoPadreId,
             )[0];
-            this.openDialogConsulta();
+            this.openDialogConsulta(id);
           } else {
             Swal.fire(opt1).then(willDelete => {
               if (willDelete.value) {
@@ -555,7 +555,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
             this.proyecto_padre_id = res.map(
               (data: any) => data.ProyectoAcademico.ProyectoPadreId,
             )[0];
-            this.openDialogModificar();
+            this.openDialogModificar(id);
           } else {
             Swal.fire(opt1).then(willDelete => {
               if (willDelete.value) {
@@ -646,6 +646,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
   }
 
   inhabilitarProyecto(row: any): void {
+    console.log(row)
     let inhabilitar_title = this.translate.instant(
       'consultaproyecto.inhabilitar_proyecto',
     );
@@ -658,7 +659,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
     let inhabilitar_error = this.translate.instant(
       'consultaproyecto.proyecto_no_inhabilitado',
     );
-    if (!row.ProyectoAcademico.Oferta) {
+    if (!row.Oferta) {
       inhabilitar_title = this.translate.instant(
         'consultaproyecto.habilitar_proyecto',
       );
@@ -682,7 +683,7 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
     };
     Swal.fire(opt).then(willDelete => {
       if (willDelete.value) {
-        const proyectoAModificar = row.ProyectoAcademico;
+        const proyectoAModificar = row;
         proyectoAModificar.Activo = !proyectoAModificar.Activo;
         proyectoAModificar.Oferta = !proyectoAModificar.Oferta;
         this.sgamidService
@@ -695,21 +696,21 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
               if (res.Type !== 'error') {
                 this.loadproyectos();
                 this.loadData();
-                this.showToast('info', inhabilitar_title, inhabilitar_ok);
+                //this.showToast('info', inhabilitar_title, inhabilitar_ok);
               } else {
-                this.showToast(
-                  'error',
-                  this.translate.instant('GLOBAL.error'),
-                  inhabilitar_error,
-                );
+                // this.showToast(
+                //   'error',
+                //   this.translate.instant('GLOBAL.error'),
+                //   inhabilitar_error,
+                // );
               }
             },
             () => {
-              this.showToast(
-                'error',
-                this.translate.instant('GLOBAL.error'),
-                inhabilitar_error,
-              );
+              // this.showToast(
+              //   'error',
+              //   this.translate.instant('GLOBAL.error'),
+              //   inhabilitar_error,
+              // );
             },
           );
       }

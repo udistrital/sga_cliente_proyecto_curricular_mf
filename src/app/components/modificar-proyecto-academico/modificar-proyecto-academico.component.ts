@@ -3,6 +3,7 @@ import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
+import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -103,6 +104,7 @@ export class ModificarProyectoAcademicoComponent {
   terceros: Array<Tercero> = [];
   vinculaciones!: Array<Vinculacion>;
   creandoAutor: boolean = true;
+  dataSource!: MatTableDataSource<any>;
 
   CampoControl = new FormControl("", [Validators.required]);
   CampoControl_espacio = new FormControl("", [Validators.required]);
@@ -149,6 +151,7 @@ export class ModificarProyectoAcademicoComponent {
   fileRegistroCalificado: any;
   fileRegistroAltaCalidad: any;
   fileResolucionCoordinador: any;
+  displayedColumns: string[] = ['nombre', 'activo','acciones'];
 
   dpDayPickerConfig: any = {
     locale: "es",
@@ -263,7 +266,7 @@ export class ModificarProyectoAcademicoComponent {
     // enfasis
     this.arr_enfasis_proyecto = this.data.enfasis;
     //this.source_emphasys.load(this.arr_enfasis_proyecto);
-
+    this.dataSource = new MatTableDataSource(data.enfasis);
     this.settings_emphasys = {
       delete: {
         deleteButtonContent: '<i class="nb-trash"></i>',
@@ -452,7 +455,7 @@ export class ModificarProyectoAcademicoComponent {
       );;
       console.log(enfasis_temporal)
       this.arr_enfasis_proyecto.push(enfasis_temporal);
-      //this.source_emphasys.load(this.arr_enfasis_proyecto);
+      this.dataSource = new MatTableDataSource(this.arr_enfasis_proyecto);
     } else {
       Swal.fire({
         icon: "error",
@@ -475,17 +478,17 @@ export class ModificarProyectoAcademicoComponent {
       return -1;
     };
     const to_delete = this.arr_enfasis_proyecto[
-      findInArray(event.data.EnfasisId.Id, this.arr_enfasis_proyecto, "Id")
+      findInArray(event.EnfasisId.Id, this.arr_enfasis_proyecto, "Id")
     ];
     if (to_delete.esNuevo) {
       this.arr_enfasis_proyecto.splice(
-        findInArray(event.data.EnfasisId.Id, this.arr_enfasis_proyecto, "Id"),
+        findInArray(event.EnfasisId.Id, this.arr_enfasis_proyecto, "Id"),
         1
       );
     } else {
       to_delete.Activo = !to_delete.Activo;
     }
-    //this.source_emphasys.load(this.arr_enfasis_proyecto);
+    this.dataSource = new MatTableDataSource(this.arr_enfasis_proyecto);
   }
 
   useLanguage(language: string) {
@@ -592,13 +595,13 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   loadespacio() {
+    console.log(this.data)
     this.oikosService
-      .get("dependencia_tipo_dependencia/?query=TipoDependenciaId:1&limit=0")
+      .get("dependencia_tipo_dependencia/?query=TipoDependenciaId:"+this.data.Id+"&limit=0")
       .subscribe(
         (res: any) => {
           const r = <any>res;
           if (res !== null && r.Type !== "error") {
-            console.log(this.data);
             this.espacio = res.map((data: any) => data.DependenciaId);
             
             this.espacio.forEach((esp: any) => {
