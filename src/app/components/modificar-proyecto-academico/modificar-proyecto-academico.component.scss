@@ -1,29 +1,31 @@
-.contenedor{
+.contenedor {
     font-family: sans-serif;
 }
 
-.input{
+.input {
     width: 70%;
 }
 
-.input-acto{
+.input-acto {
     width: 100%;
 }
 
-.text-center{
+.text-center {
     display: flex;
     justify-content: center;
 }
 
-.container-form{
+.container-form {
     display: flex;
 
 }
 
 .col-sm-6 {
     /* Estilos para las columnas */
-    flex: 0 0 50%; /* Ocúpan 50% del ancho en pantallas pequeñas */
-    max-width: 50%; /* Máximo 50% del ancho */
+    flex: 0 0 50%;
+    /* Ocúpan 50% del ancho en pantallas pequeñas */
+    max-width: 50%;
+    /* Máximo 50% del ancho */
 }
 
 .btn-primary {
@@ -34,18 +36,18 @@
     margin: 0 80px;
     cursor: pointer;
     color: white !important;
-  }
-  
+}
 
-  .container-buttons{
-    display: flex;
-    justify-content: center;    
-  }
 
-  .container-table{
+.container-buttons {
     display: flex;
     justify-content: center;
-  }
+}
+
+.container-table {
+    display: flex;
+    justify-content: center;
+}
 
 .demo-table {
     overflow: auto;
@@ -55,7 +57,6 @@
 .mat-mdc-row .mat-mdc-cell {
     border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
-    cursor: pointer;
 }
 
 
@@ -102,18 +103,27 @@
     cursor: pointer;
     color: white !important;
     font-family: sans-serif;
-  }
+}
 
-  .container-buttons{
+.container-buttons {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;    
-  }
+    margin-bottom: 40px;
+}
 
 
-  :host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+:host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
     background-color: transparent !important;
-  }
-  :host ::ng-deep  .mat-mdc-form-field-focus-overlay {
+}
+
+:host ::ng-deep .mat-mdc-form-field-focus-overlay {
     background-color: transparent !important;
-  }
+}
+
+.link:hover {
+    cursor: pointer;
+}
+
+.icono:hover {
+    color: #03678f;
+}

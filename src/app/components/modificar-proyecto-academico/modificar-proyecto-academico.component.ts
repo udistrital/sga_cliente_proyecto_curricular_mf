@@ -453,7 +453,6 @@ export class ModificarProyectoAcademicoComponent {
       enfasis_temporal.FechaModificacion = new Date(
         momentTimezone.tz("America/Bogota").format("YYYY-MM-DDTHH:mm")
       );;
-      console.log(enfasis_temporal)
       this.arr_enfasis_proyecto.push(enfasis_temporal);
       this.dataSource = new MatTableDataSource(this.arr_enfasis_proyecto);
     } else {
@@ -500,7 +499,7 @@ export class ModificarProyectoAcademicoComponent {
 
   cloneProject(project: any): void {
     this.routerService.navigateByUrl(
-      `pages/proyecto_academico/crud-proyecto_academico/${project.Id}`
+      `crear/${project.Id}`
     );
     this.dialogRef.close();
   }

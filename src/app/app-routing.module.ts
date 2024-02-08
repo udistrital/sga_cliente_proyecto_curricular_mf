@@ -2,13 +2,15 @@ import { APP_BASE_HREF } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ListProyectoAcademicoComponent } from "./components/list-proyecto-academico.component/list-proyecto-academico.component.component";
-import { RegistroProyectoAcademicoComponent } from "./components/registro-proyecto-academico/registro-proyecto-academico.component";
-import { ListRegistroProyectoAcademicoComponent } from "./components/list-registro-proyecto-academico/list-registro-proyecto-academico.component";
-import { ConsultaProyectoAcademicoComponent } from "./components/consulta-proyecto-academico/consulta-proyecto-academico.component";
+import { CrudProyectoAcademicoComponent } from "./components/crud-proyecto-academico/crud-proyecto-academico.component";
+import { ListEnfasisComponent } from "./components/list-enfasis/list-enfasis.component";
 
 const routes: Routes = [
   { path: "lista", component: ListProyectoAcademicoComponent },
-  { path: "ver",  component: ConsultaProyectoAcademicoComponent}
+  { path: "", component: ListProyectoAcademicoComponent },
+  { path: "crear", component: CrudProyectoAcademicoComponent },
+  { path: "crear/:proyecto_id", component: CrudProyectoAcademicoComponent},
+  { path: "ver",  component: ListEnfasisComponent}
 ];
 
 @NgModule({

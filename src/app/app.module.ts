@@ -38,6 +38,13 @@ import { TercerosService } from './services/terceros.service';
 import { CoreService } from './services/core.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import { ListEnfasisComponent } from './components/list-enfasis/list-enfasis.component';
+import { ListEnfasisService } from './services/list_enfasis.service';
+import {MatStepperModule} from '@angular/material/stepper';
+import { CrudEnfasisComponent } from './components/crud-enfasis/crud-enfasis.component';
+import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
+import { RequestService } from './services/request.service';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
@@ -52,9 +59,14 @@ export function createTranslateLoader(http: HttpClient) {
     ListProyectoAcademicoComponent,
     CrudProyectoAcademicoComponent,
     ModificarProyectoAcademicoComponent,
-    ListEnfasisComponent
+    ListEnfasisComponent,
+    CrudEnfasisComponent,
+    DynamicFormComponent
   ],
   imports: [
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatStepperModule,
     MatTabsModule,
     MatDatepickerModule,
     BrowserAnimationsModule,
@@ -101,7 +113,9 @@ export function createTranslateLoader(http: HttpClient) {
     NewNuxeoService,
     ProyectoAcademicoService,
     TercerosService,
-    CoreService
+    CoreService,
+    ListEnfasisService,
+    RequestService
   ],
   bootstrap: [AppComponent]
 })

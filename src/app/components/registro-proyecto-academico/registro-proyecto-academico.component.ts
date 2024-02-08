@@ -16,7 +16,7 @@ import { NewNuxeoService } from 'src/app/utils/services/new_nuxeo.service';
  
 import Swal from 'sweetalert2';
 import { ListRegistroProyectoAcademicoComponent } from '../list-registro-proyecto-academico/list-registro-proyecto-academico.component';
-import { NuxeoService } from 'src/app/services/nuxeo.service';
+
 
 @Component({
   selector: 'app-registro-proyecto-academico',
@@ -60,7 +60,6 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
     private toasterService: ToasterService,
     public dialogRef: MatDialogRef<ListRegistroProyectoAcademicoComponent>,
     private sgamidService: SgaMidService,
-    private nuxeoService: NuxeoService,
     private documentoService: DocumentoService,
     private sanitization: DomSanitizer,
     private newNuxeoService: NewNuxeoService,

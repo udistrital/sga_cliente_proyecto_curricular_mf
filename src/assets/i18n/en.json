@@ -7,7 +7,20 @@
         "nombre":"Name",
         "activo":"Active",
         "archivo_seleccionado": "Selected file",
-        "crear": "Create"
+        "crear": "Create",
+        "descripcion": "Description",
+        "codigo_abreviacion": "Abbreviation Code",
+        "numero_orden": "Order number",
+        "desactivar":"Deactivate",
+        "cerrar":"Close",
+        "placeholder_numero_orden": "E.g.: 1,2,3",
+        "placeholder_nombre": "E.g.: Academic",
+        "placeholder_descripcion": "E.g.: Period of the academic area",
+        "placeholder_codigo_abreviacion": "E.g.: ACADE",
+        "regresar": "Return",
+        "guardar": "Save",
+        "actualizar":"Update"
+
     },
     "historial_registro": {
         "titulo": "History of accreditation records and high quality of the Academic Project",
@@ -219,6 +232,7 @@
         "enfasis_actualizado": "Emphasys updated",
         "enfasis_no_actualizado": "Emphasys not updated",
         "administrar_enfasis": "Administrate emphasys",
-        "error_enfasis_ya_existe": "The emphasys is already added"
+        "error_enfasis_ya_existe": "The emphasys is already added",
+        "agregar_enfasis":"Add emphasys"
     }
 }

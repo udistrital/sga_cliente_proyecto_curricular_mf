@@ -2,6 +2,7 @@
 
 @use '@angular/material' as mat;
 
+
 $primary: (
     50: var(--primary),
     100: var(--primary),
@@ -48,3 +49,7 @@ $my-theme: mat.define-light-theme((
 ));
 
 @include mat.all-component-themes($my-theme);
+
+html{
+    font-size: 11pt;
+}

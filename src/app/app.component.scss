@@ -1,9 +1,10 @@
 .main-container{
-    margin: 40px 15px 0px 15px;
-    width: 100%;
+    padding: 50px 15px 0px 15px;
+    width: 101%;
+    height: calc(-130px + 100vh) !important; 
 }
 
 body{
-    background-color: black;
+    background-color: #f8f9fa !important;
 }
 

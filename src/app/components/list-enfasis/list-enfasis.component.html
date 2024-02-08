@@ -1,1 +1,97 @@
-<p>list-enfasis works!</p>
+<div class="col-md-12 col-lg-12">
+        <mat-card-header>
+            <b class="mx-4 mt-3">{{ 'enfasis.enfasis' | translate }}</b>
+        </mat-card-header>
+        <mat-card-content>
+            <!-- <toaster-container [toasterconfig]="config"></toaster-container> -->
+
+            <div class="container-table" *ngIf="!cambiotab">
+                <mat-table [dataSource]="dataSource" class="demo-table">
+                    <ng-container matColumnDef="acciones">
+                        <mat-header-cell *matHeaderCellDef><b>{{ 'consultaproyecto.acciones' | translate }}</b>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> 
+                            <mat-icon class="link icono" (click)="onEdit(row)"
+                            aria-hidden="false" title="{{'consultaproyecto.editar' | translate}}"
+                            fontIcon="edit_outline"></mat-icon>
+
+                        <mat-icon class="link icono" (click)="onDelete(row)"
+                            aria-hidden="false" title="{{'consultaproyecto.desactivar' | translate}}"
+                            fontIcon="delete_outline"></mat-icon>    
+                        </mat-cell>
+                        
+                    </ng-container>
+
+                    <ng-container matColumnDef="nombre">
+                        <mat-header-cell *matHeaderCellDef><b> {{ 'GLOBAL.nombre' | translate
+                                }}</b>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.Nombre }} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="descripcion">
+                        <mat-header-cell *matHeaderCellDef><b>{{ 'GLOBAL.descripcion' | translate
+                                }}</b>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.Descripcion}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="codigo_abreviacion">
+                        <mat-header-cell *matHeaderCellDef><b>{{ 'GLOBAL.codigo_abreviacion' |
+                                translate }}</b>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.CodigoAbreviacion }} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="activo">
+                        <mat-header-cell class="text-left" *matHeaderCellDef> <b>{{
+                                'GLOBAL.activo' |
+                                translate }}</b> </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <span *ngIf="row.Activo">Si</span>
+                            <span *ngIf="!row.Activo">No</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="numero_orden">
+                        <mat-header-cell *matHeaderCellDef><b>{{ 'GLOBAL.numero_orden' | translate }}</b>
+
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.NumeroOrden }} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
+                        class="encabezado"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+            </div>
+
+            <div class="d-flex justify-content-between" *ngIf="!cambiotab">
+                <button class="boton-primary" (click)="dismissDialog();" mat-button style="margin-top: 10px;">
+                    <mat-icon>arrow_back</mat-icon>
+                    {{ 'GLOBAL.cerrar' | translate }}
+                </button>
+                <button class="boton-primary mr-2" (click)="onCreate();" mat-button style="margin-top: 10px;">
+                    <mat-icon>add</mat-icon>
+                    {{ 'enfasis.agregar_enfasis' | translate }}
+                </button>
+            </div>
+
+            <!-- <ng2-smart-table *ngIf="!cambiotab" [settings]="settings" [source]="source" (delete)="onDelete($event)"
+          (rowSelect)="itemselec($event)" (edit)="onEdit($event)" (create)="onCreate($event)">
+        </ng2-smart-table> -->
+            <!--button (click)="activetab()" >cambiar</button-->
+        <br>
+            <app-crud-enfasis *ngIf="cambiotab" [enfasis_id]="uid" (eventChange)="onChange($event)"></app-crud-enfasis>
+            <button *ngIf="cambiotab" (click)="activetab()" mat-button color="primary" class="boton-primary mt-3">
+                <mat-icon>arrow_back</mat-icon>
+                {{ 'GLOBAL.regresar' | translate }}
+            </button>
+            <br *ngIf="cambiotab">
+            <button *ngIf="cambiotab" (click)="dismissDialog();" mat-button color="primary" style="margin-top: 10px;"
+                class="boton-primary">
+                <mat-icon>arrow_back</mat-icon>
+                {{ 'GLOBAL.cerrar' | translate }}
+            </button>
+        </mat-card-content>
+</div>

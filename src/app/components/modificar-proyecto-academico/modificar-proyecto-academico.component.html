@@ -202,7 +202,7 @@
                                                     <mat-header-cell class="text-left" *matHeaderCellDef> <b>{{
                                                             'GLOBAL.nombre' |
                                                             translate }}</b> </mat-header-cell>
-                                                    <mat-cell *matCellDef="let row"> {{row.EnfasisId.Descripcion}}
+                                                    <mat-cell *matCellDef="let row"> {{row.EnfasisId.Nombre}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -641,7 +641,6 @@
                                         }}:
                                         {{ fileRegistroAltaCalidad.name }}</label>
                                     <br />
-                                    <br>
                                     <mat-form-field class="input-acto">
                                         <mat-label>* {{ "proyecto.fecha_creacion" | translate }}:</mat-label>
                                         <br>
@@ -653,7 +652,6 @@
                                         <mat-error *ngIf="Campo26Control.hasError('required')">
                                             {{ "proyecto.erro_fecha_creacion" | translate }}</mat-error>
                                     </mat-form-field>
-                                    <br />
                                     <br />
 
                                     <div class="form-group row">

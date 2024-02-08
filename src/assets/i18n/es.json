@@ -7,7 +7,19 @@
         "nombre":"Nombre",
         "activo":"Activo",
         "archivo_seleccionado": "Archivo seleccionado",
-        "crear": "Crear"
+        "crear": "Crear",
+        "descripcion": "Descripción",
+        "codigo_abreviacion": "Código abreviación",
+        "numero_orden": "Numero orden",
+        "desactivar":"Desactivar",
+        "cerrar":"Cerrar",
+        "placeholder_nombre": "ej: Académico",
+        "placeholder_descripcion": "ej: Período del área académico",
+        "placeholder_codigo_abreviacion": "ej: ACADE",
+        "placeholder_numero_orden": "ej: 1,2,3",
+        "regresar": "Regresar",
+        "guardar": "Guardar",
+        "actualizar":"Actualizar"
     },
     "historial_registro": {
         "titulo": "Histórico de registros de acreditación y alta calidad del proyecto curricular",
@@ -220,6 +232,7 @@
         "enfasis_no_actualizado": "Énfasis no actualizado",
         "administrar_enfasis": "Administrar énfasis",
         "error_enfasis_ya_existe": "El énfasis ya fue agregado",
-        "select_enfasis": "Seleccione el énfasis"
+        "select_enfasis": "Seleccione el énfasis",
+        "agregar_enfasis":"Agregar énfasis"
     }
 }

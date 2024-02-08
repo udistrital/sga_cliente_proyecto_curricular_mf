@@ -1,6 +1,6 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, NgZone, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, NgZone, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
@@ -27,20 +27,20 @@ import { Titulacion } from 'src/app/models/titulacion';
 import { CoreService } from 'src/app/services/core.service';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { ListEnfasisService } from 'src/app/services/list_enfasis.service';
-import { NuxeoService } from 'src/app/services/nuxeo.service';
 import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { NewNuxeoService } from 'src/app/utils/services/new_nuxeo.service';
 import Swal from 'sweetalert2';
 import { ListEnfasisComponent } from '../list-enfasis/list-enfasis.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-crud-proyecto-academico',
   templateUrl: './crud-proyecto-academico.component.html',
   styleUrls: ['./crud-proyecto-academico.component.scss']
 })
-export class CrudProyectoAcademicoComponent {
+export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize!: CdkTextareaAutosize;
 
   triggerResize() {
@@ -136,6 +136,8 @@ export class CrudProyectoAcademicoComponent {
 
   subscription: Subscription;
   //source_emphasys: LocalDataSource = new LocalDataSource();
+  dataSource!: MatTableDataSource<any>;
+  displayedColumns: string[] = ['nombre','acciones'];
   arr_enfasis_proyecto: InstitucionEnfasis[] = [];
   settings_emphasys: any;
 
@@ -151,8 +153,6 @@ export class CrudProyectoAcademicoComponent {
     private sgamidService: SgaMidService,
     private dialogService: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private nuxeoService: NuxeoService,
-    private documentoService: DocumentoService,
     private sanitization: DomSanitizer,
     private listEnfasisService: ListEnfasisService,
     private newNuxeoService: NewNuxeoService,
@@ -206,35 +206,13 @@ export class CrudProyectoAcademicoComponent {
       }
     });
 
-    this.settings_emphasys = {
-      delete: {
-        deleteButtonContent: '<i class="nb-trash"></i>',
-        confirmDelete: true,
-      },
-      actions: {
-        edit: false,
-        add: false,
-        position: 'right',
-      },
-      mode: 'external',
-      columns: {
-        Nombre: {
-          title: this.translate.instant('GLOBAL.nombre'),
-          // icon: 'string;',
-          valuePrepareFunction: (value:any) => {
-            return value;
-          },
-          width: '80%',
-        },
-      },
-    };
   }
 
   onCreateEmphasys(event: any) {
     const emphasys = event.value;
     if (!this.arr_enfasis_proyecto.find((enfasis: any) => emphasys.Id === enfasis.Id) && emphasys.Id) {
       this.arr_enfasis_proyecto.push(emphasys);
-      //this.source_emphasys.load(this.arr_enfasis_proyecto);
+      this.dataSource = new MatTableDataSource(this.arr_enfasis_proyecto);
       const matSelect: MatSelect = event.source;
       matSelect.writeValue(null);
     } else {
@@ -256,8 +234,8 @@ export class CrudProyectoAcademicoComponent {
       }
       return -1;
     }
-    this.arr_enfasis_proyecto.splice(findInArray(event.data.Id, this.arr_enfasis_proyecto, 'Id'), 1);
-    //this.source_emphasys.load(this.arr_enfasis_proyecto);
+    this.arr_enfasis_proyecto.splice(findInArray(event.Id, this.arr_enfasis_proyecto, 'Id'), 1);
+    this.dataSource = new MatTableDataSource(this.arr_enfasis_proyecto);
   }
 
   mostrarfecha() {
@@ -278,6 +256,8 @@ export class CrudProyectoAcademicoComponent {
 
   openListEnfasisComponent() {
     this.dialogService.open(ListEnfasisComponent, {
+      width: '1050px',
+      height: 'auto'
       // context: {
       //   asDialog: true,
       // },
@@ -639,12 +619,12 @@ export class CrudProyectoAcademicoComponent {
         }
 
         this.enfasis_proyecto = [];
-        this.arr_enfasis_proyecto.forEach(enfasis => {
+        this.arr_enfasis_proyecto.forEach((enfasis:any) => {
           this.enfasis_proyecto.push({
             Activo: true,
             ProyectoAcademicoInstitucionId: this.proyecto_academico,
             EnfasisId: {
-              Id: 1//enfasis['Id'],
+              Id: enfasis['Id'],
             },
           });
         });

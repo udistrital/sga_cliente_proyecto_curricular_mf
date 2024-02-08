@@ -64,7 +64,6 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
             element.TipoRegistroIdNombre = element.TipoRegistroId.Nombre
             element.FechaCreacionActoAdministrativo = momentTimezone.tz(element.FechaCreacionActoAdministrativo, 'America/Bogota').format('DD-MM-YYYY')
             element.VencimientoActoAdministrativo = momentTimezone.tz(element.VencimientoActoAdministrativo, 'America/Bogota').format('DD-MM-YYYY')
-            console.log(data)
             this.dataSource = new MatTableDataSource(data);
           });
         } else {
@@ -98,11 +97,12 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
   }
 
   downloadFile(id_documento: any) {
-    console.log("Se llamo a download")
+    console.log(id_documento)
+
     let filesToGet = [
       {
-        Id: id_documento.data.EnlaceActo,
-        key: id_documento.data.EnlaceActo,
+        Id: id_documento,
+        key: id_documento,
       },
     ];
     this.newNuxeoService.get(filesToGet).subscribe(
@@ -140,7 +140,7 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
   }
 
   highlight(row:any): void {
-    this.idproyecto = row.data.ProyectoAcademicoInstitucionId.Id;
+    this.idproyecto = row.ProyectoAcademicoInstitucionId.Id;
   }
 
   OpenRegistroCalificado(): void {
