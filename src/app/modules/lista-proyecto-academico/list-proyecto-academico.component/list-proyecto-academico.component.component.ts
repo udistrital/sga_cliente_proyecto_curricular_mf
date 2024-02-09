@@ -1,9 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { BodyOutputType, Toast, ToasterConfig, ToasterService } from 'angular2-toaster';
 import * as moment from 'moment';
 import { ProyectoAcademicoInstitucion } from 'src/app/models/proyecto_academico_institucion';
 import { SgaMidService } from 'src/app/services/sga_mid.service';
@@ -13,13 +12,14 @@ import { ModificarProyectoAcademicoComponent } from '../modificar-proyecto-acade
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-list-proyecto-academico.component',
   templateUrl: './list-proyecto-academico.component.component.html',
   styleUrls: ['./list-proyecto-academico.component.component.scss'],
 })
-export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
+export class ListProyectoAcademicoComponent implements OnInit {
   displayedColumns: string[] = [
     'id', 'facultad', 'nombre_proyecto', 'nivel_proyecto', 'codigo', 'cod_snies', 'activo',
     'vencimiento_registro', 'vencimiento_alta_calidad', 'acciones'
@@ -30,7 +30,6 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort = {} as MatSort;
   
 
-  config!: ToasterConfig;
   settings: any;
   //dataSource: any;
   index: any;
@@ -89,30 +88,18 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
 
   listaDatos: any[] = []
 
-  //source: LocalDataSource;
-
   constructor(
     private http: HttpClient,
     private translate: TranslateService,
     private proyectoacademicoService: ProyectoAcademicoService,
     private sgamidService: SgaMidService,
     public dialog: MatDialog,
-    private toasterService: ToasterService,
+    private snackBar: MatSnackBar,
   ) {
-    //this.source = new LocalDataSource();
-
-    // Assign the data to the data source for the table to render
     this.loading = true;
     this.loadData();
-    // this.source.load(this.listaDatos)
-
-  }
-  ngAfterViewInit() {
-
-
   }
 
-  //@ViewChild(MatSort, { static: true }) sort!: MatSort;
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -139,7 +126,6 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
           element.NivelProyecto = element.ProyectoAcademico.NivelFormacionId.Nombre;
           element.proyecto = element.ProyectoAcademico.Nombre;
           element.Id = element.ProyectoAcademico.Id;
-          //this.source.load(data)
           this.dataSource = new MatTableDataSource(data);
           setTimeout(() => {
             this.dataSource.paginator = this.paginator;
@@ -696,45 +682,16 @@ export class ListProyectoAcademicoComponent implements OnInit, AfterViewInit {
               if (res.Type !== 'error') {
                 this.loadproyectos();
                 this.loadData();
-                //this.showToast('info', inhabilitar_title, inhabilitar_ok);
+                this.snackBar.open(inhabilitar_ok, '', {duration: 3000,panelClass: ['info-snackbar']});
               } else {
-                // this.showToast(
-                //   'error',
-                //   this.translate.instant('GLOBAL.error'),
-                //   inhabilitar_error,
-                // );
+                this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
               }
             },
             () => {
-              // this.showToast(
-              //   'error',
-              //   this.translate.instant('GLOBAL.error'),
-              //   inhabilitar_error,
-              // );
+              this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
             },
           );
       }
     });
-  }
-
-  private showToast(type: string, title: string, body: string) {
-    this.config = new ToasterConfig({
-      // 'toast-top-full-width', 'toast-bottom-full-width', 'toast-top-left', 'toast-top-center'
-      positionClass: 'toast-top-center',
-      timeout: 5000, // ms
-      newestOnTop: true,
-      tapToDismiss: false, // hide on click
-      preventDuplicates: true,
-      animation: 'slideDown', // 'fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'
-      limit: 5,
-    });
-    const toast: Toast = {
-      type: 'info', // 'default', 'info', 'success', 'warning', 'error'
-      title: title,
-      body: body,
-      showCloseButton: true,
-      bodyOutputType: BodyOutputType.TrustedHtml,
-    };
-    this.toasterService.popAsync(toast);
   }
 }

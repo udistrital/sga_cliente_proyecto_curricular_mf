@@ -8,15 +8,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RegistroProyectoAcademicoComponent } from './components/registro-proyecto-academico/registro-proyecto-academico.component';
+import { RegistroProyectoAcademicoComponent } from './modules/lista-proyecto-academico/registro-proyecto-academico/registro-proyecto-academico.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from 'src/environments/environment';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ListRegistroProyectoAcademicoComponent } from './components/list-registro-proyecto-academico/list-registro-proyecto-academico.component';
-import { ConsultaProyectoAcademicoComponent } from './components/consulta-proyecto-academico/consulta-proyecto-academico.component';
+import { ListRegistroProyectoAcademicoComponent } from './modules/lista-proyecto-academico/list-registro-proyecto-academico/list-registro-proyecto-academico.component';
+import { ConsultaProyectoAcademicoComponent } from './modules/lista-proyecto-academico/consulta-proyecto-academico/consulta-proyecto-academico.component';
 import { SgaMidService } from './services/sga_mid.service';
 import { DocumentoService } from './services/documento.service';
 import { OikosService } from './services/oikos.service';
@@ -27,9 +27,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import { ListProyectoAcademicoComponent } from './components/list-proyecto-academico.component/list-proyecto-academico.component.component';
-import { CrudProyectoAcademicoComponent } from './components/crud-proyecto-academico/crud-proyecto-academico.component';
-import { ModificarProyectoAcademicoComponent } from './components/modificar-proyecto-academico/modificar-proyecto-academico.component';
+import { ListProyectoAcademicoComponent } from './modules/lista-proyecto-academico/list-proyecto-academico.component/list-proyecto-academico.component.component';
+import { CrudProyectoAcademicoComponent } from './modules/crear-proyecto-academico/crud-proyecto-academico/crud-proyecto-academico.component';
+import { ModificarProyectoAcademicoComponent } from './modules/lista-proyecto-academico/modificar-proyecto-academico/modificar-proyecto-academico.component';
 import { ProyectoAcademicoService } from './services/proyecto_academico.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,14 +37,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { TercerosService } from './services/terceros.service';
 import { CoreService } from './services/core.service';
 import {MatTabsModule} from '@angular/material/tabs';
-import { ListEnfasisComponent } from './components/list-enfasis/list-enfasis.component';
+import { ListEnfasisComponent } from './modules/crear-proyecto-academico/list-enfasis/list-enfasis.component';
 import { ListEnfasisService } from './services/list_enfasis.service';
 import {MatStepperModule} from '@angular/material/stepper';
-import { CrudEnfasisComponent } from './components/crud-enfasis/crud-enfasis.component';
+import { CrudEnfasisComponent } from './modules/crear-proyecto-academico/crud-enfasis/crud-enfasis.component';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import { RequestService } from './services/request.service';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
@@ -64,6 +65,7 @@ export function createTranslateLoader(http: HttpClient) {
     DynamicFormComponent
   ],
   imports: [
+    MatSnackBarModule,
     MatAutocompleteModule,
     MatCheckboxModule,
     MatStepperModule,
