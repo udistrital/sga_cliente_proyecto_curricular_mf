@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { BodyOutputType, Toast, ToasterConfig, ToasterService } from 'angular2-toaster';
 import { ListEnfasisService } from 'src/app/services/list_enfasis.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import Swal from 'sweetalert2';
@@ -16,10 +16,8 @@ export class ListEnfasisComponent implements OnInit {
 
   uid!: number;
   cambiotab: boolean = false;
-  config!: ToasterConfig;
   settings: any;
 
-  //source: LocalDataSource = new LocalDataSource();
   displayedColumns = ['acciones', 'nombre', 'descripcion', 'codigo_abreviacion', 'activo', 'numero_orden'];
 
   dataSource!: MatTableDataSource<any>;
@@ -27,11 +25,9 @@ export class ListEnfasisComponent implements OnInit {
   constructor(private translate: TranslateService, private proyectoAcademicoService: ProyectoAcademicoService,
     private dialogRef: MatDialogRef<ListEnfasisComponent>,
     private listEnfasisService: ListEnfasisService,
-    private toasterService: ToasterService) {
+    private snackBar: MatSnackBar) {
     this.loadData();
-    this.cargarCampos();
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.cargarCampos();
     });
   }
 
@@ -40,69 +36,6 @@ export class ListEnfasisComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  cargarCampos() {
-    this.settings = {
-      add: {
-        addButtonContent: '<i class="nb-plus"></i>',
-        createButtonContent: '<i class="nb-checkmark"></i>',
-        cancelButtonContent: '<i class="nb-close"></i>',
-      },
-      edit: {
-        editButtonContent: '<i class="nb-edit"></i>',
-        saveButtonContent: '<i class="nb-checkmark"></i>',
-        cancelButtonContent: '<i class="nb-close"></i>',
-      },
-      delete: {
-        deleteButtonContent: '<i class="nb-trash"></i>',
-        confirmDelete: true,
-      },
-      mode: 'external',
-      columns: {
-        // Id: {
-        //   title: this.translate.instant('GLOBAL.id'),
-        //   // type: 'number;',
-        //   valuePrepareFunction: (value) => {
-        //     return value;
-        //   },
-        // },
-        Nombre: {
-          title: this.translate.instant('GLOBAL.nombre'),
-          // type: 'string;',
-          valuePrepareFunction: (value: any) => {
-            return value;
-          },
-        },
-        Descripcion: {
-          title: this.translate.instant('GLOBAL.descripcion'),
-          // type: 'string;',
-          valuePrepareFunction: (value: any) => {
-            return value;
-          },
-        },
-        CodigoAbreviacion: {
-          title: this.translate.instant('GLOBAL.codigo_abreviacion'),
-          // type: 'string;',
-          valuePrepareFunction: (value: any) => {
-            return value;
-          },
-        },
-        Activo: {
-          title: this.translate.instant('GLOBAL.activo'),
-          // type: 'string;',
-          valuePrepareFunction: (value: any) => {
-            return value;
-          },
-        },
-        NumeroOrden: {
-          title: this.translate.instant('GLOBAL.numero_orden'),
-          // type: 'string;',
-          valuePrepareFunction: (value: any) => {
-            return value;
-          },
-        },
-      },
-    };
-  }
 
   useLanguage(language: string) {
     this.translate.use(language);
@@ -113,18 +46,16 @@ export class ListEnfasisComponent implements OnInit {
       .subscribe((res: any) => {
         if (res.Type !== 'error') {
           const data = <Array<any>>res;
-          console.log(data)
           if (this.asDialog) {
             // service
             this.listEnfasisService.sendListEnfasis(res);
           }
-          //this.source.load(data);
           this.dataSource = new MatTableDataSource(data);
         } else {
-          this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('ERROR.general'));
+          this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
         }
       }, () => {
-        this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('ERROR.general'));
+        this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
       });
   }
 
@@ -146,8 +77,7 @@ export class ListEnfasisComponent implements OnInit {
       title: this.translate.instant('GLOBAL.eliminar'),
       text: this.translate.instant('enfasis.seguro_continuar_eliminar_enfasis'),
       icon: 'warning',
-      buttons: true,
-      dangerMode: true,
+      
       showCancelButton: true,
     };
     Swal.fire(opt)
@@ -158,12 +88,12 @@ export class ListEnfasisComponent implements OnInit {
             .subscribe((res: any) => {
               if (res.Type !== 'error') {
                 this.loadData();
-                this.showToast('info', this.translate.instant('GLOBAL.eliminar'), this.translate.instant('enfasis.enfasis_eliminado'));
+                this.snackBar.open(this.translate.instant('enfasis.enfasis_eliminado'), '', {duration: 3000,panelClass: ['info-snackbar']});
               } else {
-                this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('enfasis.enfasis_no_eliminado'));
+                this.snackBar.open(this.translate.instant('enfasis.enfasis_no_eliminado'), '', {duration: 3000,panelClass: ['error-snackbar']});
               }
             }, () => {
-              this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('enfasis.enfasis_no_eliminado'));
+              this.snackBar.open(this.translate.instant('enfasis.enfasis_no_eliminado'), '', {duration: 3000,panelClass: ['error-snackbar']});
             });
         }
       });
@@ -190,28 +120,5 @@ export class ListEnfasisComponent implements OnInit {
 
 
   itemselec(event: any): void {
-    // console.log("afssaf");
   }
-
-  private showToast(type: string, title: string, body: string) {
-    this.config = new ToasterConfig({
-      // 'toast-top-full-width', 'toast-bottom-full-width', 'toast-top-left', 'toast-top-center'
-      positionClass: 'toast-top-center',
-      timeout: 5000,  // ms
-      newestOnTop: true,
-      tapToDismiss: false, // hide on click
-      preventDuplicates: true,
-      animation: 'slideDown', // 'fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'
-      limit: 5,
-    });
-    const toast: Toast = {
-      type: 'info', // 'default', 'info', 'success', 'warning', 'error'
-      title: title,
-      body: body,
-      showCloseButton: true,
-      bodyOutputType: BodyOutputType.TrustedHtml,
-    };
-    this.toasterService.popAsync(toast);
-  }
-
 }

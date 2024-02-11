@@ -7,7 +7,6 @@ import { MatSelect } from '@angular/material/select';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BodyOutputType, Toast, ToasterConfig, ToasterService } from 'angular2-toaster';
 import * as moment from 'moment';
 import { Subscription, take } from 'rxjs';
 import { Enfasis } from 'src/app/models/enfasis';
@@ -30,10 +29,11 @@ import { ListEnfasisService } from 'src/app/services/list_enfasis.service';
 import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { SgaMidService } from 'src/app/services/sga_mid.service';
-import { NewNuxeoService } from 'src/app/utils/services/new_nuxeo.service';
+import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 import Swal from 'sweetalert2';
 import { ListEnfasisComponent } from '../list-enfasis/list-enfasis.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-crud-proyecto-academico',
@@ -50,7 +50,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
   isLinear = true;
   checkregistro = false;
-  config!: ToasterConfig;
   settings: any;
   basicform: any;
   resoluform: any;
@@ -135,7 +134,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   @Output() eventChange = new EventEmitter();
 
   subscription: Subscription;
-  //source_emphasys: LocalDataSource = new LocalDataSource();
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['nombre','acciones'];
   arr_enfasis_proyecto: InstitucionEnfasis[] = [];
@@ -144,7 +142,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   dpDayPickerConfig: any;
 
   constructor(private translate: TranslateService,
-    private toasterService: ToasterService,
     private oikosService: OikosService,
     private routerService: Router,
     private _ngZone: NgZone,
@@ -156,7 +153,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     private sanitization: DomSanitizer,
     private listEnfasisService: ListEnfasisService,
     private newNuxeoService: NewNuxeoService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar) {
 
     this.dpDayPickerConfig = {
       locale: 'es',
@@ -258,9 +256,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     this.dialogService.open(ListEnfasisComponent, {
       width: '1050px',
       height: 'auto'
-      // context: {
-      //   asDialog: true,
-      // },
     });
   }
 
@@ -300,7 +295,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           this.proyecto_padre_id = proyecto_a_clonar.ProyectoAcademico;
           // enfasis
           this.arr_enfasis_proyecto = proyecto_a_clonar.Enfasis.map((enfasis: any) => enfasis.EnfasisId);
-          //this.source_emphasys.load(this.arr_enfasis_proyecto);
           // checks
           this.checkciclos = proyecto_a_clonar.ProyectoAcademico.CiclosPropedeuticos;
           this.checkofrece = proyecto_a_clonar.ProyectoAcademico.Oferta;
@@ -339,10 +333,10 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             competencias: [proyecto_a_clonar.ProyectoAcademico.Competencias, Validators.required],
           });
         } else {
-          this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('proyecto.proyecto_no_cargado'));
+          this.snackBar.open(this.translate.instant('proyecto.proyecto_no_cargado'), '', {duration: 3000,panelClass: ['error-snackbar']});
         }
       }, () => {
-        this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('proyecto.proyecto_no_cargado'));
+        this.snackBar.open(this.translate.instant('proyecto.proyecto_no_cargado'), '', {duration: 3000,panelClass: ['error-snackbar']});
       });
   }
 
@@ -360,7 +354,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         file.file = event.target.files[0];
         this.fileResolucion = file;
       } else {
-        this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('ERROR.formato_documento_pdf'));
+        this.snackBar.open(this.translate.instant('ERROR.formato_documento_pdf'), '', {duration: 3000,panelClass: ['error-snackbar']});
       }
     }
   }
@@ -375,7 +369,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         file.file = event.target.files[0];
         this.fileActoAdministrativo = file;
       } else {
-        this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('ERROR.formato_documento_pdf'));
+        this.snackBar.open(this.translate.instant('ERROR.formato_documento_pdf'), '', {duration: 3000,panelClass: ['error-snackbar']});
       }
     }
   }
@@ -699,15 +693,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         Swal.fire(opt)
           .then(async (willCreate) => {
             if (willCreate.value) {
-              // Subir archivos
-              // Swal.fire({
-              //   title: 'Creando proyecto académico ...',
-              //   html: `<b></b>`,
-              //   timerProgressBar: true,
-              //   onOpen: () => {
-              //     Swal.showLoading();
-              //   },
-              // });
               let content = Swal.getHtmlContainer()
               if (content) {
                 const b: any = content.querySelector('b')
@@ -735,7 +720,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                       text: this.translate.instant('ERROR.' + res.Code),
                       confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
                     });
-                    this.showToast('error', 'error', this.translate.instant('proyecto.proyecto_no_creado'));
+                    this.snackBar.open(this.translate.instant('proyecto.proyecto_no_creado'), '', {duration: 3000,panelClass: ['error-snackbar']});
+
                     Swal.close();
                   } else {
                     Swal.close();
@@ -784,26 +770,5 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         showCancelButton: true,
       }; Swal.fire(opt2)
     }
-  }
-
-  private showToast(icon: string, title: string, body: string) {
-    this.config = new ToasterConfig({
-      // 'toast-top-full-width', 'toast-bottom-full-width', 'toast-top-left', 'toast-top-center'
-      positionClass: 'toast-top-center',
-      timeout: 5000,  // ms
-      newestOnTop: true,
-      tapToDismiss: false, // hide on click
-      preventDuplicates: true,
-      animation: 'slideDown', // 'fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'
-      limit: 5,
-    });
-    const toast: Toast = {
-      type: 'info', // 'default', 'info', 'success', 'warning', 'error'
-      title: title,
-      body: body,
-      showCloseButton: true,
-      bodyOutputType: BodyOutputType.TrustedHtml,
-    };
-    this.toasterService.popAsync(toast);
   }
 }

@@ -3,7 +3,7 @@ import { Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 import { ListRegistroProyectoAcademicoComponent } from '../list-registro-proyecto-academico/list-registro-proyecto-academico.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NewNuxeoService } from 'src/app/utils/services/new_nuxeo.service';
+import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -57,7 +57,6 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
         columns: {
           EnfasisId: {
             title: this.translate.instant('GLOBAL.nombre'),
-            // type: 'string;',
             valuePrepareFunction: (value: { Nombre: any; }) => {
               return value.Nombre;
             },
@@ -65,7 +64,6 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
           },
           Activo: {
             title: this.translate.instant('GLOBAL.activo'),
-            // type: 'string;',
             valuePrepareFunction: (value: any) => {
               return value ? translate.instant('GLOBAL.si') : translate.instant('GLOBAL.si');
             },
@@ -91,7 +89,6 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       (      response: any) => {
         const filesResponse = <any>response;
         if (Object.keys(filesResponse).length === filesToGet.length) {
-          // console.log("files", filesResponse);
           filesToGet.forEach((file: any) => {
             const url = filesResponse[0].url;
             window.open(url);
@@ -109,7 +106,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
   }
 
   cloneProject(project: any): void {
-    this.routerService.navigateByUrl(`pages/proyecto_academico/crud-proyecto_academico/${project.Id}`);
+    this.routerService.navigateByUrl(`crear/${project.Id}`);
     this.dialogRef.close();
   }
 
@@ -160,7 +157,6 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       .get("dependencia_tipo_dependencia/?query=TipoDependenciaId:"+this.data.Id+"&limit=0")
       .subscribe(
         (res: any) => {
-          console.log(res)
           const r = <any>res;
           if (res !== null && r.Type !== "error") {
             this.espacio = res.map((data: any) => data.DependenciaId);

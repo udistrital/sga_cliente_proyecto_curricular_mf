@@ -5,6 +5,7 @@ import { Enfasis } from 'src/app/models/enfasis';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { FORM_ENFASIS } from './form-enfasis';
 import Swal from 'sweetalert2';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-crud-enfasis',
@@ -32,7 +33,7 @@ export class CrudEnfasisComponent implements OnInit {
   constructor(
     private translate: TranslateService,
     private proyectoAcademicoService: ProyectoAcademicoService,
-    private toasterService: ToasterService
+    private snackBar: MatSnackBar,
     ) {
     this.formEnfasis = FORM_ENFASIS;
     this.construirForm();
@@ -72,13 +73,12 @@ export class CrudEnfasisComponent implements OnInit {
           if (res.Type !== 'error') {
             this.info_enfasis = <Enfasis>res[0];
           } else {
-            this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('ERROR.general'));
+            this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
           }
         }, () => {
-          this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('ERROR.general'));
+          this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
         });
     } else  {
-      //this.info_enfasis = undefined;
       this.clean = !this.clean;
     }
   }
@@ -89,8 +89,7 @@ export class CrudEnfasisComponent implements OnInit {
       title: this.translate.instant('GLOBAL.actualizar'),
       text: this.translate.instant('enfasis.seguro_continuar_actualizar_enfasis'),
       icon: 'warning',
-      buttons: true,
-      dangerMode: true,
+      
       showCancelButton: true,
     };
     Swal.fire(opt)
@@ -102,12 +101,12 @@ export class CrudEnfasisComponent implements OnInit {
             if (res.Type !== 'error') {
               this.loadEnfasis();
               this.eventChange.emit(true);
-              this.showToast('info', this.translate.instant('GLOBAL.actualizar'), this.translate.instant('enfasis.enfasis_actualizado'));
+              this.snackBar.open(this.translate.instant('enfasis.enfasis_actualizado'), '', {duration: 3000,panelClass: ['info-snackbar']});
             } else {
-              this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('enfasis.enfasis_no_actualizado'));
+              this.snackBar.open(this.translate.instant('enfasis.enfasis_no_actualizado'), '', {duration: 3000,panelClass: ['error-snackbar']});
             }
           }, () => {
-            this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('enfasis.enfasis_no_actualizado'));
+            this.snackBar.open(this.translate.instant('enfasis.enfasis_no_actualizado'), '', {duration: 3000,panelClass: ['error-snackbar']});
           });
       }
     });
@@ -118,29 +117,30 @@ export class CrudEnfasisComponent implements OnInit {
       title: this.translate.instant('GLOBAL.registrar'),
       text: this.translate.instant('enfasis.seguro_continuar_registrar_enfasis'),
       icon: 'warning',
-      buttons: true,
-      dangerMode: true,
+      
       showCancelButton: true,
     };
+  
     Swal.fire(opt)
-    .then((willDelete) => {
-      if (willDelete.value) {
-        this.info_enfasis = <Enfasis>enfasis;
-        this.proyectoAcademicoService.post('enfasis', this.info_enfasis)
-          .subscribe((res: any) => {
-            if (res.Type !== 'error') {
-              this.info_enfasis = <Enfasis><unknown>res;
-              this.eventChange.emit(true);
-              this.showToast('info', this.translate.instant('GLOBAL.registrar'), this.translate.instant('enfasis.enfasis_creado'));
-            } else {
-              this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('enfasis.enfasis_no_creado'));
-            }
-          }, () => {
-            this.showToast('error', this.translate.instant('GLOBAL.error'), this.translate.instant('enfasis.enfasis_no_creado'));
-          });
-      }
-    });
+      .then((willDelete) => {
+        if (willDelete.value) {
+          this.info_enfasis = <Enfasis>enfasis;
+          this.proyectoAcademicoService.post('enfasis', this.info_enfasis)
+            .subscribe((res: any) => {
+              if (res.Type !== 'error') {
+                this.info_enfasis = <Enfasis><unknown>res;
+                this.eventChange.emit(true);
+                this.snackBar.open(this.translate.instant('enfasis.enfasis_creado'), '', {duration: 3000, panelClass: ['info-snackbar']});
+              } else {
+                this.snackBar.open(this.translate.instant('enfasis.enfasis_no_creado'), '', {duration: 3000, panelClass: ['error-snackbar']});
+              }
+            }, () => {
+              this.snackBar.open(this.translate.instant('enfasis.enfasis_no_creado'), '', {duration: 3000, panelClass: ['error-snackbar']});
+            });
+        }
+      });
   }
+  
 
   ngOnInit() {
     this.loadEnfasis();
@@ -155,26 +155,4 @@ export class CrudEnfasisComponent implements OnInit {
       }
     }
   }
-
-  private showToast(type: string, title: string, body: string) {
-    this.config = new ToasterConfig({
-      // 'toast-top-full-width', 'toast-bottom-full-width', 'toast-top-left', 'toast-top-center'
-      positionClass: 'toast-top-center',
-      timeout: 5000,  // ms
-      newestOnTop: true,
-      tapToDismiss: false, // hide on click
-      preventDuplicates: true,
-      animation: 'slideDown', // 'fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'
-      limit: 5,
-    });
-    const toast: Toast = {
-      type: 'info', // 'default', 'info', 'success', 'warning', 'error'
-      title: title,
-      body: body,
-      showCloseButton: true,
-      bodyOutputType: BodyOutputType.TrustedHtml,
-    };
-    this.toasterService.popAsync(toast);
-  }
-
 }

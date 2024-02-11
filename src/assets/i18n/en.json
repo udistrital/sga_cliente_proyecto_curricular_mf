@@ -19,7 +19,8 @@
         "placeholder_codigo_abreviacion": "E.g.: ACADE",
         "regresar": "Return",
         "guardar": "Save",
-        "actualizar":"Update"
+        "actualizar":"Update",
+        "eliminar": "Delete"
 
     },
     "historial_registro": {

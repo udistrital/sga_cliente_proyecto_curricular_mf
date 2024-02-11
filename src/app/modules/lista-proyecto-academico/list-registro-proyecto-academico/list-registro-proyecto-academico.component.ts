@@ -2,11 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { BodyOutputType, Toast, ToasterConfig, ToasterService } from 'angular2-toaster';
 
 import { DocumentoService } from 'src/app/services/documento.service';
 import { SgaMidService } from 'src/app/services/sga_mid.service';
-import { NewNuxeoService } from 'src/app/utils/services/new_nuxeo.service';
+import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 import Swal from 'sweetalert2';
 import { RegistroProyectoAcademicoComponent } from '../registro-proyecto-academico/registro-proyecto-academico.component';
 import * as momentTimezone from 'moment-timezone';
@@ -19,7 +18,6 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./list-registro-proyecto-academico.component.scss']
 })
 export class ListRegistroProyectoAcademicoComponent implements OnInit {
-  config!: ToasterConfig;
   settings: any;
   index: any;
   idproyecto: any;
@@ -28,7 +26,6 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
     
   dataSource!: MatTableDataSource<any>;
 
-  //source: LocalDataSource = new LocalDataSource();
   listaDatos = [];
   proyectoJson: any;
   cardSize = 4;
@@ -40,8 +37,7 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
     private nuxeoService: NewNuxeoService,
     private documentoService: DocumentoService,
     private newNuxeoService: NewNuxeoService,
-    public dialog: MatDialog,
-    private toasterService: ToasterService) {
+    public dialog: MatDialog) {
     this.loadData();
   }
 
@@ -52,8 +48,7 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
       title: this.translate.instant('GLOBAL.atencion'),
       text: this.translate.instant('oferta.evento'),
       icon: 'warning',
-      buttons: true,
-      dangerMode: true,
+      
       showCancelButton: true,
     }
     this.sgamidService.get('consulta_proyecto_academico/get_registro/' + this.data.Id)
@@ -85,10 +80,8 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
   }
 
   onAction(event:any) {
-    console.log("Se llamo al botón")
 
     this.highlight(event)
-    console.log(event)
     switch (event.action) {
       case 'Documento':
         this.downloadFile(event);
@@ -97,7 +90,6 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
   }
 
   downloadFile(id_documento: any) {
-    console.log(id_documento)
 
     let filesToGet = [
       {
@@ -107,12 +99,9 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
     ];
     this.newNuxeoService.get(filesToGet).subscribe(
       response => {
-        console.log(response)
         const filesResponse = <any>response;
         if (Object.keys(filesResponse).length === filesToGet.length) {
-          // console.log("files", filesResponse);
           filesToGet.forEach((file: any) => {
-            console.log("--", file)
             const url = filesResponse[0].url;
             window.open(url);
           });
@@ -165,26 +154,5 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadData();
     });
-  }
-
-  private showToast(type: string, title: string, body: string) {
-    this.config = new ToasterConfig({
-      // 'toast-top-full-width', 'toast-bottom-full-width', 'toast-top-left', 'toast-top-center'
-      positionClass: 'toast-top-center',
-      timeout: 5000,  // ms
-      newestOnTop: true,
-      tapToDismiss: false, // hide on click
-      preventDuplicates: true,
-      animation: 'slideDown', // 'fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'
-      limit: 5,
-    });
-    const toast: Toast = {
-      type: 'info', // 'default', 'info', 'success', 'warning', 'error'
-      title: title,
-      body: body,
-      showCloseButton: true,
-      bodyOutputType: BodyOutputType.TrustedHtml,
-    };
-    this.toasterService.popAsync(toast);
   }
 }

@@ -17,7 +17,7 @@ const routes: Routes = [
   { 
     path: "crear",
     loadChildren: () => import ('./modules/crear-proyecto-academico/crear-proyecto-academico.module').then(m => m.CrearProyectoAcademicoModule),
-  }
+  },
 ];
 
 @NgModule({

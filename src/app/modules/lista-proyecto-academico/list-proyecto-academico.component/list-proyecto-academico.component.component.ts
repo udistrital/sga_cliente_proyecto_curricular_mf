@@ -31,7 +31,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
   
 
   settings: any;
-  //dataSource: any;
   index: any;
   idproyecto: any;
   codigosnies!: Number;
@@ -277,8 +276,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
       title: this.translate.instant('GLOBAL.atencion'),
       text: this.translate.instant('oferta.evento'),
       icon: 'warning',
-      buttons: true,
-      dangerMode: true,
       showCancelButton: true,
     };
     this.loading = true;
@@ -325,8 +322,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
       title: this.translate.instant('GLOBAL.atencion'),
       text: this.translate.instant('oferta.evento'),
       icon: 'warning',
-      buttons: true,
-      dangerMode: true,
       showCancelButton: true,
     };
     this.sgamidService
@@ -334,7 +329,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           const r = <any>res;
-          console.log(r)
           if (res !== null && r.Type !== 'error') {
             this.codigo = res.map(
               (data: any) => data.ProyectoAcademico.Codigo,
@@ -399,8 +393,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
       title: this.translate.instant('GLOBAL.atencion'),
       text: this.translate.instant('oferta.evento'),
       icon: 'warning',
-      buttons: true,
-      dangerMode: true,
       showCancelButton: true,
     };
     this.sgamidService
@@ -588,8 +580,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       title: this.translate.instant('GLOBAL.atencion'),
       text: this.translate.instant('oferta.evento'),
       icon: 'warning',
-      buttons: true,
-      dangerMode: true,
+      
       showCancelButton: true,
     };
     this.proyectoacademicoService
@@ -632,7 +623,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
   }
 
   inhabilitarProyecto(row: any): void {
-    console.log(row)
     let inhabilitar_title = this.translate.instant(
       'consultaproyecto.inhabilitar_proyecto',
     );
@@ -663,8 +653,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       title: inhabilitar_title,
       text: inhabilitar_text,
       icon: 'warning',
-      buttons: true,
-      dangerMode: true,
+      
       showCancelButton: true,
     };
     Swal.fire(opt).then(willDelete => {

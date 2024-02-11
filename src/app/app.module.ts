@@ -21,7 +21,7 @@ import { SgaMidService } from './services/sga_mid.service';
 import { DocumentoService } from './services/documento.service';
 import { OikosService } from './services/oikos.service';
 import { AnyService } from './services/any.service';
-import { NewNuxeoService } from './utils/services/new_nuxeo.service';
+import { NewNuxeoService } from './services/new_nuxeo.service';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';

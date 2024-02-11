@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 import { Observable, Subject } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpEventType } from '@angular/common/http';
-import { AnyService } from '../../services/any.service';
-import { DocumentoService } from '../../services/documento.service';
+import { AnyService } from './any.service';
+import { DocumentoService } from './documento.service';
 import { Documento } from 'src/app/models/documento/documento';
 
 

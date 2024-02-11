@@ -3,11 +3,11 @@ import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BodyOutputType, Toast, ToasterConfig, ToasterService } from 'angular2-toaster';
 import * as moment from 'moment-timezone';
 import * as momentTimezone from 'moment-timezone';
 import { Coordinador } from 'src/app/models/coordinador';
@@ -33,7 +33,7 @@ import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { TercerosService } from 'src/app/services/terceros.service';
-import { NewNuxeoService } from 'src/app/utils/services/new_nuxeo.service';
+import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -42,7 +42,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./modificar-proyecto-academico.component.scss']
 })
 export class ModificarProyectoAcademicoComponent {
-  config!: ToasterConfig;
   settings: any;
   basicform: any;
   resoluform: any;
@@ -143,7 +142,6 @@ export class ModificarProyectoAcademicoComponent {
   selectFormControl = new FormControl("", Validators.required);
   @Output() eventChange = new EventEmitter();
 
-  //source_emphasys: LocalDataSource = new LocalDataSource();
   arr_enfasis_proyecto: any[] = [];
   settings_emphasys: any;
 
@@ -166,7 +164,6 @@ export class ModificarProyectoAcademicoComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<ModificarProyectoAcademicoComponent>,
-    private toasterService: ToasterService,
     private sanitization: DomSanitizer,
     private oikosService: OikosService,
     private terceroService: TercerosService,
@@ -175,7 +172,8 @@ export class ModificarProyectoAcademicoComponent {
     private sgamidService: SgaMidService,
     private routerService: Router,
     private newNuxeoService: NewNuxeoService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
   ) {
     this.dpDayPickerConfig = {
       locale: "es",
@@ -263,43 +261,8 @@ export class ModificarProyectoAcademicoComponent {
     );
     this.checkalta = Boolean(JSON.parse(this.data.tieneregistroaltacalidad));
 
-    // enfasis
     this.arr_enfasis_proyecto = this.data.enfasis;
-    //this.source_emphasys.load(this.arr_enfasis_proyecto);
     this.dataSource = new MatTableDataSource(data.enfasis);
-    this.settings_emphasys = {
-      delete: {
-        deleteButtonContent: '<i class="nb-trash"></i>',
-        confirmDelete: true
-      },
-      actions: {
-        edit: false,
-        add: false,
-        position: "right"
-      },
-      hideSubHeader: true,
-      mode: "external",
-      columns: {
-        EnfasisId: {
-          title: this.translate.instant("GLOBAL.nombre"),
-          // type: 'string;',
-          valuePrepareFunction: (value: { Nombre: any; }) => {
-            return value.Nombre;
-          },
-          width: "60%"
-        },
-        Activo: {
-          title: this.translate.instant("GLOBAL.activo"),
-          // type: 'string;',
-          valuePrepareFunction: (value: any) => {
-            return value
-              ? translate.instant("GLOBAL.si")
-              : translate.instant("GLOBAL.no");
-          },
-          width: "20%"
-        }
-      }
-    };
   }
 
   loadfechaaltacalidad() {
@@ -340,11 +303,7 @@ export class ModificarProyectoAcademicoComponent {
         file.file = event.target.files[0];
         this.fileActoAdministrativo = file;
       } else {
-        this.showToast(
-          "error",
-          this.translate.instant("GLOBAL.error"),
-          this.translate.instant("ERROR.formato_documento_pdf")
-        );
+        this.snackBar.open(this.translate.instant('ERROR.formato_documento_pdf'), '', {duration: 3000,panelClass: ['error-snackbar']});
       }
     }
   }
@@ -359,11 +318,7 @@ export class ModificarProyectoAcademicoComponent {
         file.file = event.target.files[0];
         this.fileRegistroCalificado = file;
       } else {
-        this.showToast(
-          "error",
-          this.translate.instant("GLOBAL.error"),
-          this.translate.instant("ERROR.formato_documento_pdf")
-        );
+        this.snackBar.open(this.translate.instant('ERROR.formato_documento_pdf'), '', {duration: 3000,panelClass: ['error-snackbar']});
       }
     }
   }
@@ -378,11 +333,7 @@ export class ModificarProyectoAcademicoComponent {
         file.file = event.target.files[0];
         this.fileRegistroAltaCalidad = file;
       } else {
-        this.showToast(
-          "error",
-          this.translate.instant("GLOBAL.error"),
-          this.translate.instant("ERROR.formato_documento_pdf")
-        );
+        this.snackBar.open(this.translate.instant('ERROR.formato_documento_pdf'), '', {duration: 3000,panelClass: ['error-snackbar']});
       }
     }
   }
@@ -579,6 +530,7 @@ export class ModificarProyectoAcademicoComponent {
               if (fac.Id === Number(this.data.idfacultad)) {
                 this.opcionSeleccionadoFacultad = fac;
               }
+              console.log(this.opcionSeleccionadoFacultad)
             });
           }
         },
@@ -594,7 +546,6 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   loadespacio() {
-    console.log(this.data)
     this.oikosService
       .get("dependencia_tipo_dependencia/?query=TipoDependenciaId:"+this.data.Id+"&limit=0")
       .subscribe(
@@ -772,6 +723,7 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   putinformacionbasica() {
+
     if (this.compleform.valid && this.basicform.valid) {
       this.metodologia = {
         Id: this.opcionSeleccionadoMeto["Id"]
@@ -883,13 +835,7 @@ export class ModificarProyectoAcademicoComponent {
                   text: this.translate.instant("ERROR." + res.Code),
                   confirmButtonText: this.translate.instant("GLOBAL.aceptar")
                 });
-                this.showToast(
-                  "error",
-                  "error",
-                  this.translate.instant(
-                    "editarproyecto.proyecto_no_actualizado"
-                  )
-                );
+                this.snackBar.open(this.translate.instant('editarproyecto.proyecto_no_actualizado'), '', {duration: 3000,panelClass: ['error-snackbar']});
               } else {
                 this.arr_enfasis_proyecto.forEach((enfasis_temp: any) => {
                   enfasis_temp.esNuevo = false;
@@ -1076,14 +1022,7 @@ export class ModificarProyectoAcademicoComponent {
                     text: this.translate.instant("ERROR." + res.Code),
                     confirmButtonText: this.translate.instant("GLOBAL.aceptar")
                   });
-
-                  this.showToast(
-                    "error",
-                    "error",
-                    this.translate.instant(
-                      "editarproyecto.proyecto_no_actualizado"
-                    )
-                  );
+                  this.snackBar.open(this.translate.instant('editarproyecto.proyecto_no_actualizado'), '', {duration: 3000,panelClass: ['error-snackbar']});
                 } else {
                   this.dialogRef.close();
                   const opt1: any = {
@@ -1221,13 +1160,7 @@ export class ModificarProyectoAcademicoComponent {
                     text: this.translate.instant("ERROR." + res.Code),
                     confirmButtonText: this.translate.instant("GLOBAL.aceptar")
                   });
-                  this.showToast(
-                    "error",
-                    "error",
-                    this.translate.instant(
-                      "editarproyecto.proyecto_no_actualizado"
-                    )
-                  );
+                  this.snackBar.open(this.translate.instant('editarproyecto.proyecto_no_actualizado'), '', {duration: 3000,panelClass: ['error-snackbar']});
                 } else {
                   this.dialogRef.close();
                   const opt1: any = {
@@ -1275,11 +1208,7 @@ export class ModificarProyectoAcademicoComponent {
         file.file = event.target.files[0];
         this.fileResolucionCoordinador = file;
       } else {
-        this.showToast(
-          "error",
-          this.translate.instant("GLOBAL.error"),
-          this.translate.instant("ERROR.formato_documento_pdf")
-        );
+        this.snackBar.open(this.translate.instant('ERROR.formato_documento_pdf'), '', {duration: 3000,panelClass: ['error-snackbar']});
       }
     }
   }
@@ -1326,13 +1255,7 @@ export class ModificarProyectoAcademicoComponent {
                   text: this.translate.instant("ERROR." + res.Code),
                   confirmButtonText: this.translate.instant("GLOBAL.aceptar")
                 });
-                this.showToast(
-                  "error",
-                  "error",
-                  this.translate.instant(
-                    "editarproyecto.coordinador_no_asignado"
-                  )
-                );
+                this.snackBar.open(this.translate.instant('editarproyecto.coordinador_no_asignado'), '', {duration: 3000,panelClass: ['error-snackbar']});
               } else {
                 this.dialogRef.close();
                 const opt1: any = {
@@ -1367,26 +1290,5 @@ export class ModificarProyectoAcademicoComponent {
         }
       });
     }
-  }
-
-  private showToast(type: string, title: string, body: string) {
-    this.config = new ToasterConfig({
-      // 'toast-top-full-width', 'toast-bottom-full-width', 'toast-top-left', 'toast-top-center'
-      positionClass: "toast-top-center",
-      timeout: 5000, // ms
-      newestOnTop: true,
-      tapToDismiss: false, // hide on click
-      preventDuplicates: true,
-      animation: "slideDown", // 'fade', 'flyLeft', 'flyRight', 'slideDown', 'slideUp'
-      limit: 5
-    });
-    const toast: Toast = {
-      type: 'info', // 'default', 'info', 'success', 'warning', 'error'
-      title: title,
-      body: body,
-      showCloseButton: true,
-      bodyOutputType: BodyOutputType.TrustedHtml
-    };
-    this.toasterService.popAsync(toast);
   }
 }

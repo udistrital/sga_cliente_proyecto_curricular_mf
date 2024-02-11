@@ -50,3 +50,12 @@ $my-theme: mat.define-light-theme((color: (primary: $my-primary,
 html {
     font-size: 11pt;
 }
+
+.mat-calendar-body-cell-content.mat-focus-indicator:hover {
+    color: #fff !important;
+}
+
+.mat-calendar-body-cell-content .mat-focus-indicator .mat-calendar-body-selected{
+    color: #fff !important;
+    padding-left: 5px !important;
+}
