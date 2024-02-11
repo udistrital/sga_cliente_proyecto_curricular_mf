@@ -13,8 +13,7 @@
                 </div>
 
                 <div class="row" style="margin: 0px; padding: 0px;">
-                    <!-- [linear]="isLinear" -->
-                    <mat-vertical-stepper #stepper style="margin-inline: auto; width: 90%;">
+                    <mat-vertical-stepper [linear]="isLinear" #stepper style="margin-inline: auto; width: 90%;">
                         <mat-step [stepControl]="basicform">
                             <form [formGroup]="basicform">
                                 <ng-template matStepLabel>{{ 'proyecto.basica' | translate }}</ng-template>
