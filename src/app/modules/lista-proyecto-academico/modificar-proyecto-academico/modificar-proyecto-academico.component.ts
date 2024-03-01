@@ -732,7 +732,7 @@ export class ModificarProyectoAcademicoComponent {
         Id: this.opcionSeleccionadoNivel["Id"]
       };
       this.proyecto_academico = {
-        Id: Number(this.data.idproyecto),
+        Id: Number(this.data.Id),
         Codigo: String(this.basicform.value.codigo_interno),
         Nombre: String(this.basicform.value.nombre_proyecto),
         CodigoSnies: String(this.basicform.value.codigo_snies),
@@ -824,7 +824,7 @@ export class ModificarProyectoAcademicoComponent {
           this.proyectoacademicoService
             .put(
               "tr_proyecto_academico/informacion_basica/" +
-              Number(this.data.idproyecto),
+              Number(this.data.Id),
               informacion_basicaPut
             )
             .subscribe((res: any) => {
