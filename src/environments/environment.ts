@@ -5,6 +5,7 @@
  */
 
 export const environment = {
+  SGA_PROYECTO_CURRICULAR_MID: "http://pruebasapi2.intranetoas.udistrital.edu.co:8540/v1/",
   production: false,
   apiUrl:"http://localhost:4204/",
   NUXEO: {

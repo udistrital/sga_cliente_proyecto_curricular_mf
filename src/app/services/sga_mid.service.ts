@@ -3,25 +3,26 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { RequestManager } from '../managers/requestManager';
 
-
 const httpOptions = {
-    headers: new HttpHeaders({
-        'Accept': 'application/json',
-    }),
-}
+  headers: new HttpHeaders({
+    Accept: 'application/json',
+  }),
+};
 
 const httpOptionsFile = {
-    headers: new HttpHeaders({
-        'Content-Type': 'multipart/form-data',
-    }),
-}
+  headers: new HttpHeaders({
+    'Content-Type': 'multipart/form-data',
+  }),
+};
 
 const path = environment.SGA_MID_SERVICE;
 
 @Injectable()
 export class SgaMidService {
-
-  constructor(private requestManager: RequestManager, private http: HttpClient) {
+  constructor(
+    private requestManager: RequestManager,
+    private http: HttpClient
+  ) {
     this.requestManager.setPath('SGA_MID_SERVICE');
   }
   get(endpoint: any) {
@@ -41,9 +42,8 @@ export class SgaMidService {
     this.requestManager.setPath('SGA_MID_SERVICE');
     return this.requestManager.put(endpoint, element);
   }
-  delete(endpoint: any, element: { Id: any; }) {
+  delete(endpoint: any, element: { Id: any }) {
     this.requestManager.setPath('SGA_MID_SERVICE');
     return this.requestManager.delete(endpoint, element.Id);
   }
-
 }

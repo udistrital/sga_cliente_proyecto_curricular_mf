@@ -256,7 +256,7 @@ export class ModificarProyectoAcademicoComponent {
     this.checkciclos = Boolean(JSON.parse(this.data.ciclos_check));
     this.fecha_creacion_calificado = new Date(
       momentTimezone
-        .tz(this.data.fecha_creacion_registro[0], "America/Bogota")
+        .tz(this.data.fecha_creacion_registro, "America/Bogota")
         .format("YYYY-MM-DDTHH:mm")
     );
     this.checkalta = Boolean(JSON.parse(this.data.tieneregistroaltacalidad));
@@ -266,12 +266,12 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   loadfechaaltacalidad() {
-    if (this.data.fecha_creacion_registro_alta[0] == null) {
+    if (this.data.fecha_creacion_registro_alta == null) {
       this.fecha_creacion_alta = null;
     } else {
       this.fecha_creacion_alta = new Date(
         momentTimezone
-          .tz(this.data.fecha_creacion_registro_alta[0], "America/Bogota")
+          .tz(this.data.fecha_creacion_registro_alta, "America/Bogota")
           .format("YYYY-MM-DD HH:mm")
       );
     }
@@ -530,7 +530,7 @@ export class ModificarProyectoAcademicoComponent {
               if (fac.Id === Number(this.data.idfacultad)) {
                 this.opcionSeleccionadoFacultad = fac;
               }
-              console.log(this.opcionSeleccionadoFacultad)
+              // console.log(this.opcionSeleccionadoFacultad)
             });
           }
         },
