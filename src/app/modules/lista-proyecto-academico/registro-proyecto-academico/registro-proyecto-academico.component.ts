@@ -238,11 +238,6 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
           if (willCreate.value) {
             await this.uploadFilesCreacionRegistro([this.fileDocumento]);
             this.registro_nuevo.EnlaceActo = this.idDocumento + '';
-            //AQUI SGA_MID_SERVICE MODIFICADO
-            // this.sgamidService.post(
-            //   'proyecto_academico/' + String(this.data.endpoint),
-            //   this.registro_nuevo
-            // );
             this.sgaProyectoCurricularMidService
               .post(
                 'proyecto-academico/' + String(this.data.endpoint),

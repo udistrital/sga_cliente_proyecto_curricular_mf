@@ -61,60 +61,10 @@ export class ListProyectoAcademicoComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator = {} as MatPaginator;
   @ViewChild(MatSort) sort: MatSort = {} as MatSort;
 
-  settings: any;
-  index: any;
   idproyecto: any;
-  codigosnies!: Number;
-  codigo!: string;
-  facultad!: string | null;
-  nombre!: String;
-  nivel!: string;
-  iddependencia!: number;
-  metodologia!: string;
-  abreviacion!: string;
-  correo!: string;
-  numerocreditos!: Number;
-  duracion!: Number;
-  tipo_duracion!: string;
-  ciclos!: string;
-  oferta!: string;
-  enfasis!: Enfasi[];
-  consulta: boolean = false;
-  idfacultad!: Number;
-  idnivel!: Number;
-  idmetodo!: Number;
-  idunidad!: Number;
-  idarea!: Number;
-  idnucleo!: Number;
-  coordinador: any[] = [];
-  oferta_check: boolean = false;
-  ciclos_check: boolean = false;
+  coordinador: any = null;
   loading: boolean = false;
-  titulacion_snies!: string;
-  numero_acto!: string;
-  ano_acto!: string;
-  titulacion_mujer!: string;
-  titulacion_hombre!: string;
-  competencias!: string;
-  resolucion_acreditacion!: string;
-  resolucion_acreditacion_ano!: string;
-  fecha_creacion_resolucion!: Date;
-  resolucion_alta_calidad!: string | null;
-  resolucion_alta_calidad_ano!: string | null;
-  fecha_creacion_resolucion_alta_calidad!: Date | null;
-  vigencia_resolucion_meses_alta_calidad!: string;
-  vigencia_resolucion_anos_alta_calidad!: string;
   existe_registro_alta_calidad: boolean = false;
-  fecha_inicio_coordinador!: Date;
-  vigencia_resolucion_meses!: string;
-  vigencia_resolucion_anos!: string;
-  id_coordinador: any;
-  proyectoJson: any;
-  id_documento_acto!: string;
-  id_documento_registor_calificado!: string;
-  id_documento_alta_calidad!: string | null;
-  id_documento_registro_coordinador!: number;
-  proyecto_padre_id!: ProyectoAcademicoInstitucion | null;
 
   listaDatos: any[] = [];
 
@@ -177,95 +127,97 @@ export class ListProyectoAcademicoComponent implements OnInit {
     }
   }
 
-  openDialogConsulta(id: number): void {
+  openDialogConsulta(id: number, proyectoConsultaData: any): void {
     const dialogRef = this.dialog.open(ConsultaProyectoAcademicoComponent, {
       width: '1000px',
       height: '750px',
       data: {
-        codigointerno: this.codigo,
-        codigosnies: this.codigosnies,
-        nombre: this.nombre,
-        facultad: this.facultad,
-        nivel: this.nivel,
-        metodologia: this.metodologia,
-        abreviacion: this.abreviacion,
-        correo: this.correo,
-        numerocreditos: this.numerocreditos,
-        duracion: this.duracion,
-        tipoduracion: this.tipo_duracion,
-        ciclos: this.ciclos,
-        ofrece: this.oferta,
-        enfasis: this.enfasis,
+        codigointerno: proyectoConsultaData.codigo,
+        codigosnies: proyectoConsultaData.codigosnies,
+        nombre: proyectoConsultaData.nombre,
+        facultad: proyectoConsultaData.facultad,
+        nivel: proyectoConsultaData.nivel,
+        metodologia: proyectoConsultaData.metodologia,
+        abreviacion: proyectoConsultaData.abreviacion,
+        correo: proyectoConsultaData.correo,
+        numerocreditos: proyectoConsultaData.numerocreditos,
+        duracion: proyectoConsultaData.duracion,
+        tipoduracion: proyectoConsultaData.tipo_duracion,
+        ciclos: proyectoConsultaData.ciclos,
+        ofrece: proyectoConsultaData.oferta,
+        enfasis: proyectoConsultaData.enfasis,
         Id: id,
-        id_documento_acto: this.id_documento_acto,
-        proyecto_padre_id: this.proyecto_padre_id,
-        iddependencia: this.iddependencia,
+        id_documento_acto: proyectoConsultaData.id_documento_acto,
+        proyecto_padre_id: proyectoConsultaData.proyecto_padre_id,
+        iddependencia: proyectoConsultaData.iddependencia,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {});
   }
 
-  openDialogModificar(id: number): void {
+  openDialogModificar(id: number, proyectoData: any): void {
+    this.idproyecto = id;
     const dialogRef = this.dialog.open(ModificarProyectoAcademicoComponent, {
       width: '1000px',
       height: '750px',
       data: {
-        codigointerno: this.codigo,
-        codigosnies: this.codigosnies,
-        nombre: this.nombre,
-        facultad: this.facultad,
-        nivel: this.nivel,
-        metodologia: this.metodologia,
-        abreviacion: this.abreviacion,
-        correo: this.correo,
-        numerocreditos: this.numerocreditos,
-        duracion: this.duracion,
-        tipoduracion: this.tipo_duracion,
-        ciclos: this.ciclos,
-        ofrece: this.oferta,
-        enfasis: this.enfasis,
-        idfacultad: this.idfacultad,
-        idnivel: this.idnivel,
-        idmetodo: this.idmetodo,
-        idunidad: this.idunidad,
-        oferta_check: this.oferta_check,
-        ciclos_check: this.ciclos_check,
-        titulacion_snies: this.titulacion_snies,
-        titulacion_mujer: this.titulacion_mujer,
-        titulacion_hombre: this.titulacion_hombre,
-        competencias: this.competencias,
-        idarea: this.idarea,
-        idnucleo: this.idnucleo,
-        resolucion_acreditacion: this.resolucion_acreditacion,
-        resolucion_acreditacion_ano: this.resolucion_acreditacion_ano,
-        fecha_creacion_registro: this.fecha_creacion_resolucion,
-        vigencia_meses: this.vigencia_resolucion_meses,
-        vigencia_anos: this.vigencia_resolucion_anos,
-        idproyecto: this.idproyecto,
-        numero_acto: this.numero_acto,
-        ano_acto: this.ano_acto,
-        Id: id,
-        proyectoJson: this.proyectoJson,
-        fechainiciocoordinador: this.fecha_inicio_coordinador,
-        idcoordinador: this.id_coordinador,
-        tieneregistroaltacalidad: this.existe_registro_alta_calidad,
-        resolucion_alta: this.resolucion_alta_calidad,
-        resolucion_alta_ano: this.resolucion_alta_calidad_ano,
-        vigencia_meses_alta: this.vigencia_resolucion_meses_alta_calidad,
-        vigencia_ano_alta: this.vigencia_resolucion_anos_alta_calidad,
+        codigointerno: proyectoData.codigo,
+        codigosnies: proyectoData.codigosnies,
+        nombre: proyectoData.nombre,
+        facultad: proyectoData.facultad,
+        nivel: proyectoData.nivel,
+        metodologia: proyectoData.metodologia,
+        abreviacion: proyectoData.abreviacion,
+        correo: proyectoData.correo,
+        numerocreditos: proyectoData.numerocreditos,
+        duracion: proyectoData.duracion,
+        tipoduracion: proyectoData.tipo_duracion,
+        ciclos: proyectoData.ciclos,
+        ofrece: proyectoData.oferta,
+        enfasis: proyectoData.enfasis,
+        idfacultad: proyectoData.idfacultad,
+        idnivel: proyectoData.idnivel,
+        idmetodo: proyectoData.idmetodo,
+        idunidad: proyectoData.idunidad,
+        oferta_check: proyectoData.oferta_check,
+        ciclos_check: proyectoData.ciclos_check,
+        titulacion_snies: proyectoData.titulacion_snies,
+        titulacion_mujer: proyectoData.titulacion_mujer,
+        titulacion_hombre: proyectoData.titulacion_hombre,
+        competencias: proyectoData.competencias,
+        idarea: proyectoData.idarea,
+        idnucleo: proyectoData.idnucleo,
+        resolucion_acreditacion: proyectoData.resolucion_acreditacion,
+        resolucion_acreditacion_ano: proyectoData.resolucion_acreditacion_ano,
+        fecha_creacion_registro: proyectoData.fecha_creacion_resolucion,
+        vigencia_meses: proyectoData.vigencia_resolucion_meses,
+        vigencia_anos: proyectoData.vigencia_resolucion_anos,
+        idproyecto: id, // No hay necesidad de cambiar esto
+        numero_acto: proyectoData.numero_acto,
+        ano_acto: proyectoData.ano_acto,
+        Id: id, // No hay necesidad de cambiar esto
+        proyectoJson: proyectoData.proyectoJson,
+        fechainiciocoordinador: proyectoData.fecha_inicio_coordinador,
+        idcoordinador: proyectoData.id_coordinador,
+        tieneregistroaltacalidad: proyectoData.existe_registro_alta_calidad,
+        resolucion_alta: proyectoData.resolucion_alta_calidad,
+        resolucion_alta_ano: proyectoData.resolucion_alta_calidad_ano,
+        vigencia_meses_alta:
+          proyectoData.vigencia_resolucion_meses_alta_calidad,
+        vigencia_ano_alta: proyectoData.vigencia_resolucion_anos_alta_calidad,
         fecha_creacion_registro_alta:
-          this.fecha_creacion_resolucion_alta_calidad,
-        id_documento_acto: this.id_documento_acto,
-        id_documento_registor_calificado: this.id_documento_registor_calificado,
-        id_documento_alta_calidad: this.id_documento_alta_calidad,
+          proyectoData.fecha_creacion_resolucion_alta_calidad,
+        id_documento_acto: proyectoData.id_documento_acto,
+        id_documento_registor_calificado:
+          proyectoData.id_documento_registor_calificado,
+        id_documento_alta_calidad: proyectoData.id_documento_alta_calidad,
         id_documento_registro_coordinador:
-          this.id_documento_registro_coordinador,
-        proyecto_padre_id: this.proyecto_padre_id,
-        iddependencia: this.iddependencia,
+          proyectoData.id_documento_registro_coordinador,
+        proyecto_padre_id: proyectoData.proyecto_padre_id,
+        iddependencia: proyectoData.iddependencia,
       },
     });
-
     dialogRef.afterClosed().subscribe((result) => {});
   }
 
@@ -314,29 +266,29 @@ export class ListProyectoAcademicoComponent implements OnInit {
   obteneridporid_consulta(id: number) {
     this.proyectoCurricularService.getProyectoAcademicoPorId(id).subscribe(
       (res: DetalleProyectoAcademico | null) => {
-        // console.log("CONSULTA",res);
         if (res != null) {
           try {
-            this.codigo = res.ProyectoAcademico.Codigo;
-            this.codigosnies = parseInt(res.ProyectoAcademico.CodigoSnies);
-            this.nombre = res.ProyectoAcademico.Nombre;
-            this.facultad = res.NombreFacultad;
-            this.nivel = res.ProyectoAcademico.NivelFormacionId.Nombre;
-            this.metodologia = res.ProyectoAcademico.MetodologiaId.Nombre;
-            this.abreviacion = res.ProyectoAcademico.CodigoAbreviacion;
-            this.correo = res.ProyectoAcademico.CorreoElectronico;
-            this.numerocreditos = res.ProyectoAcademico.NumeroCreditos;
-            this.duracion = res.ProyectoAcademico.NumeroCreditos;
-            this.duracion = res.ProyectoAcademico.Duracion;
-            this.iddependencia = res.ProyectoAcademico.DependenciaId;
-            this.tipo_duracion = res.NombreUnidad;
-            this.ciclos = res.CiclosLetra;
-            this.oferta = res.OfertaLetra;
-            this.enfasis = res.Enfasis;
-            this.id_documento_acto =
-              res.ProyectoAcademico.EnlaceActoAdministrativo[0];
-            this.proyecto_padre_id = res.ProyectoAcademico.ProyectoPadreId;
-            this.openDialogConsulta(id);
+            const proyectoConsultaData = {
+              codigo: res.ProyectoAcademico.Codigo,
+              codigosnies: parseInt(res.ProyectoAcademico.CodigoSnies),
+              nombre: res.ProyectoAcademico.Nombre,
+              facultad: res.NombreFacultad,
+              nivel: res.ProyectoAcademico.NivelFormacionId.Nombre,
+              metodologia: res.ProyectoAcademico.MetodologiaId.Nombre,
+              abreviacion: res.ProyectoAcademico.CodigoAbreviacion,
+              correo: res.ProyectoAcademico.CorreoElectronico,
+              numerocreditos: res.ProyectoAcademico.NumeroCreditos,
+              duracion: res.ProyectoAcademico.Duracion,
+              iddependencia: res.ProyectoAcademico.DependenciaId,
+              tipo_duracion: res.NombreUnidad,
+              ciclos: res.CiclosLetra,
+              oferta: res.OfertaLetra,
+              enfasis: res.Enfasis,
+              id_documento_acto:
+                res.ProyectoAcademico.EnlaceActoAdministrativo[0],
+              proyecto_padre_id: res.ProyectoAcademico.ProyectoPadreId,
+            };
+            this.openDialogConsulta(id, proyectoConsultaData);
           } catch (error) {
             console.info(error);
           }
@@ -364,86 +316,90 @@ export class ListProyectoAcademicoComponent implements OnInit {
     );
   }
 
-  obteneridporid_modificar(id: number) {
+  async obteneridporid_modificar(id: number) {
+    this.loading = true;
     const opt1: any = {
       title: this.translate.instant('GLOBAL.atencion'),
       text: this.translate.instant('oferta.evento'),
       icon: 'warning',
       showCancelButton: true,
     };
+    const coordinador = await this.consultacoordinador(id);
+
+    console.log('coordinador', coordinador);
     this.proyectoCurricularService.getProyectoAcademicoPorId(id).subscribe(
       (res: DetalleProyectoAcademico | null) => {
         if (res == null) throw new Error('No se encontró el proyecto');
         try {
-          this.codigo = res.ProyectoAcademico.Codigo;
-          this.codigosnies = parseInt(res.ProyectoAcademico.CodigoSnies);
-          this.nombre = res.ProyectoAcademico.Nombre;
-          this.facultad = res.NombreFacultad;
-          this.nivel = res.ProyectoAcademico.NivelFormacionId.Nombre;
-          this.metodologia = res.ProyectoAcademico.MetodologiaId.Nombre;
-          this.abreviacion = res.ProyectoAcademico.CodigoAbreviacion;
-          this.correo = res.ProyectoAcademico.CorreoElectronico;
-          this.numerocreditos = res.ProyectoAcademico.NumeroCreditos;
-          this.duracion = res.ProyectoAcademico.Duracion;
-          this.tipo_duracion = res.NombreUnidad;
-          this.ciclos = res.CiclosLetra;
-          this.oferta = res.OfertaLetra;
-          this.enfasis = res.Enfasis; //revisar enfasis
-          this.idfacultad = res.ProyectoAcademico.FacultadId;
-          this.idnivel = res.ProyectoAcademico.NivelFormacionId.Id;
-          this.idmetodo = res.ProyectoAcademico.MetodologiaId.Id;
-          this.idunidad = res.ProyectoAcademico.UnidadTiempoId;
-          this.oferta_check = res.ProyectoAcademico.Oferta;
-          this.ciclos_check = res.ProyectoAcademico.CiclosPropedeuticos;
-          this.titulacion_snies = res.Titulaciones[0].Nombre;
-          this.titulacion_mujer = res.Titulaciones[1].Nombre;
-          this.titulacion_hombre = res.Titulaciones[2].Nombre;
-          this.competencias = res.ProyectoAcademico.Competencias;
-          this.idarea = res.ProyectoAcademico.AreaConocimientoId;
-          this.idnucleo = res.ProyectoAcademico.NucleoBaseId;
-          this.resolucion_acreditacion =
-            res.Registro[0].NumeroActoAdministrativo;
-          this.iddependencia = res.ProyectoAcademico.DependenciaId;
-          this.resolucion_acreditacion_ano =
-            res.Registro[0].AnoActoAdministrativoId;
-          this.fecha_creacion_resolucion = new Date(
-            res.Registro[0].FechaCreacionActoAdministrativo
-          );
-          this.vigencia_resolucion_meses =
-            res.Registro[0].VigenciaActoAdministrativo.substr(6, 1);
-          this.vigencia_resolucion_anos =
-            res.Registro[0].VigenciaActoAdministrativo.substr(12, 1);
-          this.id_documento_registor_calificado = res.Registro[0].EnlaceActo;
-          this.numero_acto = res.ProyectoAcademico.NumeroActoAdministrativo;
-          this.ano_acto = res.ProyectoAcademico.AnoActoAdministrativo;
-          this.existe_registro_alta_calidad = Boolean(
-            res.TieneRegistroAltaCalidad
-          );
-          this.resolucion_alta_calidad =
-            res.NumeroActoAdministrativoAltaCalidad;
-          this.resolucion_alta_calidad_ano =
-            res.AnoActoAdministrativoIdAltaCalidad;
-          this.fecha_creacion_resolucion_alta_calidad = new Date(
-            res.FechaCreacionActoAdministrativoAltaCalidad
-          );
-          this.id_documento_alta_calidad =
-            res.EnlaceActoAdministrativoAltaCalidad;
-          this.id_documento_acto =
-            res.ProyectoAcademico.EnlaceActoAdministrativo;
-          if (this.existe_registro_alta_calidad === true) {
-            this.vigencia_resolucion_meses_alta_calidad =
-              res.VigenciaActoAdministrativoAltaCalidad.substr(6, 1);
-            this.vigencia_resolucion_anos_alta_calidad =
-              res.VigenciaActoAdministrativoAltaCalidad.substr(12, 1);
-          } else {
-            this.vigencia_resolucion_meses_alta_calidad = '';
-            this.vigencia_resolucion_anos_alta_calidad = '';
-          }
-          this.proyectoJson = res.ProyectoAcademico;
+          console.log('res', res);
+          const datosProyecto = {
+            codigo: res.ProyectoAcademico.Codigo,
+            codigosnies: parseInt(res.ProyectoAcademico.CodigoSnies),
+            nombre: res.ProyectoAcademico.Nombre,
+            facultad: res.NombreFacultad,
+            nivel: res.ProyectoAcademico.NivelFormacionId.Nombre,
+            metodologia: res.ProyectoAcademico.MetodologiaId.Nombre,
+            abreviacion: res.ProyectoAcademico.CodigoAbreviacion,
+            correo: res.ProyectoAcademico.CorreoElectronico,
+            numerocreditos: res.ProyectoAcademico.NumeroCreditos,
+            duracion: res.ProyectoAcademico.Duracion,
+            tipo_duracion: res.NombreUnidad,
+            ciclos: res.CiclosLetra,
+            oferta: res.OfertaLetra,
+            enfasis: res.Enfasis, // revisar enfasis
+            idfacultad: res.ProyectoAcademico.FacultadId,
+            idnivel: res.ProyectoAcademico.NivelFormacionId.Id,
+            idmetodo: res.ProyectoAcademico.MetodologiaId.Id,
+            idunidad: res.ProyectoAcademico.UnidadTiempoId,
+            oferta_check: res.ProyectoAcademico.Oferta,
+            ciclos_check: res.ProyectoAcademico.CiclosPropedeuticos,
+            titulacion_snies: res.Titulaciones[0].Nombre,
+            titulacion_mujer: res.Titulaciones[1].Nombre,
+            titulacion_hombre: res.Titulaciones[2].Nombre,
+            competencias: res.ProyectoAcademico.Competencias,
+            idarea: res.ProyectoAcademico.AreaConocimientoId,
+            idnucleo: res.ProyectoAcademico.NucleoBaseId,
+            resolucion_acreditacion: res.Registro[0].NumeroActoAdministrativo,
+            iddependencia: res.ProyectoAcademico.DependenciaId,
+            resolucion_acreditacion_ano:
+              res.Registro[0].AnoActoAdministrativoId,
+            fecha_creacion_resolucion: new Date(
+              res.Registro[0].FechaCreacionActoAdministrativo
+            ),
+            vigencia_resolucion_meses:
+              res.Registro[0].VigenciaActoAdministrativo.substr(6, 1),
+            vigencia_resolucion_anos:
+              res.Registro[0].VigenciaActoAdministrativo.substr(12, 1),
+            id_documento_registor_calificado: res.Registro[0].EnlaceActo,
+            numero_acto: res.ProyectoAcademico.NumeroActoAdministrativo,
+            ano_acto: res.ProyectoAcademico.AnoActoAdministrativo,
+            existe_registro_alta_calidad: Boolean(res.TieneRegistroAltaCalidad),
+            resolucion_alta_calidad: res.NumeroActoAdministrativoAltaCalidad,
+            resolucion_alta_calidad_ano: res.AnoActoAdministrativoIdAltaCalidad,
+            fecha_creacion_resolucion_alta_calidad: new Date(
+              res.FechaCreacionActoAdministrativoAltaCalidad
+            ),
+            id_documento_alta_calidad: res.EnlaceActoAdministrativoAltaCalidad,
+            id_documento_acto: res.ProyectoAcademico.EnlaceActoAdministrativo,
+            vigencia_resolucion_meses_alta_calidad:
+              Boolean(res.TieneRegistroAltaCalidad) === true
+                ? res.VigenciaActoAdministrativoAltaCalidad.substr(6, 1)
+                : '',
+            vigencia_resolucion_anos_alta_calidad:
+              Boolean(res.TieneRegistroAltaCalidad) === true
+                ? res.VigenciaActoAdministrativoAltaCalidad.substr(12, 1)
+                : '',
+            proyectoJson: res.ProyectoAcademico,
+          };
+
+          const proyectoModificarData = { ...datosProyecto, ...coordinador };
+
+          this.openDialogModificar(id, proyectoModificarData);
+          this.loading = false;
         } catch (error) {
           console.info(error);
+          this.loading = false;
         }
-        this.openDialogModificar(id);
       },
       (error) => {
         Swal.fire({
@@ -452,6 +408,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
+        this.loading = false;
       }
     );
   }
@@ -470,7 +427,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
       setTimeout(() => {
         resolve({ id: id });
         this.obteneridporid_modificar(id);
-        this.consultacoordinador(id);
       }, 600);
     });
   }
@@ -479,50 +435,31 @@ export class ListProyectoAcademicoComponent implements OnInit {
     this.idproyecto = row.data.ProyectoAcademico.Id;
   }
 
-  consultacoordinador(id: number) {
-    console.log('CONSULTANDO COORDINADORS');
-    const opt1: any = {
-      title: this.translate.instant('GLOBAL.atencion'),
-      text: this.translate.instant('oferta.evento'),
-      icon: 'warning',
+  async consultacoordinador(id: number): Promise<any> {
+    try {
+      const res = await this.proyectoacademicoService
+        .get(
+          `proyecto_academico_rol_tercero_dependencia/?query=ProyectoAcademicoInstitucionId.Id:${id}`
+        )
+        .toPromise();
 
-      showCancelButton: true,
-    };
-    this.proyectoacademicoService
-      .get(
-        'proyecto_academico_rol_tercero_dependencia/?query=ProyectoAcademicoInstitucionId.Id:' +
-          id
-      )
-      .subscribe(
-        (res: any) => {
-          const r = <any>res;
-          if (res !== null && r.Type !== 'error') {
-            this.coordinador = <any>res;
-            this.coordinador.forEach((uni: any) => {
-              if (uni.Activo === true) {
-                this.coordinador = uni;
-              }
-            });
-            this.id_coordinador = this.coordinador[0]['TerceroId'];
-            this.fecha_inicio_coordinador = this.coordinador[0]['FechaInicio'];
-            this.id_documento_registro_coordinador =
-              this.coordinador[0]['ResolucionAsignacionId'];
-          } else {
-            Swal.fire(opt1).then((willDelete) => {
-              if (willDelete.value) {
-              }
-            });
-          }
-        },
-        (error: HttpErrorResponse) => {
-          Swal.fire({
-            icon: 'error',
-            title: error.status + '',
-            text: this.translate.instant('ERROR.' + error.status),
-            confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-          });
+      if (res !== null && res.Type !== 'error') {
+        const coordinador = res.find((uni: any) => uni.Activo === true);
+        if (coordinador) {
+          return {
+            id_coordinador: coordinador.TerceroId,
+            fecha_inicio_coordinador: coordinador.FechaInicio,
+            id_documento_registro_coordinador:
+              coordinador.ResolucionAsignacionId,
+          };
         }
-      );
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 
   inhabilitarProyecto(row: Proyecto): void {
@@ -557,7 +494,10 @@ export class ListProyectoAcademicoComponent implements OnInit {
     });
   }
 
-  private handleResponseInhabilitar(res: ResponseAPI<any>, translationKey: any) {
+  private handleResponseInhabilitar(
+    res: ResponseAPI<any>,
+    translationKey: any
+  ) {
     if (res.success) {
       this.loadproyectos();
       this.snackBar.open(this.translate.instant(translationKey.OK), '', {
@@ -572,5 +512,3 @@ export class ListProyectoAcademicoComponent implements OnInit {
     }
   }
 }
-
-

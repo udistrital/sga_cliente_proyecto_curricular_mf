@@ -1,6 +1,6 @@
 export interface ResponseAPI<T> {
     success: boolean;
-    status: string;
+    statusCode: string;
     message: any;
     data: T;
 }

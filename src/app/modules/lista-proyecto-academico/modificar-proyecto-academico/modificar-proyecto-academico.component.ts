@@ -1358,17 +1358,15 @@ export class ModificarProyectoAcademicoComponent {
               idFileResolucionCoordinador
             );
           }
-
-          //AQUI SGA_MID_SERVICE MODIFICADO
-          // this.sgamidService.post("proyecto_academico/coordinador/", this.coordinador_data)
+          console.log("DATA PARA REGISTRAR COORDINADOR:", this.coordinador_data)
           this.sgaProyectoCurricularMidService
-            .post('proyecto-academico/coordinadores/', this.coordinador_data)
+            .post('proyecto-academico/coordinador/', this.coordinador_data)
             .subscribe((res: any) => {
-              if (res.Type === 'error') {
+              if (!res.success) {
                 Swal.fire({
                   icon: 'error',
-                  title: res.Code,
-                  text: this.translate.instant('ERROR.' + res.Code),
+                  title: res.statusCode,
+                  text: this.translate.instant('ERROR.' + res.statusCode),
                   confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
                 });
                 this.snackBar.open(

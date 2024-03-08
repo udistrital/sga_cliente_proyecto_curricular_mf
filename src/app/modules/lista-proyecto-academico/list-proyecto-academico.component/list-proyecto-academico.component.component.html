@@ -185,7 +185,7 @@
                 class="link icono"
                 (click)="inhabilitarProyecto(row.ProyectoAcademico)"
                 aria-hidden="false"
-                [fontIcon]="row.ProyectoAcademico.Activo ? 'check_circle' : 'cancel'"
+                [fontIcon]="row.ProyectoAcademico.Oferta ? 'cancel' : 'check_circle'"
                 title="{{ 'consultaproyecto.inhabilitar' | translate }}"
               ></mat-icon>
             </mat-cell>
