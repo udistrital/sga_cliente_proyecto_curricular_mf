@@ -83,4 +83,5 @@ export class ProyectoCurricularService {
     console.log(proyecto);
     return this.sgaProyectoCurricularMidService.put(`/proyecto-academico/${proyecto.Id}/inhabilitar`, proyecto)
   }
+  
 }

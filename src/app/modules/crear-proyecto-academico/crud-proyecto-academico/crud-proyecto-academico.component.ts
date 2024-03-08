@@ -34,6 +34,7 @@ import Swal from 'sweetalert2';
 import { ListEnfasisComponent } from '../list-enfasis/list-enfasis.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
 
 @Component({
   selector: 'app-crud-proyecto-academico',
@@ -148,6 +149,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     private coreService: CoreService,
     private proyectoacademicoService: ProyectoAcademicoService,
     private sgamidService: SgaMidService,
+    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
     private dialogService: MatDialog,
     private activatedRoute: ActivatedRoute,
     private sanitization: DomSanitizer,
@@ -288,7 +290,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
   loadCloneData(id: any): void {
     this.Campo2Control.setValidators([Validators.nullValidator]);
-    this.sgamidService.get('consulta_proyecto_academico/' + id)
+    //AQUI SGA_MID_SERVICE MODIFICADO
+    // this.sgamidService.get('consulta_proyecto_academico/' + id)
+    this.sgaProyectoCurricularMidService.get('proyecto-academico/' + id)
       .subscribe((res: any) => {
         if (res.Type !== 'error' && res[0].ProyectoAcademico.Id) {
           const proyecto_a_clonar = res[0];
@@ -711,7 +715,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
               this.registro_califacado_acreditacion.EnlaceActo = this.idDocumentoResolucion + '';
               this.proyecto_academico.EnlaceActoAdministrativo = this.idDocumentoAdministrativo + '';
-              this.sgamidService.post('proyecto_academico', this.proyecto_academicoPost)
+              //AQUI SGA_MID_SERVICE MODIFICADO
+              // this.sgamidService.post('proyecto_academico', this.proyecto_academicoPost)
+              this.sgaProyectoCurricularMidService.post('proyecto-academico/', this.proyecto_academico)
                 .subscribe((res: any) => {
                   if (res.Type === 'error') {
                     Swal.fire({

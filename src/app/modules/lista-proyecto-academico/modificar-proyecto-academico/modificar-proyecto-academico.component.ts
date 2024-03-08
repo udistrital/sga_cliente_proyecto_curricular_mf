@@ -35,6 +35,7 @@ import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { TercerosService } from 'src/app/services/terceros.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 import Swal from 'sweetalert2';
+import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
 
 @Component({
   selector: 'app-modificar-proyecto-academico',
@@ -174,6 +175,7 @@ export class ModificarProyectoAcademicoComponent {
     private newNuxeoService: NewNuxeoService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
+    private sgaProyectoCurricularMidService:SgaProyectoCurricularMidService
   ) {
     this.dpDayPickerConfig = {
       locale: "es",
@@ -1246,7 +1248,9 @@ export class ModificarProyectoAcademicoComponent {
             );
           }
 
-          this.sgamidService.post("proyecto_academico/coordinador/", this.coordinador_data)
+          //AQUI SGA_MID_SERVICE MODIFICADO
+          // this.sgamidService.post("proyecto_academico/coordinador/", this.coordinador_data)
+          this.sgaProyectoCurricularMidService.post('proyecto-academico/coordinadores/', this.coordinador_data)
             .subscribe((res: any) => {
               if (res.Type === "error") {
                 Swal.fire({
