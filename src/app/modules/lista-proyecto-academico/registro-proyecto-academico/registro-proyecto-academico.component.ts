@@ -14,7 +14,6 @@ import { NuevoRegistro } from 'src/app/models/nuevo_registro';
 import { RegistroCalificadoAcreditacion } from 'src/app/models/registro_calificado_acreditacion';
 import { TipoRegistro } from 'src/app/models/tipo_registro';
 import { DocumentoService } from 'src/app/services/documento.service';
-import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 
 import Swal from 'sweetalert2';
@@ -73,7 +72,6 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
     private translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ListRegistroProyectoAcademicoComponent>,
-    private sgamidService: SgaMidService,
     private sanitization: DomSanitizer,
     private newNuxeoService: NewNuxeoService,
     private formBuilder: FormBuilder,

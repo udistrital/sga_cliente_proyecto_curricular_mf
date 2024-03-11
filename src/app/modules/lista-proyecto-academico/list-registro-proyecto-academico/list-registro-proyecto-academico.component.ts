@@ -4,7 +4,6 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 import { DocumentoService } from 'src/app/services/documento.service';
-import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 import Swal from 'sweetalert2';
 import { RegistroProyectoAcademicoComponent } from '../registro-proyecto-academico/registro-proyecto-academico.component';
@@ -34,7 +33,6 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
   constructor(private translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ConsultaProyectoAcademicoComponent>,
-    private sgamidService: SgaMidService,
     private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
     private nuxeoService: NewNuxeoService,
     private documentoService: DocumentoService,

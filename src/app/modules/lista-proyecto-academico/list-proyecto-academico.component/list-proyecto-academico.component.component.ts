@@ -5,7 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { ProyectoAcademicoInstitucion } from 'src/app/models/proyecto_academico_institucion';
-import { SgaMidService } from 'src/app/services/sga_mid.service';
 import Swal from 'sweetalert2';
 import { ConsultaProyectoAcademicoComponent } from '../consulta-proyecto-academico/consulta-proyecto-academico.component';
 import { ModificarProyectoAcademicoComponent } from '../modificar-proyecto-academico/modificar-proyecto-academico.component';
@@ -237,18 +236,21 @@ export class ListProyectoAcademicoComponent implements OnInit {
     this.loading = true;
     this.proyectoCurricularService.getProyectosAcademicos().subscribe(
       (res: ProyectoAcademico[]) => {
+        res.sort((a, b) => {
+          const dateA = new Date(a.ProyectoAcademico.FechaModificacion);
+          const dateB = new Date(b.ProyectoAcademico.FechaModificacion);
+          return dateB.getTime() - dateA.getTime();
+        });
         this.listaDatos = [...res];
         this.dataSource = new MatTableDataSource(res);
-        this.dataSource.sort = this.sort;
-        this.dataSource.filterPredicate = (data: any, filter: string) =>
-          this.filterPredicate(data.ProyectoAcademico.Nombre, filter);
-        this.dataSource.data.forEach(
-          (data: any) => (data.proyecto = data.ProyectoAcademico.Nombre)
-        );
+
         setTimeout(() => {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }, 1000);
+        this.dataSource.filterPredicate = (data: any, filter: string) =>
+          this.filterPredicate(data.ProyectoAcademico.Nombre, filter);
+
         this.loading = false;
       },
       (error) => {
@@ -264,6 +266,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
   }
 
   obteneridporid_consulta(id: number) {
+    this.loading = true;
     this.proyectoCurricularService.getProyectoAcademicoPorId(id).subscribe(
       (res: DetalleProyectoAcademico | null) => {
         if (res != null) {
@@ -288,11 +291,14 @@ export class ListProyectoAcademicoComponent implements OnInit {
                 res.ProyectoAcademico.EnlaceActoAdministrativo[0],
               proyecto_padre_id: res.ProyectoAcademico.ProyectoPadreId,
             };
+            this.loading = false;
             this.openDialogConsulta(id, proyectoConsultaData);
           } catch (error) {
+            this.loading = false;
             console.info(error);
           }
         } else {
+          this.loading = false;
           Swal.fire({
             title: this.translate.instant('GLOBAL.atencion'),
             text: this.translate.instant('oferta.evento'),
@@ -305,6 +311,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
         }
       },
       (error) => {
+        this.loading = false;
         Swal.fire({
           icon: 'error',
           title: this.translate.instant('GLOBAL.error'),

@@ -17,7 +17,6 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListRegistroProyectoAcademicoComponent } from './modules/lista-proyecto-academico/list-registro-proyecto-academico/list-registro-proyecto-academico.component';
 import { ConsultaProyectoAcademicoComponent } from './modules/lista-proyecto-academico/consulta-proyecto-academico/consulta-proyecto-academico.component';
-import { SgaMidService } from './services/sga_mid.service';
 import { DocumentoService } from './services/documento.service';
 import { OikosService } from './services/oikos.service';
 import { AnyService } from './services/any.service';
@@ -108,7 +107,6 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
-    SgaMidService,
     DocumentoService,
     OikosService,
     AnyService,

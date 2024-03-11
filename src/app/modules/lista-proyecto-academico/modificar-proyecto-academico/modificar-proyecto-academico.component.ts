@@ -35,7 +35,6 @@ import { Titulacion } from 'src/app/models/titulacion';
 import { CoreService } from 'src/app/services/core.service';
 import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
-import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { TercerosService } from 'src/app/services/terceros.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 import Swal from 'sweetalert2';
@@ -211,7 +210,6 @@ export class ModificarProyectoAcademicoComponent {
     private terceroService: TercerosService,
     private coreService: CoreService,
     private proyectoacademicoService: ProyectoAcademicoService,
-    private sgamidService: SgaMidService,
     private routerService: Router,
     private newNuxeoService: NewNuxeoService,
     private formBuilder: FormBuilder,
