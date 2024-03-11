@@ -25,5 +25,5 @@ export class ProyectoAcademicoInstitucion {
     MetodologiaId!: Metodologia;
     NivelFormacionId!: NivelFormacion;
     AnoActoAdministrativo!: string;
-    ProyectoPadreId!: ProyectoAcademicoInstitucion;
+    ProyectoPadreId!: ProyectoAcademicoInstitucion | null;
 }

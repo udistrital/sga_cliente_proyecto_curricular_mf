@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { BodyOutputType, Toast, ToasterConfig, ToasterService } from 'angular2-toaster';
+// import { BodyOutputType, Toast, ToasterConfig, ToasterService } from 'angular2-toaster';
 import { Enfasis } from 'src/app/models/enfasis';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { FORM_ENFASIS } from './form-enfasis';
@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CrudEnfasisComponent implements OnInit {
 
-  config!: ToasterConfig;
+  // config!: ToasterConfig;
   enfasis_id!: number;
 
   @Input('enfasis_id')
