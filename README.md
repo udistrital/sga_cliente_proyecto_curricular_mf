@@ -9,7 +9,7 @@ Cliente para la gestión del proyecto curricular, parte del Sistema de Gestión 
 
 - **[Angular](https://angular.io/)**: 16.0.0 (Incluye Animations, Common, Compiler, Core, Forms, Platform-Browser, Platform-Browser-Dynamic, Router)
 - **[Angular Material](https://material.angular.io/)**: 16.2.13
-- **[ngx-translate](http://www.ngx-translate.com/)**: 15.0.0
+- **[ngx-translate](https://github.com/ngx-translate/core)**: 15.0.0
 - **[Bootstrap](https://getbootstrap.com/)**: 5.3.2
 - **[jQuery](https://jquery.com/)**: 3.7.1
 - **[Moment.js](https://momentjs.com/)**: 2.30.1
