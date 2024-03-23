@@ -58,7 +58,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
   coordinador: any[] = [];
   oferta_check: boolean = false;
   ciclos_check: boolean = false;
-  loading: boolean = false;
   titulacion_snies!: string;
   numero_acto!: string;
   ano_acto!: string;
@@ -95,7 +94,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
   ) {
-    this.loading = true;
     this.loadData();
   }
 
@@ -109,7 +107,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
   }
 
   loadData(): void {
-    this.loading = true;
     this.sgamidService.get('consulta_proyecto_academico/').subscribe(res => {
       if (res !== null) {
         const data = <Array<any>>res;
@@ -130,7 +127,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           }, 1000);
-          this.loading = false;
         });
       }
     },
@@ -143,7 +139,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
             this.translate.instant('GLOBAL.proyecto_academico'),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-        this.loading = false;
       });
 
 
@@ -278,7 +273,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
       icon: 'warning',
       showCancelButton: true,
     };
-    this.loading = true;
     this.sgamidService.get('consulta_proyecto_academico/').subscribe(
       (res: any[]) => {
         res.forEach((element: any) => {
@@ -296,13 +290,8 @@ export class ListProyectoAcademicoComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           }, 1000);
-          this.loading = false;
         } else {
-          Swal.fire(opt1).then(willDelete => {
-            if (willDelete.value) {
-              this.loading = false;
-            }
-          });
+          Swal.fire(opt1);
         }
       },
       (error: HttpErrorResponse) => {
@@ -312,7 +301,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-        this.loading = false;
       },
     );
   }

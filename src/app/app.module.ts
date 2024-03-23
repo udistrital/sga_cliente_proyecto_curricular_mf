@@ -9,7 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegistroProyectoAcademicoComponent } from './modules/lista-proyecto-academico/registro-proyecto-academico/registro-proyecto-academico.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from 'src/environments/environment';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -46,6 +46,7 @@ import { RequestService } from './services/request.service';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
@@ -94,6 +95,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatSelectModule,
     MatIconModule,
+    SpinnerUtilModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -108,6 +110,7 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerUtilInterceptor, multi: true },
     SgaMidService,
     DocumentoService,
     OikosService,
