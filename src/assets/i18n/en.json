@@ -20,8 +20,8 @@
         "regresar": "Return",
         "guardar": "Save",
         "actualizar":"Update",
-        "eliminar": "Delete"
-
+        "eliminar": "Delete",
+        "registrar": "Register"
     },
     "historial_registro": {
         "titulo": "History of accreditation records and high quality of the Academic Project",

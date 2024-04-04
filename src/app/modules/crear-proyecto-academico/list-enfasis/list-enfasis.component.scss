@@ -52,3 +52,11 @@ mat-cell, mat-header-cell{
     cursor: pointer;
     color: white !important;
 }
+
+.container-table {
+    overflow: overlay;
+}
+
+mat-table {
+    display: table;
+}

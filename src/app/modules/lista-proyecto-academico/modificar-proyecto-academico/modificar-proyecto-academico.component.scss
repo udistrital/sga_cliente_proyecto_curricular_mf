@@ -132,3 +132,25 @@
     --mat-tab-header-active-ripple-color: white !important;
     --mat-tab-header-inactive-ripple-color: white !important;
 }
+
+button {
+    min-height: 36px;
+}
+
+@media (max-width: 750px) {
+    .col-xs {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .row-xs {
+        flex-direction: column !important;
+    }
+}
+
+@media (max-width: 500px) {
+    .container-buttons button {
+        height: auto;
+        max-height: 100Px;
+    }
+}

@@ -39,7 +39,7 @@
 
   .container-buttons{
     display: flex;
-    justify-content: center;    
+    justify-content: center;
   }
 
   .demo-table {
@@ -145,4 +145,24 @@
     line-height: 1.5rem;
 }
 
+.container-table {
+    overflow: overlay;
+}
 
+mat-table {
+    display: table;
+}
+
+@media (max-width: 750px) {
+    .container-buttons {
+      flex-direction: column;
+    }
+
+    .container-buttons button {
+        margin: 10px 0;
+    }
+
+    .container-buttons .div-button {
+        text-align: center;
+    }
+}
