@@ -6,7 +6,8 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { ProyectoAcademicoInstitucion } from 'src/app/models/proyecto_academico_institucion';
 import { SgaMidService } from 'src/app/services/sga_mid.service';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 import { ConsultaProyectoAcademicoComponent } from '../consulta-proyecto-academico/consulta-proyecto-academico.component';
 import { ModificarProyectoAcademicoComponent } from '../modificar-proyecto-academico/modificar-proyecto-academico.component';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
@@ -298,7 +299,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
           }, 1000);
           this.loading = false;
         } else {
-          Swal.fire(opt1).then(willDelete => {
+          Swal.fire(opt1).then((willDelete: any) => {
             if (willDelete.value) {
               this.loading = false;
             }
@@ -371,7 +372,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
             )[0];
             this.openDialogConsulta(id);
           } else {
-            Swal.fire(opt1).then(willDelete => {
+            Swal.fire(opt1).then((willDelete: any) => {
               if (willDelete.value) {
               }
             });
@@ -535,7 +536,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
             )[0];
             this.openDialogModificar(id);
           } else {
-            Swal.fire(opt1).then(willDelete => {
+            Swal.fire(opt1).then((willDelete: any) => {
               if (willDelete.value) {
               }
             });
@@ -605,7 +606,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
               'ResolucionAsignacionId'
             ];
           } else {
-            Swal.fire(opt1).then(willDelete => {
+            Swal.fire(opt1).then((willDelete: any) => {
               if (willDelete.value) {
               }
             });
@@ -656,7 +657,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       
       showCancelButton: true,
     };
-    Swal.fire(opt).then(willDelete => {
+    Swal.fire(opt).then((willDelete: any) => {
       if (willDelete.value) {
         const proyectoAModificar = row;
         proyectoAModificar.Activo = !proyectoAModificar.Activo;

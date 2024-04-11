@@ -5,7 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { ListEnfasisService } from 'src/app/services/list_enfasis.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 
 @Component({
   selector: 'app-list-enfasis',
@@ -81,7 +82,7 @@ export class ListEnfasisComponent implements OnInit {
       showCancelButton: true,
     };
     Swal.fire(opt)
-      .then((willDelete) => {
+      .then((willDelete: any) => {
 
         if (willDelete.value) {
           this.proyectoAcademicoService.delete('enfasis/', event)

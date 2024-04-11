@@ -34,7 +34,8 @@ import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.se
 import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { TercerosService } from 'src/app/services/terceros.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 
 @Component({
   selector: 'app-modificar-proyecto-academico',
@@ -810,7 +811,7 @@ export class ModificarProyectoAcademicoComponent {
         showCancelButton: true
       };
 
-      Swal.fire(opt).then(async willCreate => {
+      Swal.fire(opt).then(async (willCreate: any) => {
         if (willCreate.value) {
           // Si se actualiza el acto administrativo
           if (this.fileActoAdministrativo) {
@@ -851,7 +852,7 @@ export class ModificarProyectoAcademicoComponent {
                   dangerMode: true,
                   showCancelButton: true
                 };
-                Swal.fire(opt1).then(willDelete => {
+                Swal.fire(opt1).then((willDelete: any) => {
                   if (willDelete.value) {
                   }
                 });
@@ -868,7 +869,7 @@ export class ModificarProyectoAcademicoComponent {
         dangerMode: true,
         showCancelButton: true
       };
-      Swal.fire(opt1).then(willDelete => {
+      Swal.fire(opt1).then((willDelete: any) => {
         if (willDelete.value) {
         }
       });
@@ -997,7 +998,7 @@ export class ModificarProyectoAcademicoComponent {
           showCancelButton: true
         };
 
-        Swal.fire(opt).then(async willCreate => {
+        Swal.fire(opt).then(async (willCreate: any) => {
           if (willCreate.value) {
             if (this.fileRegistroCalificado) {
               const idFileRegistroCalificado = await this.uploadFilesModificacionProyecto(
@@ -1035,7 +1036,7 @@ export class ModificarProyectoAcademicoComponent {
                     dangerMode: true,
                     showCancelButton: true
                   };
-                  Swal.fire(opt1).then(willDelete => {
+                  Swal.fire(opt1).then((willDelete: any) => {
                     if (willDelete.value) {
                     }
                   });
@@ -1052,7 +1053,7 @@ export class ModificarProyectoAcademicoComponent {
           dangerMode: true,
           showCancelButton: true
         };
-        Swal.fire(opt1).then(willDelete => {
+        Swal.fire(opt1).then((willDelete: any) => {
           if (willDelete.value) {
           }
         });
@@ -1138,7 +1139,7 @@ export class ModificarProyectoAcademicoComponent {
           showCancelButton: true
         };
 
-        Swal.fire(opt).then(async willCreate => {
+        Swal.fire(opt).then(async (willCreate: any) => {
           if (willCreate.value) {
             if (this.fileRegistroCalificado) {
               const idFileRegistroCalificado = await this.uploadFilesModificacionProyecto(
@@ -1173,7 +1174,7 @@ export class ModificarProyectoAcademicoComponent {
                     dangerMode: true,
                     showCancelButton: true
                   };
-                  Swal.fire(opt1).then(willDelete => {
+                  Swal.fire(opt1).then((willDelete: any) => {
                     if (willDelete.value) {
                     }
                   });
@@ -1190,7 +1191,7 @@ export class ModificarProyectoAcademicoComponent {
           dangerMode: true,
           showCancelButton: true
         };
-        Swal.fire(opt1).then(willDelete => {
+        Swal.fire(opt1).then((willDelete: any) => {
           if (willDelete.value) {
           }
         });
@@ -1235,7 +1236,7 @@ export class ModificarProyectoAcademicoComponent {
         dangerMode: true,
         showCancelButton: true
       };
-      Swal.fire(opt).then(async willCreate => {
+      Swal.fire(opt).then(async (willCreate: any) => {
         if (willCreate.value) {
           if (this.fileResolucionCoordinador) {
             const idFileResolucionCoordinador = await this.uploadFilesModificacionProyecto(
@@ -1268,7 +1269,7 @@ export class ModificarProyectoAcademicoComponent {
                   dangerMode: true,
                   showCancelButton: true
                 };
-                Swal.fire(opt1).then(willDelete => {
+                Swal.fire(opt1).then((willDelete: any) => {
                   if (willDelete.value) {
                   }
                 });
@@ -1285,7 +1286,7 @@ export class ModificarProyectoAcademicoComponent {
         dangerMode: true,
         showCancelButton: true
       };
-      Swal.fire(opt1).then(willDelete => {
+      Swal.fire(opt1).then((willDelete: any) => {
         if (willDelete.value) {
         }
       });

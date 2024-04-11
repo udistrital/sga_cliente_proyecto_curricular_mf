@@ -30,7 +30,8 @@ import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 import { ListEnfasisComponent } from '../list-enfasis/list-enfasis.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -691,7 +692,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           showCancelButton: true,
         };
         Swal.fire(opt)
-          .then(async (willCreate) => {
+          .then(async (willCreate: any) => {
             if (willCreate.value) {
               let content = Swal.getHtmlContainer()
               if (content) {
@@ -733,7 +734,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                       dangerMode: true,
                       showCancelButton: true,
                     }; Swal.fire(opt1)
-                      .then((willDelete) => {
+                      .then((willDelete: any) => {
                         if (willDelete.value) {
                           this.checkregistro = true;
                           this.openlist();
@@ -754,7 +755,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           dangerMode: true,
           showCancelButton: true,
         }; Swal.fire(opt1)
-          .then((willDelete) => {
+          .then((willDelete: any) => {
             if (willDelete.value) {
 
             }

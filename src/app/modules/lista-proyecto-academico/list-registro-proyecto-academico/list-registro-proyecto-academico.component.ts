@@ -6,7 +6,8 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 import { RegistroProyectoAcademicoComponent } from '../registro-proyecto-academico/registro-proyecto-academico.component';
 import * as momentTimezone from 'moment-timezone';
 import { ConsultaProyectoAcademicoComponent } from '../consulta-proyecto-academico/consulta-proyecto-academico.component';
@@ -63,7 +64,7 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
           });
         } else {
           Swal.fire(opt1)
-            .then((willDelete) => {
+            .then((willDelete: any) => {
               if (willDelete.value) {
               }
             });
