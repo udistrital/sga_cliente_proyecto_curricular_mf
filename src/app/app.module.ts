@@ -46,6 +46,7 @@ import { RequestService } from './services/request.service';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
@@ -94,6 +95,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatSelectModule,
     MatIconModule,
+    MatExpansionModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
