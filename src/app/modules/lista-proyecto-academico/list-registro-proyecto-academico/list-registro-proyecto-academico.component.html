@@ -1,101 +1,131 @@
 <!-- <toaster-container [toasterconfig]="config"></toaster-container> -->
 <div class="col-md-12 col-lg-12">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
-        <br>
-        <div class="text-center">
-            <mat-card-header><b >{{ 'historial_registro.titulo' | translate }}</b></mat-card-header>
-        </div>
-        
-                <div class="info-p p-3">
-                    <mat-icon class="info-icon">info</mat-icon> &nbsp;
-                    {{ 'historial_registro.explicacacion' | translate }}
-                </div>
-        
-                <div class="container-table">
-                    <mat-table [dataSource]="dataSource" class="demo-table">
-                        <ng-container matColumnDef="Id">
-                            <mat-header-cell *matHeaderCellDef ><b>{{ 'consultaproyecto.id' | translate }}</b>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row" class="text-capitalize"> {{row.Id}} </mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="Registro">
-                            <mat-header-cell *matHeaderCellDef ><b> {{ 'historial_registro.registro' | translate
-                                }}</b>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.NumeroActoAdministrativo }} </mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="Vigencia">
-                            <mat-header-cell *matHeaderCellDef ><b>{{ 'historial_registro.vigencia' | translate
-                                }}</b>
-                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.AnoActoAdministrativoId}} </mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="Tipo de registro">
-                            <mat-header-cell *matHeaderCellDef ><b>{{ 'historial_registro.tipo_registro' |
-                                translate }}</b>
-                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.TipoRegistroId.Nombre }} </mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="Tiempo de vigencia">
-                            <mat-header-cell *matHeaderCellDef ><b>{{ 'historial_registro.tiempo' | translate }}</b>
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
 
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.VigenciaActoAdministrativo }} </mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="Activo">
-                            <mat-header-cell *matHeaderCellDef ><b>{{ 'historial_registro.activo' | translate }}</b>
+  <br />
+  <div class="text-center">
+    <mat-card-header
+      ><b>{{ "historial_registro.titulo" | translate }}</b></mat-card-header
+    >
+  </div>
 
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.ActivoLetra }} </mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="Fecha Inicio Registro">
-                            <mat-header-cell *matHeaderCellDef ><b>{{ 'historial_registro.fecha_inicio' |
-                                translate }}</b>
-                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.FechaCreacionActoAdministrativo  }}
-                            </mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="Fecha Vencimiento Registro">
-                            <mat-header-cell *matHeaderCellDef><b> {{ 'historial_registro.fecha_vencimiento' | translate }}</b>
+  <div class="info-p p-3">
+    <mat-icon class="info-icon">info</mat-icon> &nbsp;
+    {{ "historial_registro.explicacacion" | translate }}
+  </div>
 
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.VencimientoActoAdministrativo }}
-                            </mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="Documento">
-                            <mat-header-cell *matHeaderCellDef ><b>{{ 'historial_registro.documento' | translate
-                                }}</b>
-                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row">
-                                <mat-icon class="link icono " (click)="downloadFile(row.EnlaceActo)" aria-hidden="false" fontIcon="cloud_download" ></mat-icon>
-                            </mat-cell>
-                        </ng-container>
-    
-                        <mat-header-row *matHeaderRowDef="displayedColumns" class="encabezado"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="highlight(row)"></mat-row>
-                    </mat-table>
-                </div>
-           
-        
-        <br>
-        <div class="container-buttons">
-            <div class=""> <button class="btn btn-primary" (click)="OpenRegistroCalificado()">{{
-                    'historial_registro.calificado' | translate }}</button> </div>
-            <div class=""> <button class="btn btn-primary" (click)="OpenRegistroAlta()">{{
-                    'historial_registro.alta' |
-                    translate }}</button></div>
-            <div class=""> <button class="btn btn-primary" (click)="onclick()">{{ 'GLOBAL.aceptar' | translate
-                    }}</button>
-            </div>
-        </div>
-        <br>
+  <div class="container-table">
+    <mat-table [dataSource]="dataSource" class="demo-table">
+      <ng-container matColumnDef="Id">
+        <mat-header-cell *matHeaderCellDef
+          ><b>{{ "consultaproyecto.id" | translate }}</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" class="text-capitalize">
+          {{ row.Id }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Registro">
+        <mat-header-cell *matHeaderCellDef
+          ><b> {{ "historial_registro.registro" | translate }}</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{ row.NumeroActoAdministrativo }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Vigencia">
+        <mat-header-cell *matHeaderCellDef
+          ><b>{{ "historial_registro.vigencia" | translate }}</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{ row.AnoActoAdministrativoId }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Tipo de registro">
+        <mat-header-cell *matHeaderCellDef
+          ><b>{{ "historial_registro.tipo_registro" | translate }}</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{ row.TipoRegistroId.Nombre }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Tiempo de vigencia">
+        <mat-header-cell *matHeaderCellDef
+          ><b>{{ "historial_registro.tiempo" | translate }}</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{ row.VigenciaActoAdministrativo }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Activo">
+        <mat-header-cell *matHeaderCellDef
+          ><b>{{ "historial_registro.activo" | translate }}</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.ActivoLetra }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Fecha Inicio Registro">
+        <mat-header-cell *matHeaderCellDef
+          ><b>{{ "historial_registro.fecha_inicio" | translate }}</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{ row.FechaCreacionActoAdministrativo }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Fecha Vencimiento Registro">
+        <mat-header-cell *matHeaderCellDef
+          ><b> {{ "historial_registro.fecha_vencimiento" | translate }}</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{ row.VencimientoActoAdministrativo }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Documento">
+        <mat-header-cell *matHeaderCellDef
+          ><b>{{ "historial_registro.documento" | translate }}</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button
+            mat-icon-button
+            color="accent"
+            (click)="downloadFile(row.EnlaceActo)"
+          >
+            <mat-icon>cloud_download</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row
+        *matHeaderRowDef="displayedColumns"
+        class="encabezado"
+      ></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="highlight(row)"
+      ></mat-row>
+    </mat-table>
+  </div>
+
+  <br />
+  <div class="container-buttons">
+    <button mat-flat-button color="accent" (click)="OpenRegistroCalificado()">
+      {{ "historial_registro.calificado" | translate }}
+    </button>
+    <button mat-flat-button color="accent" (click)="OpenRegistroAlta()">
+      {{ "historial_registro.alta" | translate }}
+    </button>
+    <button mat-flat-button color="accent" (click)="onclick()">
+      {{ "GLOBAL.aceptar" | translate }}
+    </button>
+  </div>
+  <br />
 </div>
