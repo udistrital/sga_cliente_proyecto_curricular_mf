@@ -4,13 +4,13 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 import { DocumentoService } from 'src/app/services/documento.service';
-import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 import Swal from 'sweetalert2';
 import { RegistroProyectoAcademicoComponent } from '../registro-proyecto-academico/registro-proyecto-academico.component';
 import * as momentTimezone from 'moment-timezone';
 import { ConsultaProyectoAcademicoComponent } from '../consulta-proyecto-academico/consulta-proyecto-academico.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
 
 @Component({
   selector: 'app-list-registro-proyecto-academico',
@@ -33,7 +33,7 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
   constructor(private translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ConsultaProyectoAcademicoComponent>,
-    private sgamidService: SgaMidService,
+    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
     private nuxeoService: NewNuxeoService,
     private documentoService: DocumentoService,
     private newNuxeoService: NewNuxeoService,
@@ -51,10 +51,12 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
       
       showCancelButton: true,
     }
-    this.sgamidService.get('consulta_proyecto_academico/get_registro/' + this.data.Id)
+    //AQUI SGA_MID_SERVICE MODIFICADO FINO
+    // this.sgamidService.get('consulta_proyecto_academico/get_registro/' + this.data.Id)
+    this.sgaProyectoCurricularMidService.get('proyecto-academico/registro/'+this.data.Id)
       .subscribe(res => {
-        if (res !== null && res[0] !== 'error') {
-          const data = <Array<any>>res;
+        if (res.success) {
+          const data = <Array<any>>res.data;
           data.forEach(element => {
             element.TipoRegistroIdNombre = element.TipoRegistroId.Nombre
             element.FechaCreacionActoAdministrativo = momentTimezone.tz(element.FechaCreacionActoAdministrativo, 'America/Bogota').format('DD-MM-YYYY')
@@ -136,7 +138,7 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
     const dialogRef = this.dialog.open(RegistroProyectoAcademicoComponent, {
       width: '550px',
       height: '750px',
-      data: { IdProyecto: this.data.Id, endpoint: 'registro_calificado', tipo_registro: 1 },
+      data: { IdProyecto: this.data.Id, endpoint: 'registros-calificados', tipo_registro: 1 },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -145,10 +147,11 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
   }
 
   OpenRegistroAlta(): void {
+    console.log(this.data)
     const dialogRef = this.dialog.open(RegistroProyectoAcademicoComponent, {
       width: '550px',
       height: '750px',
-      data: { IdProyecto: this.data.Id, endpoint: 'registro_alta_calidad', tipo_registro: 2 },
+      data: { IdProyecto: this.data.Id, endpoint: `${this.data.Id}/registros-alta-calidad/`, tipo_registro: 2 },
     });
 
     dialogRef.afterClosed().subscribe(result => {
