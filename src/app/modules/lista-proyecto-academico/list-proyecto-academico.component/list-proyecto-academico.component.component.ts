@@ -62,7 +62,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
 
   idproyecto: any;
   coordinador: any = null;
-  loading: boolean = false;
   existe_registro_alta_calidad: boolean = false;
 
   listaDatos: any[] = [];
@@ -74,7 +73,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
     public dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
-    this.loading = true;
     this.loadproyectos();
     // this.loadData();
   }
@@ -89,7 +87,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
   }
 
   loadData(): void {
-    this.loading = true;
     this.proyectoCurricularService.getProyectosAcademicos().subscribe(
       (res: ProyectoAcademico[]) => {
         this.dataSource = new MatTableDataSource(res);
@@ -97,11 +94,9 @@ export class ListProyectoAcademicoComponent implements OnInit {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }, 1000);
-        this.loading = false;
       },
 
       (error) => {
-        this.loading = false;
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -233,7 +228,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
   ngOnInit() {}
 
   loadproyectos() {
-    this.loading = true;
     this.proyectoCurricularService.getProyectosAcademicos().subscribe(
       (res: ProyectoAcademico[]) => {
         res.sort((a, b) => {
@@ -250,8 +244,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
         }, 1000);
         this.dataSource.filterPredicate = (data: any, filter: string) =>
           this.filterPredicate(data.ProyectoAcademico.Nombre, filter);
-
-        this.loading = false;
       },
       (error) => {
         Swal.fire({
@@ -260,13 +252,11 @@ export class ListProyectoAcademicoComponent implements OnInit {
           text: error.message || this.translate.instant('GLOBAL.error_message'),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-        this.loading = false;
       }
     );
   }
 
   obteneridporid_consulta(id: number) {
-    this.loading = true;
     this.proyectoCurricularService.getProyectoAcademicoPorId(id).subscribe(
       (res: DetalleProyectoAcademico | null) => {
         if (res != null) {
@@ -291,14 +281,11 @@ export class ListProyectoAcademicoComponent implements OnInit {
                 res.ProyectoAcademico.EnlaceActoAdministrativo[0],
               proyecto_padre_id: res.ProyectoAcademico.ProyectoPadreId,
             };
-            this.loading = false;
             this.openDialogConsulta(id, proyectoConsultaData);
           } catch (error) {
-            this.loading = false;
             console.info(error);
           }
         } else {
-          this.loading = false;
           Swal.fire({
             title: this.translate.instant('GLOBAL.atencion'),
             text: this.translate.instant('oferta.evento'),
@@ -311,20 +298,17 @@ export class ListProyectoAcademicoComponent implements OnInit {
         }
       },
       (error) => {
-        this.loading = false;
         Swal.fire({
           icon: 'error',
           title: this.translate.instant('GLOBAL.error'),
           text: error.message || this.translate.instant('GLOBAL.error_message'),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-        this.loading = false;
       }
     );
   }
 
   async obteneridporid_modificar(id: number) {
-    this.loading = true;
     const opt1: any = {
       title: this.translate.instant('GLOBAL.atencion'),
       text: this.translate.instant('oferta.evento'),
@@ -402,10 +386,8 @@ export class ListProyectoAcademicoComponent implements OnInit {
           const proyectoModificarData = { ...datosProyecto, ...coordinador };
 
           this.openDialogModificar(id, proyectoModificarData);
-          this.loading = false;
         } catch (error) {
           console.info(error);
-          this.loading = false;
         }
       },
       (error) => {
@@ -415,7 +397,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-        this.loading = false;
       }
     );
   }
