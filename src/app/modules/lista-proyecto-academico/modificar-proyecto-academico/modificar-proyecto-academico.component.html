@@ -1,8 +1,8 @@
 <mat-tab-group>
     <mat-tab label="{{ 'editarproyecto.tag_informacionbasica' | translate }}">
         <div class="col-md-12 col-lg-12 ">
-            <div class="row">
-                <div class="col-sm-6">
+            <div class="row row-xs">
+                <div class="col-sm-6 col-xs">
                     <mat-card class="m-4 text-center " color="accent" align="center">
                         <mat-card-header><b>{{ "proyecto.basica" | translate }}</b></mat-card-header>
                         <mat-card-content>
@@ -168,7 +168,7 @@
                     </mat-card>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-6 col-xs">
                     <div class="row-sm-6">
                         <mat-card class="m-4" color="accent">
                             <mat-card-header><b>{{ "proyecto.enfasis" | translate }}</b></mat-card-header>
@@ -320,7 +320,7 @@
 
     <mat-tab label="{{ 'editarproyecto.tag_acta' | translate }}">
         <div class="text-center my-3">
-            <div class="col-7">
+            <div class="col-7 col-xs">
                 <div class="center">
                     <mat-card-header><b>{{ "proyecto.acto" | translate }}</b></mat-card-header>
                     <mat-card-content>
@@ -392,12 +392,12 @@
 
     <mat-tab label="{{ 'editarproyecto.tag_asigcoordinador' | translate }}">
         <div class="text-center my-3">
-            <div class="col-7">
+            <div class="col-7 col-xs">
                 <mat-card-header><b>{{ "editarproyecto.coordinacion" | translate }}</b> </mat-card-header>
                 <br>
                 <mat-card-content style="overflow: visible">
                     <form id="coordinadoform" [formGroup]="coordinador">
-                        <div class="col-10">
+                        <div class="">
                             <mat-form-field class="input-acto" floatLabel="always">
                                 <mat-label>*{{ "editarproyecto.agregar_coordinado" | translate
                                     }}:</mat-label>
@@ -452,7 +452,7 @@
                         <br />
                         <br />
 
-                        <div class="row justify-content-start">
+                        <div class="row text-center">
                             <div class="col-6">
                                 <button mat-button class="boton-primary" (click)="registrocoordinador()">
                                     {{ "editarproyecto.asignar_coordinado" | translate }}
@@ -469,8 +469,8 @@
 
     <mat-tab label="{{ 'editarproyecto.tag_registro' | translate }}">
         <div class="col-md-12 col-lg-12 ">
-            <div class="row">
-                <div class="col-sm-6">
+            <div class="row row-xs">
+                <div class="col-sm-6 col-xs">
                     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
                     <mat-card class="m-4" color="accent">
                         <mat-card-header><b>{{ "proyecto.registro" | translate }}</b></mat-card-header>
@@ -593,7 +593,7 @@
                     </mat-card>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-6 col-xs">
                     <div class="row-sm-6">
                         <mat-card *ngIf="checkalta" class="m-4" color="accent">
                             <mat-card-header><b>{{ "editarproyecto.registro_alta" | translate }}</b></mat-card-header>

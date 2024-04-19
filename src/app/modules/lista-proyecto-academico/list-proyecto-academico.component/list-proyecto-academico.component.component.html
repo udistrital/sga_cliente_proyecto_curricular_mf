@@ -3,6 +3,9 @@
 
   </mat-card-header>
   <mat-card-content>
+    <div [class.loader-div]="loading">
+      <mat-spinner *ngIf="loading" diameter="100" color="primary"></mat-spinner>
+    </div>
     <fieldset class="fieldseter border">
       <legend>
         <small class="small"
@@ -218,5 +221,4 @@
     </fieldset>
   </mat-card-content>
 </mat-card>
-<br><br><br><br>
 
