@@ -127,7 +127,6 @@
 .icono:hover {
     color: #03678f;
 }
-
 :host ::ng-deep .mat-mdc-tab-group, .mat-mdc-tab-nav-bar{
     --mat-tab-header-active-ripple-color: white !important;
     --mat-tab-header-inactive-ripple-color: white !important;
@@ -154,3 +153,4 @@ button {
         max-height: 100Px;
     }
 }
+
