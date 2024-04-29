@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+
 import { Enfasis } from 'src/app/models/enfasis';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { FORM_ENFASIS } from './form-enfasis';

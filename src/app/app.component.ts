@@ -21,11 +21,11 @@ export class AppComponent implements OnInit {
   ) {}
 
   validateLang() {
-    let lang = getCookie('lang') || 'es';
+    let lang = getCookie('lang') || 'en';
     this.whatLang$.subscribe((x:any) => {
       lang = x['detail']['answer'];
       this.translate.setDefaultLang(lang)
     });
-    this.translate.setDefaultLang(getCookie('lang') || 'es');
+    this.translate.setDefaultLang(getCookie('lang') || 'en');
   }
 }

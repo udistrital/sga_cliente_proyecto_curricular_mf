@@ -28,13 +28,13 @@ import { DocumentoService } from 'src/app/services/documento.service';
 import { ListEnfasisService } from 'src/app/services/list_enfasis.service';
 import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
-import { SgaMidService } from 'src/app/services/sga_mid.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';
 import { ListEnfasisComponent } from '../list-enfasis/list-enfasis.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
 
 @Component({
   selector: 'app-crud-proyecto-academico',
@@ -148,7 +148,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     private _ngZone: NgZone,
     private coreService: CoreService,
     private proyectoacademicoService: ProyectoAcademicoService,
-    private sgamidService: SgaMidService,
+    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
     private dialogService: MatDialog,
     private activatedRoute: ActivatedRoute,
     private sanitization: DomSanitizer,
@@ -289,10 +289,13 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
   loadCloneData(id: any): void {
     this.Campo2Control.setValidators([Validators.nullValidator]);
-    this.sgamidService.get('consulta_proyecto_academico/' + id)
+    //AQUI SGA_MID_SERVICE MODIFICADO
+    // this.sgamidService.get('consulta_proyecto_academico/' + id)
+    this.sgaProyectoCurricularMidService.get('proyecto-academico/' + id)
       .subscribe((res: any) => {
-        if (res.Type !== 'error' && res[0].ProyectoAcademico.Id) {
-          const proyecto_a_clonar = res[0];
+        console.log(res)
+        if (res.success && res.data.length > 0) {
+          const proyecto_a_clonar = res.data[0];
           this.proyecto_padre_id = proyecto_a_clonar.ProyectoAcademico;
           // enfasis
           this.arr_enfasis_proyecto = proyecto_a_clonar.Enfasis.map((enfasis: any) => enfasis.EnfasisId);
@@ -712,7 +715,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
               this.registro_califacado_acreditacion.EnlaceActo = this.idDocumentoResolucion + '';
               this.proyecto_academico.EnlaceActoAdministrativo = this.idDocumentoAdministrativo + '';
-              this.sgamidService.post('proyecto_academico', this.proyecto_academicoPost)
+              //AQUI SGA_MID_SERVICE MODIFICADO
+              // this.sgamidService.post('proyecto_academico', this.proyecto_academicoPost)
+              this.sgaProyectoCurricularMidService.post('proyecto-academico/', this.proyecto_academicoPost)
                 .subscribe((res: any) => {
                   if (res.Type === 'error') {
                     Swal.fire({
@@ -730,8 +735,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                       title: this.translate.instant('proyecto.creado'),
                       text: this.translate.instant('proyecto.proyecto_creado'),
                       icon: 'success',
-                      buttons: true,
-                      dangerMode: true,
                       showCancelButton: true,
                     }; Swal.fire(opt1)
                       .then((willDelete: any) => {
