@@ -289,11 +289,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
   loadCloneData(id: any): void {
     this.Campo2Control.setValidators([Validators.nullValidator]);
-    //AQUI SGA_MID_SERVICE MODIFICADO
-    // this.sgamidService.get('consulta_proyecto_academico/' + id)
     this.sgaProyectoCurricularMidService.get('proyecto-academico/' + id)
       .subscribe((res: any) => {
-        console.log(res)
         if (res.success && res.data.length > 0) {
           const proyecto_a_clonar = res.data[0];
           this.proyecto_padre_id = proyecto_a_clonar.ProyectoAcademico;
@@ -715,8 +712,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
               this.registro_califacado_acreditacion.EnlaceActo = this.idDocumentoResolucion + '';
               this.proyecto_academico.EnlaceActoAdministrativo = this.idDocumentoAdministrativo + '';
-              //AQUI SGA_MID_SERVICE MODIFICADO
-              // this.sgamidService.post('proyecto_academico', this.proyecto_academicoPost)
               this.sgaProyectoCurricularMidService.post('proyecto-academico/', this.proyecto_academicoPost)
                 .subscribe((res: any) => {
                   if (res.Type === 'error') {

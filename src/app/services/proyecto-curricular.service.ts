@@ -80,7 +80,6 @@ export class ProyectoCurricularService {
   cambiarHabilidadProyecto(proyecto: Proyecto): Observable<any> {
     proyecto.Activo = !proyecto.Activo;
     proyecto.Oferta = !proyecto.Oferta;
-    console.log(proyecto);
     return this.sgaProyectoCurricularMidService.put(`/proyecto-academico/${proyecto.Id}/inhabilitar`, proyecto)
   }
   

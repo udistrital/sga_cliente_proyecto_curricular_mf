@@ -242,7 +242,6 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
                 this.registro_nuevo
               )
               .subscribe((res: any) => {
-                console.log("RES:", res)
                 if (res.succes) {
                   Swal.fire({
                     icon: 'error',

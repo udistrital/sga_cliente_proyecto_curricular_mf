@@ -583,7 +583,6 @@ export class ModificarProyectoAcademicoComponent {
               if (fac.Id === Number(this.data.idfacultad)) {
                 this.opcionSeleccionadoFacultad = fac;
               }
-              // console.log(this.opcionSeleccionadoFacultad)
             });
           }
         },
@@ -874,7 +873,7 @@ export class ModificarProyectoAcademicoComponent {
           showCancelButton: true,
         };
 
-        Swal.fire(opt).then(async (willCreate) => {
+        Swal.fire(opt).then(async (willCreate: any) => {
           if (willCreate.value) {
             // Si se actualiza el acto administrativo
             if (this.fileActoAdministrativo) {
@@ -922,7 +921,7 @@ export class ModificarProyectoAcademicoComponent {
                     dangerMode: true,
                     showCancelButton: true,
                   };
-                  Swal.fire(opt1).then((willDelete) => {
+                  Swal.fire(opt1).then((willDelete: any) => {
                     if (willDelete.value) {
                     }
                   });
@@ -939,7 +938,7 @@ export class ModificarProyectoAcademicoComponent {
           dangerMode: true,
           showCancelButton: true,
         };
-        Swal.fire(opt1).then((willDelete) => {
+        Swal.fire(opt1).then((willDelete: any) => {
           if (willDelete.value) {
           }
         });
@@ -953,7 +952,7 @@ export class ModificarProyectoAcademicoComponent {
         dangerMode: true,
         showCancelButton: true,
       };
-      Swal.fire(opt1).then((willDelete) => {
+      Swal.fire(opt1).then((willDelete: any) => {
         if (willDelete.value) {
         }
       });
@@ -1357,7 +1356,6 @@ export class ModificarProyectoAcademicoComponent {
               idFileResolucionCoordinador
             );
           }
-          console.log("DATA PARA REGISTRAR COORDINADOR:", this.coordinador_data)
           this.sgaProyectoCurricularMidService
             .post('proyecto-academico/coordinador/', this.coordinador_data)
             .subscribe((res: any) => {

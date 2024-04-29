@@ -52,8 +52,6 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
       
       showCancelButton: true,
     }
-    //AQUI SGA_MID_SERVICE MODIFICADO FINO
-    // this.sgamidService.get('consulta_proyecto_academico/get_registro/' + this.data.Id)
     this.sgaProyectoCurricularMidService.get('proyecto-academico/registro/'+this.data.Id)
       .subscribe(res => {
         if (res.success) {
@@ -148,7 +146,6 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
   }
 
   OpenRegistroAlta(): void {
-    console.log(this.data)
     const dialogRef = this.dialog.open(RegistroProyectoAcademicoComponent, {
       width: '550px',
       height: '750px',
