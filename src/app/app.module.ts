@@ -45,6 +45,7 @@ import { RequestService } from './services/request.service';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -94,6 +95,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatSelectModule,
     MatIconModule,
+    MatExpansionModule,
     SpinnerUtilModule,
     TranslateModule.forRoot({
       loader: {

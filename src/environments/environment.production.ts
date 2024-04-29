@@ -5,9 +5,9 @@
  */
 
 export const environment = {
-  production: false,
-  apiUrl:"",
-  SGA_PROYECTO_CURRICULAR_MID: "http://pruebasapi2.intranetoas.udistrital.edu.co:8540/v1/",
+  production: true,
+  apiUrl:"https://sgaproyectocurricular.portaloas.udistrital.edu.co/",
+  SGA_PROYECTO_CURRICULAR_MID: "https://autenticacion.portaloas.udistrital.edu.co/apioas/proyecto_curricular_mid/v1/",
   NUXEO_SERVICE:'https://autenticacion.portaloas.udistrital.edu.co/apioas/gestor_documental_mid/v1',
   TERCEROS_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/terceros_crud/v1/',
   DOCUMENTO_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/documento_crud/v2/',

@@ -15,8 +15,8 @@ import { RegistroCalificadoAcreditacion } from 'src/app/models/registro_califica
 import { TipoRegistro } from 'src/app/models/tipo_registro';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
-
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 import { ListRegistroProyectoAcademicoComponent } from '../list-registro-proyecto-academico/list-registro-proyecto-academico.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
@@ -232,7 +232,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         showCancelButton: true,
       };
       Swal.fire(opt)
-        .then(async (willCreate) => {
+        .then(async (willCreate: any) => {
           if (willCreate.value) {
             await this.uploadFilesCreacionRegistro([this.fileDocumento]);
             this.registro_nuevo.EnlaceActo = this.idDocumento + '';
@@ -242,7 +242,6 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
                 this.registro_nuevo
               )
               .subscribe((res: any) => {
-                console.log("RES:", res)
                 if (res.succes) {
                   Swal.fire({
                     icon: 'error',
@@ -267,17 +266,17 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
                     buttons: true,
                     dangerMode: true,
                     showCancelButton: true,
-                  };
-                  Swal.fire(opt1).then((willDelete) => {
-                    if (willDelete.value) {
-                    }
-                  });
+                  }; Swal.fire(opt1)
+                    .then((willDelete: any) => {
+                      if (willDelete.value) {
+                      }
+                    });
                   this.dialogRef.close();
                 }
               });
           }
         })
-        .catch((res) => {
+        .catch((res: any) => {
           Swal.fire({
             icon: 'error',
             title: res.Code,
@@ -298,11 +297,12 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         buttons: true,
         dangerMode: true,
         showCancelButton: true,
-      };
-      Swal.fire(opt1).then((willDelete) => {
-        if (willDelete.value) {
-        }
-      });
+      }; Swal.fire(opt1)
+        .then((willDelete: any) => {
+          if (willDelete.value) {
+
+          }
+        });
     }
   }
 }

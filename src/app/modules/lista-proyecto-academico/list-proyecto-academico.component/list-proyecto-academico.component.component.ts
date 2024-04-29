@@ -5,7 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { ProyectoAcademicoInstitucion } from 'src/app/models/proyecto_academico_institucion';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 import { ConsultaProyectoAcademicoComponent } from '../consulta-proyecto-academico/consulta-proyecto-academico.component';
 import { ModificarProyectoAcademicoComponent } from '../modificar-proyecto-academico/modificar-proyecto-academico.component';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
@@ -291,7 +292,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
             text: this.translate.instant('oferta.evento'),
             icon: 'warning',
             showCancelButton: true,
-          }).then((willDelete) => {
+          }).then((willDelete: any) => {
             if (willDelete.value) {
             }
           });
@@ -317,12 +318,10 @@ export class ListProyectoAcademicoComponent implements OnInit {
     };
     const coordinador = await this.consultacoordinador(id);
 
-    console.log('coordinador', coordinador);
     this.proyectoCurricularService.getProyectoAcademicoPorId(id).subscribe(
       (res: DetalleProyectoAcademico | null) => {
         if (res == null) throw new Error('No se encontró el proyecto');
         try {
-          console.log('res', res);
           const datosProyecto = {
             codigo: res.ProyectoAcademico.Codigo,
             codigosnies: parseInt(res.ProyectoAcademico.CodigoSnies),
@@ -461,7 +460,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       showCancelButton: true,
     };
 
-    Swal.fire(opt).then((willDelete) => {
+    Swal.fire(opt).then((willDelete: any) => {
       if (willDelete.value) {
         this.proyectoCurricularService.cambiarHabilidadProyecto(row).subscribe(
           (res: ResponseAPI<any>) => {

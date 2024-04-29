@@ -4,7 +4,8 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Enfasis } from 'src/app/models/enfasis';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { FORM_ENFASIS } from './form-enfasis';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -92,7 +93,7 @@ export class CrudEnfasisComponent implements OnInit {
       showCancelButton: true,
     };
     Swal.fire(opt)
-    .then((willDelete) => {
+    .then((willDelete: any) => {
       if (willDelete.value) {
         this.info_enfasis = <Enfasis>enfasis;
         this.proyectoAcademicoService.put('enfasis', this.info_enfasis)
@@ -121,7 +122,7 @@ export class CrudEnfasisComponent implements OnInit {
     };
   
     Swal.fire(opt)
-      .then((willDelete) => {
+      .then((willDelete: any) => {
         if (willDelete.value) {
           this.info_enfasis = <Enfasis>enfasis;
           this.proyectoAcademicoService.post('enfasis', this.info_enfasis)

@@ -37,7 +37,8 @@ import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { TercerosService } from 'src/app/services/terceros.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
 
 @Component({
@@ -582,7 +583,6 @@ export class ModificarProyectoAcademicoComponent {
               if (fac.Id === Number(this.data.idfacultad)) {
                 this.opcionSeleccionadoFacultad = fac;
               }
-              // console.log(this.opcionSeleccionadoFacultad)
             });
           }
         },
@@ -873,7 +873,7 @@ export class ModificarProyectoAcademicoComponent {
           showCancelButton: true,
         };
 
-        Swal.fire(opt).then(async (willCreate) => {
+        Swal.fire(opt).then(async (willCreate: any) => {
           if (willCreate.value) {
             // Si se actualiza el acto administrativo
             if (this.fileActoAdministrativo) {
@@ -921,7 +921,7 @@ export class ModificarProyectoAcademicoComponent {
                     dangerMode: true,
                     showCancelButton: true,
                   };
-                  Swal.fire(opt1).then((willDelete) => {
+                  Swal.fire(opt1).then((willDelete: any) => {
                     if (willDelete.value) {
                     }
                   });
@@ -938,7 +938,7 @@ export class ModificarProyectoAcademicoComponent {
           dangerMode: true,
           showCancelButton: true,
         };
-        Swal.fire(opt1).then((willDelete) => {
+        Swal.fire(opt1).then((willDelete: any) => {
           if (willDelete.value) {
           }
         });
@@ -952,7 +952,7 @@ export class ModificarProyectoAcademicoComponent {
         dangerMode: true,
         showCancelButton: true,
       };
-      Swal.fire(opt1).then((willDelete) => {
+      Swal.fire(opt1).then((willDelete: any) => {
         if (willDelete.value) {
         }
       });
@@ -1081,7 +1081,7 @@ export class ModificarProyectoAcademicoComponent {
           showCancelButton: true,
         };
 
-        Swal.fire(opt).then(async (willCreate) => {
+        Swal.fire(opt).then(async (willCreate: any) => {
           if (willCreate.value) {
             if (this.fileRegistroCalificado) {
               const idFileRegistroCalificado =
@@ -1131,7 +1131,7 @@ export class ModificarProyectoAcademicoComponent {
                     dangerMode: true,
                     showCancelButton: true,
                   };
-                  Swal.fire(opt1).then((willDelete) => {
+                  Swal.fire(opt1).then((willDelete: any) => {
                     if (willDelete.value) {
                     }
                   });
@@ -1148,7 +1148,7 @@ export class ModificarProyectoAcademicoComponent {
           dangerMode: true,
           showCancelButton: true,
         };
-        Swal.fire(opt1).then((willDelete) => {
+        Swal.fire(opt1).then((willDelete: any) => {
           if (willDelete.value) {
           }
         });
@@ -1234,7 +1234,7 @@ export class ModificarProyectoAcademicoComponent {
           showCancelButton: true,
         };
 
-        Swal.fire(opt).then(async (willCreate) => {
+        Swal.fire(opt).then(async (willCreate: any) => {
           if (willCreate.value) {
             if (this.fileRegistroCalificado) {
               const idFileRegistroCalificado =
@@ -1277,7 +1277,7 @@ export class ModificarProyectoAcademicoComponent {
                     dangerMode: true,
                     showCancelButton: true,
                   };
-                  Swal.fire(opt1).then((willDelete) => {
+                  Swal.fire(opt1).then((willDelete: any) => {
                     if (willDelete.value) {
                     }
                   });
@@ -1294,7 +1294,7 @@ export class ModificarProyectoAcademicoComponent {
           dangerMode: true,
           showCancelButton: true,
         };
-        Swal.fire(opt1).then((willDelete) => {
+        Swal.fire(opt1).then((willDelete: any) => {
           if (willDelete.value) {
           }
         });
@@ -1345,7 +1345,7 @@ export class ModificarProyectoAcademicoComponent {
         dangerMode: true,
         showCancelButton: true,
       };
-      Swal.fire(opt).then(async (willCreate) => {
+      Swal.fire(opt).then(async (willCreate: any) => {
         if (willCreate.value) {
           if (this.fileResolucionCoordinador) {
             const idFileResolucionCoordinador =
@@ -1356,7 +1356,6 @@ export class ModificarProyectoAcademicoComponent {
               idFileResolucionCoordinador
             );
           }
-          console.log("DATA PARA REGISTRAR COORDINADOR:", this.coordinador_data)
           this.sgaProyectoCurricularMidService
             .post('proyecto-academico/coordinador/', this.coordinador_data)
             .subscribe((res: any) => {
@@ -1386,7 +1385,7 @@ export class ModificarProyectoAcademicoComponent {
                   dangerMode: true,
                   showCancelButton: true,
                 };
-                Swal.fire(opt1).then((willDelete) => {
+                Swal.fire(opt1).then((willDelete: any) => {
                   if (willDelete.value) {
                   }
                 });
@@ -1403,7 +1402,7 @@ export class ModificarProyectoAcademicoComponent {
         dangerMode: true,
         showCancelButton: true,
       };
-      Swal.fire(opt1).then((willDelete) => {
+      Swal.fire(opt1).then((willDelete: any) => {
         if (willDelete.value) {
         }
       });

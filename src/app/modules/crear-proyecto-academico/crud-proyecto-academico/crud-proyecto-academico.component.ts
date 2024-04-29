@@ -29,7 +29,8 @@ import { ListEnfasisService } from 'src/app/services/list_enfasis.service';
 import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 import { ListEnfasisComponent } from '../list-enfasis/list-enfasis.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -288,11 +289,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
   loadCloneData(id: any): void {
     this.Campo2Control.setValidators([Validators.nullValidator]);
-    //AQUI SGA_MID_SERVICE MODIFICADO
-    // this.sgamidService.get('consulta_proyecto_academico/' + id)
     this.sgaProyectoCurricularMidService.get('proyecto-academico/' + id)
       .subscribe((res: any) => {
-        console.log(res)
         if (res.success && res.data.length > 0) {
           const proyecto_a_clonar = res.data[0];
           this.proyecto_padre_id = proyecto_a_clonar.ProyectoAcademico;
@@ -694,7 +692,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           showCancelButton: true,
         };
         Swal.fire(opt)
-          .then(async (willCreate) => {
+          .then(async (willCreate: any) => {
             if (willCreate.value) {
               let content = Swal.getHtmlContainer()
               if (content) {
@@ -714,8 +712,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
               this.registro_califacado_acreditacion.EnlaceActo = this.idDocumentoResolucion + '';
               this.proyecto_academico.EnlaceActoAdministrativo = this.idDocumentoAdministrativo + '';
-              //AQUI SGA_MID_SERVICE MODIFICADO
-              // this.sgamidService.post('proyecto_academico', this.proyecto_academicoPost)
               this.sgaProyectoCurricularMidService.post('proyecto-academico/', this.proyecto_academicoPost)
                 .subscribe((res: any) => {
                   if (res.Type === 'error') {
@@ -736,7 +732,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                       icon: 'success',
                       showCancelButton: true,
                     }; Swal.fire(opt1)
-                      .then((willDelete) => {
+                      .then((willDelete: any) => {
                         if (willDelete.value) {
                           this.checkregistro = true;
                           this.openlist();
@@ -757,7 +753,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           dangerMode: true,
           showCancelButton: true,
         }; Swal.fire(opt1)
-          .then((willDelete) => {
+          .then((willDelete: any) => {
             if (willDelete.value) {
 
             }

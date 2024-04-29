@@ -47,8 +47,8 @@ export const environment = {
   OIKOS_SERVICE: '/',
   // [API: proyecto_academico_crud]
   PROYECTO_ACADEMICO_SERVICE: '',
-  // [API: sga_mid]
-  SGA_MID_SERVICE: '',
+  // [API: api mid de proyecto curricular]
+  SGA_PROYECTO_CURRICULAR_MID: '',
 };
 ```
 ## Ejecución del Proyecto

@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
-import Swal from 'sweetalert2';
+// @ts-ignore
+import Swal from 'sweetalert2/dist/sweetalert2';
 import { ListRegistroProyectoAcademicoComponent } from '../list-registro-proyecto-academico/list-registro-proyecto-academico.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';

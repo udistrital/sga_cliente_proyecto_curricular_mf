@@ -8,7 +8,7 @@ export let FORM_ENFASIS = {
     campos: [
     {
         etiqueta: 'input',
-        claseGrid: 'col-4',
+        claseGrid: 'form-col1',
         nombre: 'Nombre',
         label_i18n: 'nombre',
         placeholder_i18n: 'nombre',
@@ -17,7 +17,7 @@ export let FORM_ENFASIS = {
     },
     {
         etiqueta: 'input',
-        claseGrid: 'col-4',
+        claseGrid: 'form-col1',
         nombre: 'Descripcion',
         label_i18n: 'descripcion',
         placeholder_i18n: 'descripcion',
@@ -26,7 +26,7 @@ export let FORM_ENFASIS = {
     },
     {
         etiqueta: 'input',
-        claseGrid: 'col-4',
+        claseGrid: 'form-col1',
         nombre: 'CodigoAbreviacion',
         label_i18n: 'codigo_abreviacion',
         placeholder_i18n: 'codigo_abreviacion',
@@ -35,7 +35,7 @@ export let FORM_ENFASIS = {
     },
     {
         etiqueta: 'input',
-        claseGrid: 'col-4',
+        claseGrid: 'form-col1',
         nombre: 'NumeroOrden',
         label_i18n: 'numero_orden',
         placeholder_i18n: 'numer_orden',
@@ -44,7 +44,7 @@ export let FORM_ENFASIS = {
     },
     {
         etiqueta: 'checkbox',
-        claseGrid: 'col-4',
+        claseGrid: 'form-col1',
         nombre: 'Activo',
         label_i18n: 'activo',
         placeholder_i18n: 'activo',
