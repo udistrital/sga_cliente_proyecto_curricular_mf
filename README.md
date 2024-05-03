@@ -23,6 +23,7 @@ Cliente para la gestión del proyecto curricular, parte del Sistema de Gestión 
 - **[tslib](https://www.npmjs.com/package/tslib)**: 2.3.0
 - **[Zone.js](https://angular.io/guide/zone)**: ~0.13.0
 - **[Popper.js](https://popper.js.org/)**: 2.11.8
+- **[@sweetalert2/themes](https://github.com/sweetalert2/sweetalert2-themes)**: 5.0.16
 
 
 
