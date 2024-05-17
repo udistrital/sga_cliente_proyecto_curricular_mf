@@ -128,7 +128,8 @@
         "proyecto_padre": "Parent project",
         "mensaje_oikos": "Please relate the curricular project with the physical space of the OIKOS system, if the physical space does not exist, please notify the system administrator",
         "oikos": "Physical space",
-        "erro_oikos": "Please select the physical space!"
+        "erro_oikos": "Please select the physical space!",
+        "informar_select": "Select emphasis from the list below; if it doesn't exist, create it in the manage emphasis button."
     },
     "ERROR": {
         "general": "The request could not be satisfied",

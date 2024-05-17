@@ -128,7 +128,8 @@
         "mensaje_oikos": "Por favor relacione el proyecto curricular con el espacio físico del sistema OIKOS, si no existe el espacio físico por favor notificar al administrador del sistema",
         "oikos": "Espacio Físico",
         "erro_selec": "Por favor seleccione la facultad!",
-        "erro_oikos": "Por favor seleccione el espacio fisico!"
+        "erro_oikos": "Por favor seleccione el espacio fisico!",
+        "informar_select": "Seleccione el énfasis de la lista a continuación; si no existe, crearlo en el botón de administrar énfasis."        
     },
     "ERROR": {
         "general": "La solicitud no pudo ser cumplida",

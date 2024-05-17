@@ -443,7 +443,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   }
 
   loadarea() {
-    this.coreService.get('area_conocimiento')
+     this.coreService.get('area_conocimiento')
       .subscribe(res => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
@@ -457,11 +457,11 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             text: this.translate.instant('ERROR.' + error.status),
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
-        });
+        }); 
   }
 
   loadnucleo() {
-    this.coreService.get('nucleo_basico_conocimiento')
+     this.coreService.get('nucleo_basico_conocimiento')
       .subscribe(res => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
@@ -478,8 +478,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         });
   }
 
-  loadunidadtiempo() {
-    this.coreService.get('unidad_tiempo')
+  loadunidadtiempo() {    
+     this.coreService.get('unidad_tiempo')
       .subscribe(res => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
@@ -593,8 +593,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           NucleoBaseId: this.opcionSeleccionadoNucleo['Id'],
           MetodologiaId: this.metodologia,
           NivelFormacionId: this.nivel_formacion,
-          AnoActoAdministrativo: this.actoform.value.ano_acto,
-          ProyectoPadreId: this.proyecto_padre_id,
+          AnoActoAdministrativo: this.actoform.value.ano_acto,          
+          ProyectoPadreId: this.proyecto_padre_id.Id?this.proyecto_padre_id:null,
         }
 
         this.calculateEndDate(this.fecha_creacion, this.resoluform.value.ano_vigencia, this.resoluform.value.mes_vigencia, 0)
