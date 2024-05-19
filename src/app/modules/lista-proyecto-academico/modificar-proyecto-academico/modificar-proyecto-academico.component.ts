@@ -1359,7 +1359,7 @@ export class ModificarProyectoAcademicoComponent {
           this.sgaProyectoCurricularMidService
             .post('proyecto-academico/coordinador/', this.coordinador_data)
             .subscribe((res: any) => {
-              if (!res.success) {
+              if (!res.Success) {
                 Swal.fire({
                   icon: 'error',
                   title: res.statusCode,

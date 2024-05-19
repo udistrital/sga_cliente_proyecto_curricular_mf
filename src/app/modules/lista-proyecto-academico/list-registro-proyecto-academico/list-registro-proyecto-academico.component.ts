@@ -54,8 +54,8 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
     }
     this.sgaProyectoCurricularMidService.get('proyecto-academico/registro/'+this.data.Id)
       .subscribe(res => {
-        if (res.success) {
-          const data = <Array<any>>res.data;
+        if (res.Success) {
+          const data = <Array<any>>res.Data;
           data.forEach(element => {
             element.TipoRegistroIdNombre = element.TipoRegistroId.Nombre
             element.FechaCreacionActoAdministrativo = momentTimezone.tz(element.FechaCreacionActoAdministrativo, 'America/Bogota').format('DD-MM-YYYY')
