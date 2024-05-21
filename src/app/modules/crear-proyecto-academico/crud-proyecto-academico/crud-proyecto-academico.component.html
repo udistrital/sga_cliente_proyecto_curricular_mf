@@ -98,13 +98,7 @@
                         name="codigo_interno"
                       />
                       <mat-error
-                        *ngIf="
-                          Campo7Control.hasError('required') ||
-                          Campo7Control.hasError('minlength') ||
-                          Campo7Control.hasError('maxlength') ||
-                          Campo7Control.hasError('pattern')
-                        "
-                      >
+                        *ngIf="Campo7Control.hasError('required')">
                         {{ "proyecto.erro_codigo" | translate }}</mat-error
                       >
                     </mat-form-field>
@@ -347,6 +341,9 @@
           }}</ng-template>
           <mat-card>
             <mat-card-content>
+              {{
+                "proyecto.informar_select" | translate
+              }}
               <mat-form-field class="form-field">
                 <mat-label>{{
                   "proyecto.enfasis_proyecto" | translate
