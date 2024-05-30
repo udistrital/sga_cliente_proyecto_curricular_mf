@@ -5,9 +5,9 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div class="info">
-      <mat-icon style="width: 1.9em">info</mat-icon>
-      {{ "proyecto.mensaje" | translate }}
+    <div class="alert info">
+      <mat-icon class="icon">info</mat-icon>
+      <span>{{ "proyecto.mensaje" | translate }}</span>
     </div>
 
     <mat-vertical-stepper
@@ -286,8 +286,8 @@
                     >
                   </div>
                   <div class="form-col2">
-                    <div class="info">
-                      <mat-icon class="info-icon">info</mat-icon> &nbsp;
+                    <div class="alert warning">
+                      <mat-icon class="icon">info</mat-icon> &nbsp;
                       <span>{{ "proyecto.mensaje_oikos" | translate }}</span>
                     </div>
                   </div>
