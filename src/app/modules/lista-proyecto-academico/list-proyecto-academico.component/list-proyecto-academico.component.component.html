@@ -10,14 +10,14 @@
   <mat-card-content>
     <br />
 
-    <div class="info">
-      <mat-icon style="width: 75px">info</mat-icon>
+    <div class="alert info">
+      <mat-icon class="icon">info</mat-icon>
       <span>{{ "consultaproyecto.explicacacion" | translate }}</span>
     </div>
 
     <br />
 
-    <mat-form-field style="width: 100%;">
+    <mat-form-field style="width: 100%">
       <mat-label
         >{{
           "consultaproyecto.buscar_en_toda_la_tabla" | translate
@@ -38,7 +38,7 @@
 
     <div class="table">
       <mat-table
-        style="min-width: 1600px;"
+        style="min-width: 1600px"
         mat-table
         matSortActive="id"
         [dataSource]="dataSource"
@@ -136,10 +136,10 @@
               mat-icon-button
               color="accent"
               (click)="promesaid_consulta(row.ProyectoAcademico.Id)"
+              title="{{ 'consultaproyecto.consulta' | translate }}"
             >
               <mat-icon
                 aria-hidden="false"
-                title="{{ 'consultaproyecto.consulta' | translate }}"
                 fontIcon="search_outline"
               ></mat-icon>
             </button>
@@ -148,23 +148,30 @@
               mat-icon-button
               color="accent"
               (click)="promesaid_modificar(row.ProyectoAcademico.Id)"
+              title="{{ 'consultaproyecto.editar' | translate }}"
             >
-              <mat-icon
-                aria-hidden="false"
-                title="{{ 'consultaproyecto.editar' | translate }}"
-                fontIcon="edit_outline"
-              ></mat-icon>
+              <mat-icon aria-hidden="false" fontIcon="edit_outline"></mat-icon>
             </button>
 
             <button
               mat-icon-button
-              color="warn"
+              [ngStyle]="{
+                color: row.ProyectoAcademico.Activo
+                  ? 'var(--danger-base)'
+                  : 'var(--primary)'
+              }"
               (click)="inhabilitarProyecto(row.ProyectoAcademico)"
+              title="{{
+                row.ProyectoAcademico.Activo
+                  ? ('consultaproyecto.inhabilitar' | translate)
+                  : ('consultaproyecto.habilitar' | translate)
+              }}"
             >
               <mat-icon
                 aria-hidden="false"
-                fontIcon="lock_outline"
-                title="{{ 'consultaproyecto.inhabilitar' | translate }}"
+                [fontIcon]="
+                  row.ProyectoAcademico.Activo ? 'cancel' : 'check_circle'
+                "
               ></mat-icon>
             </button>
           </mat-cell>

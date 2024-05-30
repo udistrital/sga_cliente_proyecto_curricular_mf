@@ -21,7 +21,8 @@ import {
   ProyectoAcademico,
 } from 'src/app/models/api/sga_proyecto_curricular_mid/proyecto_curricular.models';
 import { RowProyecto } from 'src/app/models/proyecto_academico/proyecto_academico.models';
-import { ResponseAPI } from 'src/app/models/api/response-api.models';
+import { ApiResponse } from 'src/app/models/api-response.interface';
+
 
 const TRANSLATIONS = {
   INHABILITAR: {
@@ -456,14 +457,14 @@ export class ListProyectoAcademicoComponent implements OnInit {
     const opt: any = {
       title: this.translate.instant(translationKey.TITLE),
       text: this.translate.instant(translationKey.TEXT),
-      icon: row.Activo ? 'success' : 'error',
+      icon: !row.Activo ? 'success' : 'error',
       showCancelButton: true,
     };
 
     Swal.fire(opt).then((willDelete: any) => {
       if (willDelete.value) {
         this.proyectoCurricularService.cambiarHabilidadProyecto(row).subscribe(
-          (res: ResponseAPI<any>) => {
+          (res: ApiResponse<any>) => {
             this.handleResponseInhabilitar(res, translationKey);
           },
           () => {
@@ -482,10 +483,10 @@ export class ListProyectoAcademicoComponent implements OnInit {
   }
 
   private handleResponseInhabilitar(
-    res: ResponseAPI<any>,
+    res: ApiResponse<any>,
     translationKey: any
   ) {
-    if (res.success) {
+    if (res.Success) {
       this.loadproyectos();
       this.snackBar.open(this.translate.instant(translationKey.OK), '', {
         duration: 6000,
