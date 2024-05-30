@@ -600,9 +600,7 @@ export class ModificarProyectoAcademicoComponent {
   loadespacio() {
     this.oikosService
       .get(
-        'dependencia_tipo_dependencia/?query=TipoDependenciaId:' +
-          this.data.Id +
-          '&limit=0'
+        'dependencia_tipo_dependencia/?query=TipoDependenciaId:1&limit=0'
       )
       .subscribe(
         (res: any) => {

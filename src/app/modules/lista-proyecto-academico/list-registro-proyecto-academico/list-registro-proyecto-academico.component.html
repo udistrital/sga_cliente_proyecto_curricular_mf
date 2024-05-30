@@ -1,20 +1,14 @@
 <!-- <toaster-container [toasterconfig]="config"></toaster-container> -->
-<div class="col-md-12 col-lg-12">
-  <link
-    href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    rel="stylesheet"
-  />
-
-  <br />
+<div style="margin: 1em;">
   <div class="text-center">
     <mat-card-header
       ><b>{{ "historial_registro.titulo" | translate }}</b></mat-card-header
     >
   </div>
 
-  <div class="info-p p-3">
-    <mat-icon class="info-icon">info</mat-icon> &nbsp;
-    {{ "historial_registro.explicacacion" | translate }}
+  <div class="alert info" >
+    <mat-icon class="icon">info</mat-icon> &nbsp;
+    <span>{{ "historial_registro.explicacacion" | translate }}</span>
   </div>
 
   <div class="container-table">

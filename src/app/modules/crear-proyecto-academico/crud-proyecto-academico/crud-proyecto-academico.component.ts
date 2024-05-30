@@ -35,6 +35,7 @@ import { ListEnfasisComponent } from '../list-enfasis/list-enfasis.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
+import { ApiResponse } from 'src/app/models/api-response.interface';
 
 @Component({
   selector: 'app-crud-proyecto-academico',
@@ -278,6 +279,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     this.activatedRoute.paramMap.subscribe(params => {
       const clone_project_id = params.get('proyecto_id');
       if (clone_project_id) {
+        console.log("clonando data", clone_project_id)
         this.loadCloneData(clone_project_id);
       }
     });
@@ -290,9 +292,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   loadCloneData(id: any): void {
     this.Campo2Control.setValidators([Validators.nullValidator]);
     this.sgaProyectoCurricularMidService.get('proyecto-academico/' + id)
-      .subscribe((res: any) => {
-        if (res.success && res.data.length > 0) {
-          const proyecto_a_clonar = res.data[0];
+      .subscribe((res: ApiResponse<any>) => {
+        if (res.Success && res.Data.length > 0) {
+          const proyecto_a_clonar = res.Data[0];
           this.proyecto_padre_id = proyecto_a_clonar.ProyectoAcademico;
           // enfasis
           this.arr_enfasis_proyecto = proyecto_a_clonar.Enfasis.map((enfasis: any) => enfasis.EnfasisId);
