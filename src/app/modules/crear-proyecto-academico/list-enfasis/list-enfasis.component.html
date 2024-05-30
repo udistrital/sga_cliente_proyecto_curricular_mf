@@ -3,8 +3,6 @@
     <b class="mx-4 mt-3">{{ "enfasis.enfasis" | translate }}</b>
   </mat-card-header>
   <mat-card-content>
-    <!-- <toaster-container [toasterconfig]="config"></toaster-container> -->
-
     <div class="container-table" *ngIf="!cambiotab">
       <mat-table [dataSource]="dataSource" class="demo-table">
         <ng-container matColumnDef="acciones">
