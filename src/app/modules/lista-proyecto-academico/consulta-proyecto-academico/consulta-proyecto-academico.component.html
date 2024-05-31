@@ -272,8 +272,8 @@
                   <b>{{ "GLOBAL.activo" | translate }}</b>
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                  <p *ngIf="row.Activo">Si</p>
-                  <p *ngIf="!row.Activo">no</p>
+                  <p *ngIf="row.Activo">{{ "GLOBAL.si" | translate }}</p>
+                  <p *ngIf="!row.Activo">{{ "GLOBAL.no" | translate }}</p>
                 </mat-cell>
               </ng-container>
 
