@@ -21,7 +21,9 @@
         "guardar": "Guardar",
         "actualizar":"Actualizar",
         "eliminar": "Eliminar",
-        "registrar": "Registrar"
+        "registrar": "Registrar",
+        "si": "Si",
+        "no": "No"
     },
     "historial_registro": {
         "titulo": "Histórico de registros de acreditación y alta calidad del proyecto curricular",
@@ -169,8 +171,8 @@
         "calidad": "Vencimiento alta calidad",
         "consulta": "Consulta",
         "editar": "Editar",
-        "inhabilitar": "Inhabilitar",
-        "habilitar": "Habilitar",
+        "inhabilitar": "Desactivar",
+        "habilitar": "Activar",
         "titulo_consulta": "Información básica del proyecto curricular",
         "historico": "Histórico registros",
         "masinfomacion": "Más información",

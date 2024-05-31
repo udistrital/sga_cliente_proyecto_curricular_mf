@@ -21,7 +21,9 @@
         "guardar": "Save",
         "actualizar":"Update",
         "eliminar": "Delete",
-        "registrar": "Register"
+        "registrar": "Register",
+        "si": "Yes",
+        "no": "No"
     },
     "historial_registro": {
         "titulo": "History of accreditation records and high quality of the Academic Project",
