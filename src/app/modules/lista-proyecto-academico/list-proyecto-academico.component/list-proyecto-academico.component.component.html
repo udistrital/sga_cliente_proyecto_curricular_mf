@@ -45,7 +45,7 @@
         matSort
         class="demo-table"
       >
-        <ng-container matColumnDef="id" sticky>
+        <ng-container matColumnDef="id">
           <mat-header-cell class="text-left" *matHeaderCellDef mat-sort-header>
             <b>{{ "consultaproyecto.id" | translate }}</b>
           </mat-header-cell>
@@ -54,20 +54,28 @@
           </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="facultad">
-          <mat-header-cell class="text-left" *matHeaderCellDef mat-sort-header>
-            <b>{{ "consultaproyecto.facultad" | translate }}</b>
-          </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{ row.NombreFacultad }} </mat-cell>
-        </ng-container>
-
         <ng-container matColumnDef="nombre_proyecto">
           <mat-header-cell class="text-left" *matHeaderCellDef mat-sort-header>
             <b>{{ "consultaproyecto.nombre_proyecto" | translate }}</b>
           </mat-header-cell>
           <mat-cell *matCellDef="let row">
-            {{ row.ProyectoAcademico.Nombre }}</mat-cell
-          >
+            <div
+              class="badge"
+              [ngStyle]="{
+                backgroundColor: row.ProyectoAcademico.Activo
+                ? 'var(--success-accent)'
+                : 'var(--danger-base)'
+              }"
+            ></div>
+            {{ row.ProyectoAcademico.Nombre }}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="facultad">
+          <mat-header-cell class="text-left" *matHeaderCellDef mat-sort-header>
+            <b>{{ "consultaproyecto.facultad" | translate }}</b>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.NombreFacultad }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="nivel_proyecto">
@@ -101,7 +109,13 @@
           <mat-header-cell class="text-left" *matHeaderCellDef mat-sort-header>
             <b>{{ "consultaproyecto.activo" | translate }}</b>
           </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{ row.OfertaLetra }} </mat-cell>
+          <mat-cell *matCellDef="let row">
+            {{
+              row.ProyectoAcademico.Activo
+                ? ("GLOBAL.si" | translate)
+                : ("GLOBAL.no" | translate)
+            }}
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="vencimiento_registro">
@@ -134,46 +148,55 @@
           <mat-cell *matCellDef="let row">
             <button
               mat-icon-button
+              [matMenuTriggerFor]="menu"
               color="accent"
-              (click)="promesaid_consulta(row.ProyectoAcademico.Id)"
-              title="{{ 'consultaproyecto.consulta' | translate }}"
+              aria-label="Example icon-button with a menu"
             >
-              <mat-icon
-                aria-hidden="false"
-                fontIcon="search_outline"
-              ></mat-icon>
+              <mat-icon>more_vert</mat-icon>
             </button>
-
-            <button
-              mat-icon-button
-              color="accent"
-              (click)="promesaid_modificar(row.ProyectoAcademico.Id)"
-              title="{{ 'consultaproyecto.editar' | translate }}"
-            >
-              <mat-icon aria-hidden="false" fontIcon="edit_outline"></mat-icon>
-            </button>
-
-            <button
-              mat-icon-button
-              [ngStyle]="{
-                color: row.ProyectoAcademico.Activo
-                  ? 'var(--danger-base)'
-                  : 'var(--primary)'
-              }"
-              (click)="inhabilitarProyecto(row.ProyectoAcademico)"
-              title="{{
-                row.ProyectoAcademico.Activo
-                  ? ('consultaproyecto.inhabilitar' | translate)
-                  : ('consultaproyecto.habilitar' | translate)
-              }}"
-            >
-              <mat-icon
-                aria-hidden="false"
-                [fontIcon]="
-                  row.ProyectoAcademico.Activo ? 'cancel' : 'check_circle'
-                "
-              ></mat-icon>
-            </button>
+            <mat-menu #menu="matMenu">
+              <button
+                mat-menu-item
+                (click)="promesaid_consulta(row.ProyectoAcademico.Id)"
+                title="{{ 'consultaproyecto.consulta' | translate }}"
+              >
+                <mat-icon>search_outline</mat-icon>
+                <span>{{ "consultaproyecto.consulta" | translate }}</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="promesaid_modificar(row.ProyectoAcademico.Id)"
+                title="{{ 'consultaproyecto.editar' | translate }}"
+              >
+                <mat-icon color="accent">edit_outline</mat-icon>
+                <span>{{ "consultaproyecto.editar" | translate }}</span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="inhabilitarProyecto(row.ProyectoAcademico)"
+                title="{{
+                  row.ProyectoAcademico.Activo
+                    ? ('consultaproyecto.inhabilitar' | translate)
+                    : ('consultaproyecto.habilitar' | translate)
+                }}"
+              >
+                <mat-icon
+                  [ngStyle]="{
+                    color: row.ProyectoAcademico.Activo
+                      ? 'var(--danger-base)'
+                      : 'var(--success-accent)'
+                  }"
+                  >{{
+                    row.ProyectoAcademico.Activo ? "cancel" : "check_circle"
+                  }}</mat-icon
+                >
+                <span>{{
+                  row.ProyectoAcademico.Activo
+                    ? ("consultaproyecto.inhabilitar" | translate)
+                    : ("consultaproyecto.habilitar" | translate)
+                }}</span>
+              </button>
+            </mat-menu>
           </mat-cell>
         </ng-container>
 

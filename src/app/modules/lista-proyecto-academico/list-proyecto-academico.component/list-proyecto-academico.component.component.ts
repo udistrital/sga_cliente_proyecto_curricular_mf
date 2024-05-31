@@ -47,8 +47,8 @@ const TRANSLATIONS = {
 export class ListProyectoAcademicoComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
-    'facultad',
     'nombre_proyecto',
+    'facultad',
     'nivel_proyecto',
     'codigo',
     'cod_snies',
@@ -212,6 +212,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
           proyectoData.id_documento_registro_coordinador,
         proyecto_padre_id: proyectoData.proyecto_padre_id,
         iddependencia: proyectoData.iddependencia,
+        activo: proyectoData.activo,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {});
@@ -381,6 +382,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
                 ? res.VigenciaActoAdministrativoAltaCalidad.substr(12, 1)
                 : '',
             proyectoJson: res.ProyectoAcademico,
+            activo: res.ProyectoAcademico.Activo,
           };
 
           const proyectoModificarData = { ...datosProyecto, ...coordinador };
@@ -451,7 +453,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
   }
 
   inhabilitarProyecto(row: Proyecto): void {
-    const translationKey = row.Oferta
+    const translationKey = row.Activo
       ? TRANSLATIONS.INHABILITAR
       : TRANSLATIONS.HABILITAR;
     const opt: any = {
