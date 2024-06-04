@@ -279,7 +279,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     this.activatedRoute.paramMap.subscribe(params => {
       const clone_project_id = params.get('proyecto_id');
       if (clone_project_id) {
-        console.log("clonando data", clone_project_id)
         this.loadCloneData(clone_project_id);
       }
     });
