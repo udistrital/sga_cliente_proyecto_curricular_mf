@@ -80,9 +80,17 @@ export class ListProyectoAcademicoComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
+  
+    this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+      const accumulator = (currentTerm: string, key: string) => {
+        return currentTerm + data[key] + ' ';
+      };
+      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+      return dataStr.indexOf(filter) !== -1;
+    };
+  
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -452,7 +460,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
     }
   }
 
-  inhabilitarProyecto(row: Proyecto): void {
+  inhabilitarProyecto(row: Proyecto) {
     const translationKey = row.Activo
       ? TRANSLATIONS.INHABILITAR
       : TRANSLATIONS.HABILITAR;
@@ -462,14 +470,14 @@ export class ListProyectoAcademicoComponent implements OnInit {
       icon: !row.Activo ? 'success' : 'error',
       showCancelButton: true,
     };
-
-    Swal.fire(opt).then((willDelete: any) => {
-      if (willDelete.value) {
-        this.proyectoCurricularService.cambiarHabilidadProyecto(row).subscribe(
-          (res: ApiResponse<any>) => {
+  
+    Swal.fire(opt).then((result: any) => {
+      if (result.isConfirmed) {
+        this.proyectoCurricularService.cambiarHabilidadProyecto(row)
+          .then((res: ApiResponse<any>) => {
             this.handleResponseInhabilitar(res, translationKey);
-          },
-          () => {
+          })
+          .catch(() => {
             this.snackBar.open(
               this.translate.instant(translationKey.ERROR),
               '',
@@ -478,8 +486,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
                 panelClass: ['error-snackbar'],
               }
             );
-          }
-        );
+          });
       }
     });
   }
@@ -492,12 +499,10 @@ export class ListProyectoAcademicoComponent implements OnInit {
       this.loadproyectos();
       this.snackBar.open(this.translate.instant(translationKey.OK), '', {
         duration: 6000,
-        panelClass: ['info-snackbar'],
       });
     } else {
       this.snackBar.open(this.translate.instant(translationKey.ERROR), '', {
         duration: 6000,
-        panelClass: ['error-snackbar'],
       });
     }
   }
