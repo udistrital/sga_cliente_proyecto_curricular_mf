@@ -599,9 +599,7 @@ export class ModificarProyectoAcademicoComponent {
 
   loadespacio() {
     this.oikosService
-      .get(
-        'dependencia_tipo_dependencia/?query=TipoDependenciaId:1&limit=0'
-      )
+      .get('dependencia_tipo_dependencia/?query=TipoDependenciaId:1&limit=0')
       .subscribe(
         (res: any) => {
           const r = <any>res;
@@ -806,7 +804,7 @@ export class ModificarProyectoAcademicoComponent {
           EnlaceActoAdministrativo: this.data.id_documento_acto,
           Competencias: String(this.compleform.value.competencias),
           CodigoAbreviacion: String(this.basicform.value.abreviacion_proyecto),
-          Activo: true,
+          Activo: this.data.activo,
           Oferta: this.checkofrece,
           UnidadTiempoId: this.opcionSeleccionadoUnidad['Id'],
           AnoActoAdministrativoId: String(this.actoform.value.ano_acto),
@@ -819,6 +817,10 @@ export class ModificarProyectoAcademicoComponent {
           AnoActoAdministrativo: String(this.actoform.value.ano_acto),
           ProyectoPadreId: this.data.proyecto_padre_id,
         };
+
+        if (!this.proyecto_academico.Activo && this.proyecto_academico.Oferta) {
+          this.proyecto_academico.Oferta = false;
+        }
 
         this.titulacion_proyecto_snies = {
           Id: 0,
@@ -980,7 +982,7 @@ export class ModificarProyectoAcademicoComponent {
           EnlaceActoAdministrativo: this.data.id_documento_acto,
           Competencias: String(this.compleform.value.competencias),
           CodigoAbreviacion: String(this.basicform.value.abreviacion_proyecto),
-          Activo: true,
+          Activo: this.data.activo,
           Oferta: this.checkofrece,
           UnidadTiempoId: this.opcionSeleccionadoUnidad['Id'],
           AnoActoAdministrativoId: String(this.actoform.value.ano_acto),
