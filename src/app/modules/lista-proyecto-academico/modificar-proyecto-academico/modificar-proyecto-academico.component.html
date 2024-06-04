@@ -304,7 +304,7 @@
                   </div>
                   <div class="form-col1">
                     <p style="display: flex">
-                      <mat-checkbox type="checkbox" [(ngModel)]="checkofrece">
+                      <mat-checkbox type="checkbox"  [disabled]="!data.activo" [(ngModel)]="checkofrece">
                         {{
                           "proyecto.ofrece_proyecto" | translate
                         }}</mat-checkbox
