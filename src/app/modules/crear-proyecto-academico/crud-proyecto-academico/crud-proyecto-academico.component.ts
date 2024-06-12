@@ -36,6 +36,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
 import { ApiResponse } from 'src/app/models/api-response.interface';
+import { DependenciasService } from 'src/app/services/dependencias.service';
 
 @Component({
   selector: 'app-crud-proyecto-academico',
@@ -156,7 +157,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     private listEnfasisService: ListEnfasisService,
     private newNuxeoService: NewNuxeoService,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private dependenciasService: DependenciasService) {
 
     this.dpDayPickerConfig = {
       locale: 'es',
@@ -559,6 +561,77 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
   openlist(): void {
     this.routerService.navigateByUrl(`pages/proyecto_academico/list-proyecto_academico`);
+  }
+
+  onBlurCodigoSnies(codigo: string) {
+    if (codigo != '') {
+      this.dependenciasService.get('proyecto_acad_snies/' + codigo)
+      .subscribe((res: any) => {
+        const r = <any>res;
+        if (this.isObjectEmpty(res.proyecto_snies)) {
+          const opt: any = {
+            title: this.translate.instant('proyecto.proyecto_no_encontrado'),
+            html: this.translate.instant('proyecto.detalle_proyecto_no_encontrado', { codigo_snies: codigo }),
+            icon: 'error',
+            buttons: true,
+            dangerMode: true,
+            showCancelButton: false,
+          };
+
+          Swal.fire(opt)
+          .then((willCreate: any) => {
+            if (willCreate.value) {
+              this.basicform.get('codigo_interno').setValue('');
+              this.basicform.get('nombre_proyecto').setValue('');
+            }
+          });
+        } else {
+          let proyecto = res.proyecto_snies.proyectos[0];
+
+          const opt: any = {
+            title: this.translate.instant('proyecto.proyecto_encontrado'),
+            html: this.translate.instant('proyecto.detalle_proyecto_encontrado', { codigo_snies: codigo, codigo_interno: proyecto.codigo_proyecto, nombre_proyecto: proyecto.nombre_proyecto }),
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+            showCancelButton: true,
+          };
+          Swal.fire(opt)
+          .then((willCreate: any) => {
+            if (willCreate.value) {
+              this.basicform.get('codigo_interno').setValue(proyecto.codigo_proyecto);
+              this.basicform.get('nombre_proyecto').setValue(proyecto.nombre_proyecto);
+            }
+          });
+        }
+      }, () => {
+        const opt: any = {
+          title: this.translate.instant('GLOBAL.error'),
+          html: this.translate.instant('proyecto.error_consulta'),
+          icon: 'error',
+          buttons: true,
+          dangerMode: true,
+          showCancelButton: false,
+        };
+
+        Swal.fire(opt)
+        .then((willCreate: any) => {
+          if (willCreate.value) {
+            this.basicform.get('codigo_interno').setValue('');
+            this.basicform.get('nombre_proyecto').setValue('');
+          }
+        });
+      });
+    }
+  }
+
+  isObjectEmpty(obj: any): boolean {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false;
+      }
+    }
+    return obj && obj.constructor === Object;
   }
 
   registroproyecto() {

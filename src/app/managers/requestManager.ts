@@ -113,4 +113,13 @@ export class RequestManager {
             catchError(this.errManager.handleError),
         );
     }
+
+    get_soap(endpoint: string) {
+        return this.http.get(`${this.path}${endpoint}`,
+        {
+            headers: new HttpHeaders({
+                'Content-Type': 'multipart/form-data'
+            })
+        });
+    }
 };
