@@ -33,8 +33,8 @@ import { ProyectoAcademicoService } from './services/proyecto_academico.service'
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
-import { TercerosService } from './services/terceros.service';
-import { CoreService } from './services/core.service';
+import { TercerosService } from './services/terceros.service copy';
+import { ParametrosService } from './services/parametros.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import { ListEnfasisComponent } from './modules/crear-proyecto-academico/list-enfasis/list-enfasis.component';
 import { ListEnfasisService } from './services/list_enfasis.service';
@@ -120,7 +120,7 @@ export function createTranslateLoader(http: HttpClient) {
     NewNuxeoService,
     ProyectoAcademicoService,
     TercerosService,
-    CoreService,
+    ParametrosService,
     ListEnfasisService,
     RequestService
   ],

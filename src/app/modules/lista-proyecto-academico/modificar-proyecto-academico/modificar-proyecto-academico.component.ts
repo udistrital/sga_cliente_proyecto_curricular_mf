@@ -35,7 +35,7 @@ import { Titulacion } from 'src/app/models/titulacion';
 import { CoreService } from 'src/app/services/core.service';
 import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
-import { TercerosService } from 'src/app/services/terceros.service';
+import { TercerosService } from 'src/app/services/terceros.service copy';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';

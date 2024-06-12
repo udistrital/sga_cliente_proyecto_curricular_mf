@@ -23,7 +23,7 @@ import { RegistroCalificadoAcreditacion } from 'src/app/models/registro_califica
 import { TipoRegistro } from 'src/app/models/tipo_registro';
 import { TipoTitulacion } from 'src/app/models/tipo_titulacion';
 import { Titulacion } from 'src/app/models/titulacion';
-import { CoreService } from 'src/app/services/core.service';
+import { ParametrosService } from 'src/app/services/parametros.service';
 import { DocumentoService } from 'src/app/services/documento.service';
 import { ListEnfasisService } from 'src/app/services/list_enfasis.service';
 import { OikosService } from 'src/app/services/oikos.service';
@@ -147,7 +147,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     private oikosService: OikosService,
     private routerService: Router,
     private _ngZone: NgZone,
-    private coreService: CoreService,
+    private parametrosService: ParametrosService,
     private proyectoacademicoService: ProyectoAcademicoService,
     private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
     private dialogService: MatDialog,
@@ -269,7 +269,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     this.loadespacio();
     this.loadfacultad();
     this.loadarea();
-    this.loadnucleo();
     this.loadunidadtiempo();
     this.loadenfasis();
     this.loadnivel();
@@ -285,6 +284,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   }
 
   onSelectionChanged(value:any) {
+    this.loadnucleo(value.value.Id)
     this.resoluform.enable();
   }
 
@@ -444,7 +444,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   }
 
   loadarea() {
-     this.coreService.get('area_conocimiento')
+     this.parametrosService.get('parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id__isnull:true&limit=0')
       .subscribe(res => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
@@ -461,26 +461,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         }); 
   }
 
-  loadnucleo() {
-     this.coreService.get('nucleo_basico_conocimiento')
-      .subscribe(res => {
-        const r = <any>res;
-        if (res !== null && r.Type !== 'error') {
-          this.nucleo = <any>res;
-        }
-      },
-        (error: HttpErrorResponse) => {
-          Swal.fire({
-            icon: 'error',
-            title: error.status + '',
-            text: this.translate.instant('ERROR.' + error.status),
-            confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-          });
-        });
-  }
-
   loadunidadtiempo() {    
-     this.coreService.get('unidad_tiempo')
+     this.parametrosService.get('parametro?query=TipoParametroId:7,Activo:true&limit=0')
       .subscribe(res => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
@@ -560,6 +542,24 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   openlist(): void {
     this.routerService.navigateByUrl(`pages/proyecto_academico/list-proyecto_academico`);
   }
+
+  loadnucleo(id: number) {
+    this.parametrosService.get(`parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id:${id}&limit=0`)
+     .subscribe(res => {
+       const r = <any>res;
+       if (res !== null && r.Type !== 'error') {
+         this.nucleo = <any>res;
+       }
+     },
+       (error: HttpErrorResponse) => {
+         Swal.fire({
+           icon: 'error',
+           title: error.status + '',
+           text: this.translate.instant('ERROR.' + error.status),
+           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
+         });
+       });
+ }
 
   registroproyecto() {
     try {
