@@ -677,10 +677,10 @@ export class ModificarProyectoAcademicoComponent {
   loadunidadtiempo() {
     this.parametrosService.get('parametro?query=TipoParametroId:7,Activo:true&limit=0')
     .subscribe(
-      (res: null) => {
+      (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
-          this.unidad = <any>res;
+          this.unidad = <any>res.Data;
           this.unidad.forEach((uni: any) => {
             if (uni.Id === Number(this.data.idunidad)) {
               this.opcionSeleccionadoUnidad = uni;
@@ -702,10 +702,10 @@ export class ModificarProyectoAcademicoComponent {
   loadarea() {
     this.parametrosService.get('parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id__isnull:true&limit=0')
     .subscribe(
-      (res: null) => {
+      (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
-          this.area = <any>res;
+          this.area = <any>res.Data;
           this.area.forEach((are: any) => {
             if (are.Id === Number(this.data.idarea)) {
               this.opcionSeleccionadoArea = are;
@@ -727,10 +727,10 @@ export class ModificarProyectoAcademicoComponent {
   loadnucleo(id: number) {
     this.parametrosService.get(`parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id:${id}&limit=0`)
     .subscribe(
-      (res: null) => {
+      (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
-          this.nucleo = <any>res;
+          this.nucleo = <any>res.Data;
           this.nucleo.forEach((nuc: any) => {
             if (nuc.Id === Number(this.data.idnucleo)) {
               this.opcionSeleccionadoNucleo = nuc;
