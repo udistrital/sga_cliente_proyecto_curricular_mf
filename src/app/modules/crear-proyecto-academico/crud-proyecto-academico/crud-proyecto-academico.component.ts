@@ -448,7 +448,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
-          this.area = <any>res;
+          this.area = <any>res.Data;
         }
       },
         (error: HttpErrorResponse) => {
@@ -466,7 +466,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
-          this.unidad = <any>res;
+          this.unidad = <any>res.Data;
         }
       },
         (error: HttpErrorResponse) => {
@@ -548,7 +548,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
      .subscribe(res => {
        const r = <any>res;
        if (res !== null && r.Type !== 'error') {
-         this.nucleo = <any>res;
+         this.nucleo = <any>res.Data;
        }
      },
        (error: HttpErrorResponse) => {
