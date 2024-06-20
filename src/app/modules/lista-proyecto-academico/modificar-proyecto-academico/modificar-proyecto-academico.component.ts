@@ -32,10 +32,10 @@ import { Vinculacion } from 'src/app/models/terceros/vinculacion';
 import { TipoRegistro } from 'src/app/models/tipo_registro';
 import { TipoTitulacion } from 'src/app/models/tipo_titulacion';
 import { Titulacion } from 'src/app/models/titulacion';
-import { CoreService } from 'src/app/services/core.service';
+import { ParametrosService } from 'src/app/services/parametros.service';
 import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
-import { TercerosService } from 'src/app/services/terceros.service';
+import { TercerosService } from 'src/app/services/terceros.service copy';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';
@@ -209,7 +209,7 @@ export class ModificarProyectoAcademicoComponent {
     private sanitization: DomSanitizer,
     private oikosService: OikosService,
     private terceroService: TercerosService,
-    private coreService: CoreService,
+    private parametrosService: ParametrosService,
     private proyectoacademicoService: ProyectoAcademicoService,
     private routerService: Router,
     private newNuxeoService: NewNuxeoService,
@@ -289,7 +289,6 @@ export class ModificarProyectoAcademicoComponent {
     this.loadmetodologia();
     this.loadunidadtiempo();
     this.loadarea();
-    this.loadnucleo();
     this.loadenfasis();
     this.loadterceros();
     this.loadfechacoordinador();
@@ -307,6 +306,9 @@ export class ModificarProyectoAcademicoComponent {
     this.dataSource = new MatTableDataSource(data.enfasis);
   }
 
+  onSelectionChanged(event: any){
+    this.loadnucleo(event.value.Id)
+  }
   loadfechaaltacalidad() {
     if (this.data.fecha_creacion_registro_alta == null) {
       this.fecha_creacion_alta = null;
@@ -673,11 +675,12 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   loadunidadtiempo() {
-    this.coreService.get('unidad_tiempo').subscribe(
-      (res: null) => {
+    this.parametrosService.get('parametro?query=TipoParametroId:7,Activo:true&limit=0')
+    .subscribe(
+      (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
-          this.unidad = <any>res;
+          this.unidad = <any>res.Data;
           this.unidad.forEach((uni: any) => {
             if (uni.Id === Number(this.data.idunidad)) {
               this.opcionSeleccionadoUnidad = uni;
@@ -697,11 +700,12 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   loadarea() {
-    this.coreService.get('area_conocimiento').subscribe(
-      (res: null) => {
+    this.parametrosService.get('parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id__isnull:true&limit=0')
+    .subscribe(
+      (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
-          this.area = <any>res;
+          this.area = <any>res.Data;
           this.area.forEach((are: any) => {
             if (are.Id === Number(this.data.idarea)) {
               this.opcionSeleccionadoArea = are;
@@ -720,12 +724,13 @@ export class ModificarProyectoAcademicoComponent {
     );
   }
 
-  loadnucleo() {
-    this.coreService.get('nucleo_basico_conocimiento').subscribe(
-      (res: null) => {
+  loadnucleo(id: number) {
+    this.parametrosService.get(`parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id:${id}&limit=0`)
+    .subscribe(
+      (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
-          this.nucleo = <any>res;
+          this.nucleo = <any>res.Data;
           this.nucleo.forEach((nuc: any) => {
             if (nuc.Id === Number(this.data.idnucleo)) {
               this.opcionSeleccionadoNucleo = nuc;

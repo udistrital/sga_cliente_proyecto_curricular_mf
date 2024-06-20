@@ -35,6 +35,7 @@
                         formControlName="codigo_snies"
                         class="form-control"
                         name="codigo_snies"
+                        #codigoSnies (blur)="onBlurCodigoSnies(codigoSnies.value)"
                       />
                       <mat-error *ngIf="Campo24Control.hasError('required')">{{
                         "proyecto.erro_codigoSnies" | translate
@@ -96,6 +97,7 @@
                         formControlName="codigo_interno"
                         class="form-control"
                         name="codigo_interno"
+                        readonly
                       />
                       <mat-error
                         *ngIf="Campo7Control.hasError('required')">
@@ -224,6 +226,7 @@
                         formControlName="nombre_proyecto"
                         class="form-control"
                         name="nombre_proyecto"
+                        readonly
                       />
                       <mat-error *ngIf="Campo8Control.hasError('required')">{{
                         "proyecto.erro_nombre" | translate

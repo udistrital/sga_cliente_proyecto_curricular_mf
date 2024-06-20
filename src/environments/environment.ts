@@ -14,4 +14,6 @@ export const environment = {
   CORE_SERVICE: 'http://pruebasapi2.intranetoas.udistrital.edu.co:8105/v1/',
   OIKOS_SERVICE: 'http://pruebasapi.intranetoas.udistrital.edu.co:8087/v2/',
   PROYECTO_ACADEMICO_SERVICE: 'http://pruebasapi.intranetoas.udistrital.edu.co:8116/v1/',
+  PARAMETROS_SERVICE: 'http://pruebasapi.intranetoas.udistrital.edu.co:8510/v1/',
+  DEPENDENCIAS_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/dependencias_api/v1/',
 };
