@@ -48,6 +48,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
 import {MatMenuModule} from '@angular/material/menu';
+import { DependenciasService } from './services/dependencias.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
@@ -119,6 +120,7 @@ export function createTranslateLoader(http: HttpClient) {
     AnyService,
     NewNuxeoService,
     ProyectoAcademicoService,
+    DependenciasService,
     TercerosService,
     ParametrosService,
     ListEnfasisService,
