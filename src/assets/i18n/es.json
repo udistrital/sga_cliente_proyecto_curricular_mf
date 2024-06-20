@@ -133,7 +133,12 @@
     "erro_oikos": "Por favor seleccione el espacio fisico!",
     "informar_select": "Seleccione el énfasis de la lista a continuación; si no existe, crearlo en el botón de administrar énfasis.",
     "confirmar_activacion_oferta_titulo": "¿Desea habilitar la oferta?",
-    "confirmar_activacion_oferta_texto": "Al habilitar la oferta, se activará la oferta de este proyecto académico"
+    "confirmar_activacion_oferta_texto": "Al habilitar la oferta, se activará la oferta de este proyecto académico",
+    "error_consulta": "Se presentó un error consultar el proyecto, por favor intente mas tarde.",
+    "proyecto_encontrado": "Proyecto encontrado",
+    "detalle_proyecto_encontrado": "El código SNIES {{codigo_snies}} corresponde al código interno {{codigo_interno}} con el nombre '{{nombre_proyecto}}'.<br><br> Si el proyecto no corresponde al esperado, por favor contacte al administrador del sistema.<br><br> ¿Está seguro de continuar con el registro de este proyecto curricular?",
+    "proyecto_no_encontrado": "Proyecto no encontrado",
+    "detalle_proyecto_no_encontrado": "No se encontró ningún proyecto académico asociado al código SNIES {{codigo_snies}}. <br><br> Por favor valide si el código integresado es el correcto, en caso de serlo favor contactar al administrador del sistema."
   },
   "ERROR": {
     "general": "La solicitud no pudo ser cumplida",
