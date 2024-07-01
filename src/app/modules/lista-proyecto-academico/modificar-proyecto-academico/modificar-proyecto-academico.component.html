@@ -304,7 +304,7 @@
                   </div>
                   <div class="form-col1">
                     <p style="display: flex">
-                      <mat-checkbox type="checkbox" [(ngModel)]="checkofrece">
+                      <mat-checkbox type="checkbox"  [disabled]="!data.activo" [(ngModel)]="checkofrece">
                         {{
                           "proyecto.ofrece_proyecto" | translate
                         }}</mat-checkbox
@@ -758,6 +758,7 @@
                   [formControl]="Campo3Control"
                   required
                   [(ngModel)]="opcionSeleccionadoArea"
+                  (selectionChange)="onSelectionChanged($event)"
                 >
                   <mat-option>--</mat-option>
                   <mat-option *ngFor="let areacono of area" [value]="areacono">

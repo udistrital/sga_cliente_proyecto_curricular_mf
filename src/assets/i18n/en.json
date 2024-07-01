@@ -132,7 +132,14 @@
         "mensaje_oikos": "Please relate the curricular project with the physical space of the OIKOS system, if the physical space does not exist, please notify the system administrator",
         "oikos": "Physical space",
         "erro_oikos": "Please select the physical space!",
-        "informar_select": "Select emphasis from the list below; if it doesn't exist, create it in the manage emphasis button."
+        "informar_select": "Select emphasis from the list below; if it doesn't exist, create it in the manage emphasis button.",
+        "confirmar_activacion_oferta_titulo": "Do you want to enable the offer?",
+        "confirmar_activacion_oferta_texto": "By enabling the offer, the offer of this academic project will be activated",
+        "error_consulta": "Error occurred, please try again later.",
+        "proyecto_encontrado": "Project found.",
+        "detalle_proyecto_encontrado": "The SNIES code {{codigo_snies}} corresponds to the internal code {{codigo_interno}} with the name '{{nombre_proyecto}}'.<br><br> If the project does not match the expected one, please contact the system administrator.<br><br> Are you sure you want to proceed with the registration of this curricular project?",
+        "proyecto_no_encontrado": "Project not found.",
+        "detalle_proyecto_no_encontrado": "No academic project associated with the SNIES code {{codigo_snies}} was found. <br><br> Please verify if the entered code is correct. If it is, please contact the system administrator."
     },
     "ERROR": {
         "general": "The request could not be satisfied",
