@@ -663,7 +663,7 @@
               required
               [(ngModel)]="coordinadorSeleccionado"
             >
-              <mat-option>--Seleccionar--</mat-option>
+              <mat-option>--{{ "GLOBAL.seleccionar" | translate }}--</mat-option>
               <mat-option *ngFor="let tercero of terceros" [value]="tercero">
                 {{ tercero.NombreCompleto }}
               </mat-option>
