@@ -648,7 +648,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           Id: 0,
           Nombre: this.basicform.value.nombre_proyecto,
           CodigoSnies: this.basicform.value.codigo_snies,
-          Codigo: this.basicform.value.codigo_interno,
+          Codigo: String(this.basicform.value.codigo_interno),
           Duracion: Number(this.basicform.value.duracion_proyecto),
           NumeroCreditos: Number(this.basicform.value.creditos_proyecto),
           CorreoElectronico: this.basicform.value.correo_proyecto,

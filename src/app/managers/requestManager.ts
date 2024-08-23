@@ -118,7 +118,7 @@ export class RequestManager {
         return this.http.get(`${this.path}${endpoint}`,
         {
             headers: new HttpHeaders({
-                'Content-Type': 'multipart/form-data'
+                'authorization': `Bearer ${window.localStorage.getItem('access_token')}`
             })
         });
     }
