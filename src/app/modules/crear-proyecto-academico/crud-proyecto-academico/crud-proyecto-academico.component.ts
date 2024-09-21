@@ -45,7 +45,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
 import { ApiResponse } from 'src/app/models/api-response.interface';
 import { DependenciasService } from 'src/app/services/dependencias.service';
-
+import { navigateToUrl } from 'single-spa';
 @Component({
   selector: 'app-crud-proyecto-academico',
   templateUrl: './crud-proyecto-academico.component.html',
@@ -61,6 +61,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
+  isLoading = false;
   isLinear = true;
   checkregistro = false;
   settings: any;
@@ -589,7 +590,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
   uploadFilesCreacionProyecto(files: any) {
     return new Promise((resolve, reject) => {
-      files.forEach(async(file: any) => {
+      files.forEach(async (file: any) => {
         // Genera el nombre base del archivo
         let nombreArchivo =
           'soporte_' +
@@ -803,12 +804,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       .format('YYYY-MM-DDTHH:mm:ss');
     this.fecha_vencimiento = convertDate;
     return new Date(convertDate);
-  }
-
-  openlist(): void {
-    this.routerService.navigateByUrl(
-      `pages/proyecto_academico/list-proyecto_academico`
-    );
   }
 
   loadnucleo(id: number) {
@@ -1074,6 +1069,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         };
         Swal.fire(opt).then(async (willCreate: any) => {
           if (willCreate.value) {
+            this.isLoading = true; // Mostrar indicador de carga
             let content = Swal.getHtmlContainer();
             if (content) {
               const b: any = content.querySelector('b');
@@ -1101,6 +1097,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
               .post('proyecto-academico/', this.proyecto_academicoPost)
               .subscribe(
                 (res: any) => {
+                  this.isLoading = false; // Ocultar indicador de carga
                   if (res.Type === 'error') {
                     Swal.fire({
                       icon: 'error',
@@ -1127,18 +1124,22 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                     Swal.fire(opt1).then((willDelete: any) => {
                       if (willDelete.value) {
                         this.checkregistro = true;
-                        this.openlist();
+                        this.redirectToLista(); // Redirigir a la lista
                       }
                     });
                   }
                 },
                 (error: any) => {
+                  this.isLoading = false; // Ocultar indicador de carga
                   Swal.close();
                 }
               );
+          } else {
+            this.isLoading = false; // Ocultar indicador de carga
           }
         });
       } else {
+        this.isLoading = false; // Ocultar indicador de carga
         const opt1: any = {
           title: this.translate.instant('GLOBAL.atencion'),
           text: this.translate.instant('proyecto.error_datos'),
@@ -1153,6 +1154,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         });
       }
     } catch (err) {
+      this.isLoading = false; // Ocultar indicador de carga
       const opt2: any = {
         title: this.translate.instant('GLOBAL.error'),
         text: this.translate.instant('ERROR.error_subir_documento'),
@@ -1163,5 +1165,11 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       };
       Swal.fire(opt2);
     }
+  }
+
+  async redirectToLista() {
+    setTimeout(() => {
+      navigateToUrl('lista');
+    }, 500);
   }
 }
