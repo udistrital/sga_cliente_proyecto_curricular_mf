@@ -4,10 +4,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListProyectoAcademicoComponent } from './modules/lista-proyecto-academico/list-proyecto-academico.component/list-proyecto-academico.component.component';
 import { CrudProyectoAcademicoComponent } from './modules/crear-proyecto-academico/crud-proyecto-academico/crud-proyecto-academico.component';
 import { ListEnfasisComponent } from './modules/crear-proyecto-academico/list-enfasis/list-enfasis.component';
+import { AuthGuard } from 'src/_guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import(
         './modules/lista-proyecto-academico/lista-proyecto-academico.module'
@@ -15,6 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'lista',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import(
         './modules/lista-proyecto-academico/lista-proyecto-academico.module'
@@ -22,6 +25,7 @@ const routes: Routes = [
   },
   {
     path: 'crear',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import(
         './modules/crear-proyecto-academico/crear-proyecto-academico.module'
