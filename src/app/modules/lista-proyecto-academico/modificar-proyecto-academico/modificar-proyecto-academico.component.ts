@@ -284,7 +284,7 @@ export class ModificarProyectoAcademicoComponent {
     });
 
     this.loadfacultad();
-    this.loadespacio();
+    this.loadespacio(this.data.idfacultad);
     this.loadnivel();
     this.loadmetodologia();
     this.loadunidadtiempo();
@@ -306,8 +306,13 @@ export class ModificarProyectoAcademicoComponent {
     this.dataSource = new MatTableDataSource(data.enfasis);
   }
 
-  onSelectionChanged(event: any){
+  onSelectionChanged(event: any) {
     this.loadnucleo(event.value.Id)
+  }
+
+  onChangeFacultad(event: any) {
+    this.opcionSeleccionadoFacultad = event.value;
+    this.loadespacio(event.value.Id);
   }
   loadfechaaltacalidad() {
     if (this.data.fecha_creacion_registro_alta == null) {
@@ -485,7 +490,7 @@ export class ModificarProyectoAcademicoComponent {
     };
     const to_delete =
       this.arr_enfasis_proyecto[
-        findInArray(event.EnfasisId.Id, this.arr_enfasis_proyecto, 'Id')
+      findInArray(event.EnfasisId.Id, this.arr_enfasis_proyecto, 'Id')
       ];
     if (to_delete.esNuevo) {
       this.arr_enfasis_proyecto.splice(
@@ -510,7 +515,7 @@ export class ModificarProyectoAcademicoComponent {
     this.dialogRef.close();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   loadterceros(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -599,14 +604,14 @@ export class ModificarProyectoAcademicoComponent {
       );
   }
 
-  loadespacio() {
+  loadespacio(idFacultad: any) {
     this.oikosService
-      .get('dependencia_tipo_dependencia/?query=TipoDependenciaId:1&limit=0')
+      .get(`asignacion_espacio_fisico_dependencia?query=DependenciaId:${idFacultad},EspacioFisicoId__TipoEspacioFisicoId__CodigoAbreviacion:TIPO_2&limit=0`)
       .subscribe(
         (res: any) => {
           const r = <any>res;
           if (res !== null && r.Type !== 'error') {
-            this.espacio = res.map((data: any) => data.DependenciaId);
+            this.espacio = res.map((data: any) => data.EspacioFisicoId);
 
             this.espacio.forEach((esp: any) => {
               if (esp.Id === Number(this.data.iddependencia)) {
@@ -676,77 +681,77 @@ export class ModificarProyectoAcademicoComponent {
 
   loadunidadtiempo() {
     this.parametrosService.get('parametro?query=TipoParametroId:7,Activo:true&limit=0')
-    .subscribe(
-      (res) => {
-        const r = <any>res;
-        if (res !== null && r.Type !== 'error') {
-          this.unidad = <any>res.Data;
-          this.unidad.forEach((uni: any) => {
-            if (uni.Id === Number(this.data.idunidad)) {
-              this.opcionSeleccionadoUnidad = uni;
-            }
+      .subscribe(
+        (res) => {
+          const r = <any>res;
+          if (res !== null && r.Type !== 'error') {
+            this.unidad = <any>res.Data;
+            this.unidad.forEach((uni: any) => {
+              if (uni.Id === Number(this.data.idunidad)) {
+                this.opcionSeleccionadoUnidad = uni;
+              }
+            });
+          }
+        },
+        (error: HttpErrorResponse) => {
+          Swal.fire({
+            icon: 'error',
+            title: error.status + '',
+            text: this.translate.instant('ERROR.' + error.status),
+            confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
         }
-      },
-      (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.status + '',
-          text: this.translate.instant('ERROR.' + error.status),
-          confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-        });
-      }
-    );
+      );
   }
 
   loadarea() {
     this.parametrosService.get('parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id__isnull:true&limit=0')
-    .subscribe(
-      (res) => {
-        const r = <any>res;
-        if (res !== null && r.Type !== 'error') {
-          this.area = <any>res.Data;
-          this.area.forEach((are: any) => {
-            if (are.Id === Number(this.data.idarea)) {
-              this.opcionSeleccionadoArea = are;
-            }
+      .subscribe(
+        (res) => {
+          const r = <any>res;
+          if (res !== null && r.Type !== 'error') {
+            this.area = <any>res.Data;
+            this.area.forEach((are: any) => {
+              if (are.Id === Number(this.data.idarea)) {
+                this.opcionSeleccionadoArea = are;
+              }
+            });
+          }
+        },
+        (error: HttpErrorResponse) => {
+          Swal.fire({
+            icon: 'error',
+            title: error.status + '',
+            text: this.translate.instant('ERROR.' + error.status),
+            confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
         }
-      },
-      (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.status + '',
-          text: this.translate.instant('ERROR.' + error.status),
-          confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-        });
-      }
-    );
+      );
   }
 
   loadnucleo(id: number) {
     this.parametrosService.get(`parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id:${id}&limit=0`)
-    .subscribe(
-      (res) => {
-        const r = <any>res;
-        if (res !== null && r.Type !== 'error') {
-          this.nucleo = <any>res.Data;
-          this.nucleo.forEach((nuc: any) => {
-            if (nuc.Id === Number(this.data.idnucleo)) {
-              this.opcionSeleccionadoNucleo = nuc;
-            }
+      .subscribe(
+        (res) => {
+          const r = <any>res;
+          if (res !== null && r.Type !== 'error') {
+            this.nucleo = <any>res.Data;
+            this.nucleo.forEach((nuc: any) => {
+              if (nuc.Id === Number(this.data.idnucleo)) {
+                this.opcionSeleccionadoNucleo = nuc;
+              }
+            });
+          }
+        },
+        (error: HttpErrorResponse) => {
+          Swal.fire({
+            icon: 'error',
+            title: error.status + '',
+            text: this.translate.instant('ERROR.' + error.status),
+            confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
         }
-      },
-      (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.status + '',
-          text: this.translate.instant('ERROR.' + error.status),
-          confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-        });
-      }
-    );
+      );
   }
 
   uploadFilesModificacionProyecto(files: any[]) {
@@ -893,7 +898,7 @@ export class ModificarProyectoAcademicoComponent {
             this.proyectoacademicoService
               .put(
                 'tr_proyecto_academico/informacion_basica/' +
-                  Number(this.data.Id),
+                Number(this.data.Id),
                 informacion_basicaPut
               )
               .subscribe((res: any) => {
@@ -1106,7 +1111,7 @@ export class ModificarProyectoAcademicoComponent {
             this.proyectoacademicoService
               .put(
                 'tr_proyecto_academico/registro/' +
-                  Number(this.data.idproyecto),
+                Number(this.data.idproyecto),
                 registro_put
               )
               .subscribe((res: any) => {
@@ -1252,7 +1257,7 @@ export class ModificarProyectoAcademicoComponent {
             this.proyectoacademicoService
               .put(
                 'tr_proyecto_academico/registro/' +
-                  Number(this.data.idproyecto),
+                Number(this.data.idproyecto),
                 registro_put
               )
               .subscribe((res: any) => {
