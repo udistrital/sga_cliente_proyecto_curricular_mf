@@ -115,7 +115,7 @@ export class ModificarProyectoAcademicoComponent {
   dataSource!: MatTableDataSource<any>;
 
   CampoControl = new FormControl('', [Validators.required]);
-  CampoControl_espacio = new FormControl('', [Validators.required]);
+  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [Validators.required]);
   Campo1Control = new FormControl('', [Validators.required]);
   Campo2Control = new FormControl('', [Validators.required]);
   Campo3Control = new FormControl('', [Validators.required]);
@@ -605,6 +605,7 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   loadespacio(idFacultad: any) {
+    /*
     this.oikosService
       .get(`asignacion_espacio_fisico_dependencia?query=DependenciaId:${idFacultad},EspacioFisicoId__TipoEspacioFisicoId__CodigoAbreviacion:TIPO_2&limit=0`)
       .subscribe(
@@ -629,6 +630,7 @@ export class ModificarProyectoAcademicoComponent {
           });
         }
       );
+    */
   }
 
   loadnivel() {

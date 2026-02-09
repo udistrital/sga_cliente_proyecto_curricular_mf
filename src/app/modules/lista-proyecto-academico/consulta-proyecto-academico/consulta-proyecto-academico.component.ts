@@ -32,7 +32,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
   espacio = [];
   opcionSeleccionadoEspacio: boolean = false;
   opcionSeleccionadoEspacioString!: string;
-  CampoControl_espacio = new FormControl("", [Validators.required]);
+  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [Validators.required]);
   dataSource!: MatTableDataSource<any>;
 
   displayedColumns: string[] = ['nombre', 'activo'];
@@ -154,6 +154,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
   }
 
   loadespacio(idFacultad: any) {
+    /*
     this.oikosService
       .get(`asignacion_espacio_fisico_dependencia?query=DependenciaId:${idFacultad},EspacioFisicoId__TipoEspacioFisicoId__CodigoAbreviacion:TIPO_2&limit=0`)
       .subscribe(
@@ -178,6 +179,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
           });
         }
       );
+    */
   }
 
 }
