@@ -82,7 +82,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
-  
+
     this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
       const accumulator = (currentTerm: string, key: string) => {
         return currentTerm + data[key] + ' ';
@@ -90,7 +90,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
       return dataStr.indexOf(filter) !== -1;
     };
-  
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -154,10 +154,11 @@ export class ListProyectoAcademicoComponent implements OnInit {
         id_documento_acto: proyectoConsultaData.id_documento_acto,
         proyecto_padre_id: proyectoConsultaData.proyecto_padre_id,
         iddependencia: proyectoConsultaData.iddependencia,
+        idfacultad: proyectoConsultaData.idfacultad,
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
   }
 
   openDialogModificar(id: number, proyectoData: any): void {
@@ -223,7 +224,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
         activo: proyectoData.activo,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
   }
 
   filterPredicate(data: string, filter: string): boolean {
@@ -236,7 +237,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
     this.translate.use(language);
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   loadproyectos() {
     this.proyectoCurricularService.getProyectosAcademicos().subscribe(
@@ -291,6 +292,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
               id_documento_acto:
                 res.ProyectoAcademico.EnlaceActoAdministrativo[0],
               proyecto_padre_id: res.ProyectoAcademico.ProyectoPadreId,
+              idfacultad: res.ProyectoAcademico.FacultadId,
             };
             this.openDialogConsulta(id, proyectoConsultaData);
           } catch (error) {
@@ -470,7 +472,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       icon: !row.Activo ? 'success' : 'error',
       showCancelButton: true,
     };
-  
+
     Swal.fire(opt).then((result: any) => {
       if (result.isConfirmed) {
         this.proyectoCurricularService.cambiarHabilidadProyecto(row)
