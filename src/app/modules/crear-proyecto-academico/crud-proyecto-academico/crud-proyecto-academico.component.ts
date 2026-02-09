@@ -122,7 +122,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     new ProyectoAcademicoInstitucion();
 
   CampoControl = new FormControl('', [Validators.required]);
-  CampoControl_espacio = new FormControl('', [Validators.required]);
+  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [Validators.required]);
   Campo1Control = new FormControl('', [Validators.required]);
   Campo2Control = new FormControl('', [Validators.required]);
   Campo3Control = new FormControl('', [Validators.required]);
@@ -377,7 +377,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadespacio();
     this.loadfacultad();
     this.loadarea();
     this.loadunidadtiempo();
@@ -408,6 +407,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           if (res.Success && res.Data.length > 0) {
             const proyecto_a_clonar = res.Data[0];
             this.proyecto_padre_id = proyecto_a_clonar.ProyectoAcademico;
+            this.loadespacio(proyecto_a_clonar.IdDependenciaFacultad);
             // enfasis
             this.arr_enfasis_proyecto = proyecto_a_clonar.Enfasis.map(
               (enfasis: any) => enfasis.EnfasisId
@@ -669,14 +669,22 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       );
   }
 
-  loadespacio() {
+  onChangeFacultad(event: any) {
+    this.opcionSeleccionadoFacultad = event.value;
+    if (this.opcionSeleccionadoFacultad) {
+      this.loadespacio(this.opcionSeleccionadoFacultad.Id);
+    }
+  }
+
+  loadespacio(idFacultad: any) {
+    /*
     this.oikosService
-      .get('dependencia_tipo_dependencia/?query=TipoDependenciaId:1&limit=0')
+      .get(`asignacion_espacio_fisico_dependencia?query=DependenciaId:${idFacultad},EspacioFisicoId__TipoEspacioFisicoId__CodigoAbreviacion:TIPO_2&limit=0`)
       .subscribe(
         (res: any) => {
           const r = <any>res;
           if (res !== null && r.Type !== 'error') {
-            this.espacio_fisico = res.map((data: any) => data.DependenciaId);
+            this.espacio_fisico = res.map((data: any) => data.EspacioFisicoId);
           }
         },
         (error: HttpErrorResponse) => {
@@ -688,6 +696,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           });
         }
       );
+    */
   }
 
   loadarea() {
@@ -916,9 +925,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     try {
       if (
         this.basicform.valid &
-          this.resoluform.valid &
-          this.compleform.valid &
-          this.actoform.valid &&
+        this.resoluform.valid &
+        this.compleform.valid &
+        this.actoform.valid &&
         this.arr_enfasis_proyecto.length > 0 &&
         this.fileActoAdministrativo
       ) {

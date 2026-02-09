@@ -6,14 +6,27 @@
 
 export const environment = {
   production: false,
-  apiUrl:"http://localhost:4204/",
-  SGA_PROYECTO_CURRICULAR_MID: "http://pruebasapi2.intranetoas.udistrital.edu.co:8540/v1/",
-  NUXEO_SERVICE: 'http://pruebasapi2.intranetoas.udistrital.edu.co:8199/v1',
+  apiUrl: "http://localhost:4204/",
+  //SGA_PROYECTO_CURRICULAR_MID: "http://pruebasapi2.intranetoas.udistrital.edu.co:8540/v1/",
+  //SGA_PROYECTO_CURRICULAR_MID: "http://localhost:8095/v1/",
+
+  SGA_PROYECTO_CURRICULAR_MID: "https://autenticacion.portaloas.udistrital.edu.co/apioas/proyecto_curricular_mid/v1/",
+  NUXEO_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/gestor_documental_mid/v1',
+  TERCEROS_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/terceros_crud/v1/',
+  DOCUMENTO_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/documento_crud/v2/',
+  CORE_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/core_crud/v2/',
+  OIKOS_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/oikos_crud_api/v2/',
+  PROYECTO_ACADEMICO_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/proyecto_academico_crud/v1/',
+  PARAMETROS_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/parametros/v1/',
+  DEPENDENCIAS_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/dependencias_api/v1/',
+
+  /*NUXEO_SERVICE: 'http://pruebasapi2.intranetoas.udistrital.edu.co:8199/v1',
   TERCEROS_SERVICE: 'http://pruebasapi.intranetoas.udistrital.edu.co:8121/v1/',
-  DOCUMENTO_SERVICE: 'https://pruebasapi.intranetoas.udistrital.edu.co:8094/v1/',
+  DOCUMENTO_SERVICE: 'http://pruebasapi.intranetoas.udistrital.edu.co:8094/v1/',
   CORE_SERVICE: 'http://pruebasapi2.intranetoas.udistrital.edu.co:8105/v1/',
-  OIKOS_SERVICE: 'http://pruebasapi.intranetoas.udistrital.edu.co:8087/v2/',
+  //OIKOS_SERVICE: 'http://pruebasapi.intranetoas.udistrital.edu.co:8087/v2/',
+  OIKOS_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/oikos_crud_api/v2/',
   PROYECTO_ACADEMICO_SERVICE: 'http://pruebasapi.intranetoas.udistrital.edu.co:8116/v1/',
   PARAMETROS_SERVICE: 'http://pruebasapi.intranetoas.udistrital.edu.co:8510/v1/',
-  DEPENDENCIAS_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/dependencias_api/v1/',
+  DEPENDENCIAS_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/dependencias_api/v1/',*/
 };
