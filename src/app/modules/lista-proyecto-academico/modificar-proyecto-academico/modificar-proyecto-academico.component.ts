@@ -428,7 +428,7 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   loadenfasis() {
-    this.proyectoacademicoService.get('enfasis').subscribe(
+    this.proyectoacademicoService.get('enfasis/?limit=0').subscribe(
       (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
@@ -821,7 +821,8 @@ export class ModificarProyectoAcademicoComponent {
           UnidadTiempoId: this.opcionSeleccionadoUnidad['Id'],
           AnoActoAdministrativoId: String(this.actoform.value.ano_acto),
           FacultadId: this.opcionSeleccionadoFacultad['Id'],
-          DependenciaId: this.opcionSeleccionadoEspacio['Id'],
+          //DependenciaId: this.opcionSeleccionadoEspacio['Id'],
+          DependenciaId: null,
           AreaConocimientoId: this.opcionSeleccionadoArea['Id'],
           NucleoBaseId: this.opcionSeleccionadoNucleo['Id'],
           MetodologiaId: this.metodologia,
@@ -999,7 +1000,8 @@ export class ModificarProyectoAcademicoComponent {
           UnidadTiempoId: this.opcionSeleccionadoUnidad['Id'],
           AnoActoAdministrativoId: String(this.actoform.value.ano_acto),
           FacultadId: this.opcionSeleccionadoFacultad['Id'],
-          DependenciaId: this.opcionSeleccionadoEspacio['Id'],
+          //DependenciaId: this.opcionSeleccionadoEspacio['Id'],
+          DependenciaId: null,
           AreaConocimientoId: this.opcionSeleccionadoArea['Id'],
           NucleoBaseId: this.opcionSeleccionadoNucleo['Id'],
           MetodologiaId: this.metodologia,
@@ -1192,7 +1194,8 @@ export class ModificarProyectoAcademicoComponent {
           UnidadTiempoId: this.opcionSeleccionadoUnidad['Id'],
           AnoActoAdministrativoId: String(this.actoform.value.ano_acto),
           FacultadId: this.opcionSeleccionadoFacultad['Id'],
-          DependenciaId: this.opcionSeleccionadoEspacio['Id'],
+          // DependenciaId: this.opcionSeleccionadoEspacio['Id'],
+          DependenciaId: null,
           AreaConocimientoId: this.opcionSeleccionadoArea['Id'],
           NucleoBaseId: this.opcionSeleccionadoNucleo['Id'],
           MetodologiaId: this.metodologia,
