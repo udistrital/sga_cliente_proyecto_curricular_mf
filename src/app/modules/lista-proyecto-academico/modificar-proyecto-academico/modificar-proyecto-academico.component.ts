@@ -428,7 +428,7 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   loadenfasis() {
-    this.proyectoacademicoService.get('enfasis').subscribe(
+    this.proyectoacademicoService.get('enfasis/?limit=0').subscribe(
       (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
