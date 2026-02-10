@@ -1,5 +1,5 @@
-import {Metodologia} from './metodologia'
-import {NivelFormacion} from './nivel_formacion'
+import { Metodologia } from './metodologia'
+import { NivelFormacion } from './nivel_formacion'
 
 export class ProyectoAcademicoInstitucion {
     Id!: number;
@@ -18,7 +18,7 @@ export class ProyectoAcademicoInstitucion {
     Oferta!: boolean;
     UnidadTiempoId!: number;
     AnoActoAdministrativoId!: string;
-    DependenciaId!: number;
+    DependenciaId!: number | null;
     FacultadId!: number;
     AreaConocimientoId!: number;
     NucleoBaseId!: number;
