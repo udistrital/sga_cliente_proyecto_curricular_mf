@@ -744,7 +744,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   }
 
   loadenfasis() {
-    this.proyectoacademicoService.get('enfasis').subscribe(
+    this.proyectoacademicoService.get('enfasis/?limit=0').subscribe(
       (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
@@ -954,7 +954,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           Oferta: this.checkofrece,
           UnidadTiempoId: this.opcionSeleccionadoUnidad['Id'],
           AnoActoAdministrativoId: this.actoform.value.ano_acto,
-          DependenciaId: this.opcionSeleccionadoEspacioFisico['Id'],
+          // DependenciaId: this.opcionSeleccionadoEspacioFisico['Id'],
+          DependenciaId: null,
           FacultadId: this.opcionSeleccionadoFacultad['Id'],
           AreaConocimientoId: this.opcionSeleccionadoArea['Id'],
           NucleoBaseId: this.opcionSeleccionadoNucleo['Id'],
