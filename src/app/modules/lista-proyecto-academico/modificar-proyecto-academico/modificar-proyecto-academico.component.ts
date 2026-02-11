@@ -289,6 +289,7 @@ export class ModificarProyectoAcademicoComponent {
     this.loadmetodologia();
     this.loadunidadtiempo();
     this.loadarea();
+    this.loadnucleo(this.data.idarea);
     this.loadenfasis();
     this.loadterceros();
     this.loadfechacoordinador();
@@ -304,6 +305,8 @@ export class ModificarProyectoAcademicoComponent {
 
     this.arr_enfasis_proyecto = this.data.enfasis;
     this.dataSource = new MatTableDataSource(data.enfasis);
+
+    //console.log(this.data);
   }
 
   onSelectionChanged(event: any) {
@@ -943,6 +946,7 @@ export class ModificarProyectoAcademicoComponent {
           }
         });
       } catch (error) {
+        //console.log(error);
         const opt1: any = {
           title: this.translate.instant('GLOBAL.atencion'),
           text: this.translate.instant('proyecto.error_datos'),
