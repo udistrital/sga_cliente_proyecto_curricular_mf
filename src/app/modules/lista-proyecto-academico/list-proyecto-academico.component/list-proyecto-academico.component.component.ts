@@ -334,6 +334,23 @@ export class ListProyectoAcademicoComponent implements OnInit {
       (res: DetalleProyectoAcademico | null) => {
         if (res == null) throw new Error('No se encontró el proyecto');
         try {
+          const registroCalificado = res.Registro?.find(r => r.TipoRegistroId.CodigoAbreviacion === 'REGACR');
+          const registroAltaCalidad = res.Registro?.find(r => r.TipoRegistroId.CodigoAbreviacion === 'REGREN');
+
+          const parseVigencia = (texto: string) => {
+            if (!texto) return { meses: '', anos: '' };
+            const mesesMatch = texto.match(/Meses:(\d+)/);
+            const anosMatch = texto.match(/Años:(\d+)/);
+            return {
+              meses: mesesMatch ? mesesMatch[1] : '',
+              anos: anosMatch ? anosMatch[1] : ''
+            };
+          };
+
+          const vigenciaCalificado = parseVigencia(registroCalificado?.VigenciaActoAdministrativo || '');
+          const vigenciaAlta = parseVigencia(registroAltaCalidad?.VigenciaActoAdministrativo || res.VigenciaActoAdministrativoAltaCalidad || '');
+
+          console.log(res);
           const datosProyecto = {
             codigo: res.ProyectoAcademico.Codigo,
             codigosnies: parseInt(res.ProyectoAcademico.CodigoSnies),
@@ -361,36 +378,23 @@ export class ListProyectoAcademicoComponent implements OnInit {
             competencias: res.ProyectoAcademico.Competencias,
             idarea: res.ProyectoAcademico.AreaConocimientoId,
             idnucleo: res.ProyectoAcademico.NucleoBaseId,
-            resolucion_acreditacion: res.Registro[0].NumeroActoAdministrativo,
+            resolucion_acreditacion: registroCalificado ? registroCalificado.NumeroActoAdministrativo : '',
             iddependencia: res.ProyectoAcademico.DependenciaId,
-            resolucion_acreditacion_ano:
-              res.Registro[0].AnoActoAdministrativoId,
-            fecha_creacion_resolucion: new Date(
-              res.Registro[0].FechaCreacionActoAdministrativo
-            ),
-            vigencia_resolucion_meses:
-              res.Registro[0].VigenciaActoAdministrativo.substr(6, 1),
-            vigencia_resolucion_anos:
-              res.Registro[0].VigenciaActoAdministrativo.substr(12, 1),
-            id_documento_registor_calificado: res.Registro[0].EnlaceActo,
+            resolucion_acreditacion_ano: registroCalificado ? registroCalificado.AnoActoAdministrativoId : '',
+            fecha_creacion_resolucion: registroCalificado ? new Date(registroCalificado.FechaCreacionActoAdministrativo) : null,
+            vigencia_resolucion_meses: vigenciaCalificado.meses,
+            vigencia_resolucion_anos: vigenciaCalificado.anos,
+            id_documento_registor_calificado: registroCalificado ? registroCalificado.EnlaceActo : '',
             numero_acto: res.ProyectoAcademico.NumeroActoAdministrativo,
             ano_acto: res.ProyectoAcademico.AnoActoAdministrativo,
             existe_registro_alta_calidad: Boolean(res.TieneRegistroAltaCalidad),
-            resolucion_alta_calidad: res.NumeroActoAdministrativoAltaCalidad,
-            resolucion_alta_calidad_ano: res.AnoActoAdministrativoIdAltaCalidad,
-            fecha_creacion_resolucion_alta_calidad: new Date(
-              res.FechaCreacionActoAdministrativoAltaCalidad
-            ),
-            id_documento_alta_calidad: res.EnlaceActoAdministrativoAltaCalidad,
+            resolucion_alta_calidad: registroAltaCalidad ? registroAltaCalidad.NumeroActoAdministrativo : res.NumeroActoAdministrativoAltaCalidad,
+            resolucion_alta_calidad_ano: registroAltaCalidad ? registroAltaCalidad.AnoActoAdministrativoId : res.AnoActoAdministrativoIdAltaCalidad,
+            fecha_creacion_resolucion_alta_calidad: registroAltaCalidad ? new Date(registroAltaCalidad.FechaCreacionActoAdministrativo) : new Date(res.FechaCreacionActoAdministrativoAltaCalidad),
+            id_documento_alta_calidad: registroAltaCalidad ? registroAltaCalidad.EnlaceActo : res.EnlaceActoAdministrativoAltaCalidad,
             id_documento_acto: res.ProyectoAcademico.EnlaceActoAdministrativo,
-            vigencia_resolucion_meses_alta_calidad:
-              Boolean(res.TieneRegistroAltaCalidad) === true
-                ? res.VigenciaActoAdministrativoAltaCalidad.substr(6, 1)
-                : '',
-            vigencia_resolucion_anos_alta_calidad:
-              Boolean(res.TieneRegistroAltaCalidad) === true
-                ? res.VigenciaActoAdministrativoAltaCalidad.substr(12, 1)
-                : '',
+            vigencia_resolucion_meses_alta_calidad: vigenciaAlta.meses,
+            vigencia_resolucion_anos_alta_calidad: vigenciaAlta.anos,
             proyectoJson: res.ProyectoAcademico,
             activo: res.ProyectoAcademico.Activo,
           };
