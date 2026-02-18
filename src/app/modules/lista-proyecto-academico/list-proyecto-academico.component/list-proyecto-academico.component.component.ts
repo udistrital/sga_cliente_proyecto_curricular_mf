@@ -247,6 +247,20 @@ export class ListProyectoAcademicoComponent implements OnInit {
           const dateB = new Date(b.ProyectoAcademico.FechaModificacion);
           return dateB.getTime() - dateA.getTime();
         });
+
+        res.forEach((proyecto) => {
+          if (proyecto.Registro) {
+            const registroRenovacion = proyecto.Registro.filter(
+              (r) => r.TipoRegistroId.CodigoAbreviacion === 'REGREN'
+            ).sort((a, b) => b.Id - a.Id)[0];
+            if (registroRenovacion) {
+              proyecto.FechaVenimientoCalidad = moment(
+                registroRenovacion.VencimientoActoAdministrativo
+              ).format('DD-MM-YYYY');
+            }
+          }
+        });
+
         this.listaDatos = [...res];
         this.dataSource = new MatTableDataSource(res);
 
