@@ -334,8 +334,8 @@ export class ListProyectoAcademicoComponent implements OnInit {
       (res: DetalleProyectoAcademico | null) => {
         if (res == null) throw new Error('No se encontró el proyecto');
         try {
-          const registroCalificado = res.Registro?.find(r => r.TipoRegistroId.CodigoAbreviacion === 'REGACR');
-          const registroAltaCalidad = res.Registro?.find(r => r.TipoRegistroId.CodigoAbreviacion === 'REGREN');
+          const registroCalificado = res.Registro?.filter(r => r.TipoRegistroId.CodigoAbreviacion === 'REGACR').sort((a, b) => b.Id - a.Id)[0];
+          const registroAltaCalidad = res.Registro?.filter(r => r.TipoRegistroId.CodigoAbreviacion === 'REGREN').sort((a, b) => b.Id - a.Id)[0];
 
           const parseVigencia = (texto: string) => {
             if (!texto) return { meses: '', anos: '' };
