@@ -25,10 +25,14 @@
                       <mat-label>{{
                         "proyecto.codigo_snies" | translate
                         }}</mat-label>
-                      <input matInput placeholder="{{ 'proyecto.codigo_snies' | translate }}"
-                        formControlName="codigo_snies" class="form-control" name="codigo_snies" #codigoSnies
-                        (blur)="onBlurCodigoSnies(codigoSnies.value)" />
-                      <mat-error *ngIf="Campo24Control.hasError('required')">{{
+                      <mat-select formControlName="codigo_snies" required
+                        (selectionChange)="onChangeCodigoSnies($event.value)">
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let snies of sniesList" [value]="snies.IdAcad">
+                          {{ snies.IdAcad }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="basicform.get('codigo_snies').hasError('required')">{{
                         "proyecto.erro_codigoSnies" | translate
                         }}</mat-error>
                     </mat-form-field>
