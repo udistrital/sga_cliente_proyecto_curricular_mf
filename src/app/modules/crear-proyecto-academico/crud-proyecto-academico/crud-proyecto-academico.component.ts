@@ -88,6 +88,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   enfasis = [];
   nivel = [];
   metodo = [];
+  sniesList: any[] = [];
   fecha_creacion!: Date;
   fecha_vencimiento!: string;
   fecha_vencimiento_mostrar!: string;
@@ -383,6 +384,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     this.loadenfasis();
     this.loadnivel();
     this.loadmetodologia();
+
+
+    this.loadSnies();
 
     // cargar data del proyecto que se clonara
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -837,7 +841,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         }
       );
   }
-  onBlurCodigoSnies(codigo: string) {
+  onChangeCodigoSnies(codigo: string) {
     if (codigo != '') {
       this.dependenciasService.get('proyecto_acad_snies/' + codigo).subscribe(
         (res: any) => {
@@ -910,6 +914,33 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         }
       );
     }
+  }
+
+  onBlurCodigoSnies(codigo: string) {
+    this.onChangeCodigoSnies(codigo);
+  }
+
+  loadSnies() {
+    this.dependenciasService.get('dependencia').subscribe(
+      (res: any) => {
+        if (res && res.Proyectos && res.Proyectos.HomologacionProyecto) {
+          const rawList = res.Proyectos.HomologacionProyecto;
+          const filteredHelper = rawList.filter((item: any) => item.IdAcad !== null);
+          const uniqueList = [];
+          const map = new Map();
+          for (const item of filteredHelper) {
+            if (!map.has(item.IdAcad)) {
+              map.set(item.IdAcad, true);
+              uniqueList.push(item);
+            }
+          }
+          this.sniesList = uniqueList;
+        }
+      },
+      (error) => {
+        console.error('Error loading SNIES list', error);
+      }
+    );
   }
 
   isObjectEmpty(obj: any): boolean {
