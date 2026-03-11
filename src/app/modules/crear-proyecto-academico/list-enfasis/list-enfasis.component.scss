@@ -54,7 +54,10 @@ mat-cell, mat-header-cell{
 }
 
 .container-table {
-    overflow: overlay;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #edf1f7;
 }
 
 mat-table {

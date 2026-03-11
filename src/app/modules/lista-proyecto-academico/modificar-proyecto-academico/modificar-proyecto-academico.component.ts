@@ -40,6 +40,7 @@ import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';
 import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-modificar-proyecto-academico',
@@ -430,23 +431,22 @@ export class ModificarProyectoAcademicoComponent {
     );
   }
 
-  loadenfasis() {
-    this.proyectoacademicoService.get('enfasis/?limit=0').subscribe(
-      (res) => {
-        const r = <any>res;
-        if (res !== null && r.Type !== 'error') {
-          this.enfasis = <any>res;
-        }
-      },
-      (error: HttpErrorResponse) => {
-        Swal.fire({
+  async loadenfasis() {
+    try {
+      const res:any = await firstValueFrom(
+        this.proyectoacademicoService.get('enfasis/?query=Activo:true&limit=-1')
+      );
+      if (res !== null && res.Type !== 'error') {
+        this.enfasis = <any>res;
+      }
+    } catch (error:any) {
+      Swal.fire({
           icon: 'error',
           title: error.status + '',
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-      }
-    );
+    }
   }
 
   onCreateEmphasys(event: any) {
