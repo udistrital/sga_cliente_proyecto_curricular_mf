@@ -744,7 +744,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   }
 
   loadenfasis() {
-    this.proyectoacademicoService.get('enfasis/?limit=0').subscribe(
+    this.proyectoacademicoService.get('enfasis/?query=Activo:true&limit=-1').subscribe(
       (res) => {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {

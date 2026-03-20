@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SgaProyectoCurricularMidService } from './sga-proyecto-curricular-mid.service';
-import { catchError, map } from 'rxjs';
+import { catchError, firstValueFrom, map } from 'rxjs';
 import {
   DetalleProyectoAcademico,
   Proyecto,
@@ -103,8 +103,9 @@ export class ProyectoCurricularService {
         proyecto.Oferta = true;
       }
     }
-    return this.sgaProyectoCurricularMidService
-      .put(`/proyecto-academico/${proyecto.Id}/inhabilitar`, proyecto)
-      .toPromise();
+    return await firstValueFrom( 
+      this.sgaProyectoCurricularMidService
+      .put(`/proyecto-academico/${proyecto.Id}/inhabilitar`, proyecto) 
+    );
   }
 }
