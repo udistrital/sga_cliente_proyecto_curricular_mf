@@ -7,6 +7,7 @@ import { FORM_ENFASIS } from './form-enfasis';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-crud-enfasis',
@@ -93,21 +94,24 @@ export class CrudEnfasisComponent implements OnInit {
       showCancelButton: true,
     };
     Swal.fire(opt)
-    .then((willDelete: any) => {
+    .then(async (willDelete: any) => {
       if (willDelete.value) {
         this.info_enfasis = <Enfasis>enfasis;
-        this.proyectoAcademicoService.put('enfasis', this.info_enfasis)
-          .subscribe((res: any) => {
-            if (res.Type !== 'error') {
-              this.loadEnfasis();
-              this.eventChange.emit(true);
-              this.snackBar.open(this.translate.instant('enfasis.enfasis_actualizado'), '', {duration: 3000,panelClass: ['info-snackbar']});
-            } else {
-              this.snackBar.open(this.translate.instant('enfasis.enfasis_no_actualizado'), '', {duration: 3000,panelClass: ['error-snackbar']});
-            }
-          }, () => {
+        try {
+          const res:any = await firstValueFrom(
+            this.proyectoAcademicoService.put('enfasis/'+this.info_enfasis.Id, this.info_enfasis)
+          );
+          if (res.Type !== 'error') {
+            this.loadEnfasis();
+            this.eventChange.emit(true);
+            this.snackBar.open(this.translate.instant('enfasis.enfasis_actualizado'), '', {duration: 3000,panelClass: ['info-snackbar']});
+          } else {
             this.snackBar.open(this.translate.instant('enfasis.enfasis_no_actualizado'), '', {duration: 3000,panelClass: ['error-snackbar']});
-          });
+          }
+          
+        } catch (error:any) {
+          this.snackBar.open(this.translate.instant('enfasis.enfasis_no_actualizado'), '', {duration: 3000,panelClass: ['error-snackbar']});
+        }
       }
     });
   }
@@ -122,21 +126,23 @@ export class CrudEnfasisComponent implements OnInit {
     };
   
     Swal.fire(opt)
-      .then((willDelete: any) => {
+      .then(async (willDelete: any) => {
         if (willDelete.value) {
           this.info_enfasis = <Enfasis>enfasis;
-          this.proyectoAcademicoService.post('enfasis', this.info_enfasis)
-            .subscribe((res: any) => {
-              if (res.Type !== 'error') {
-                this.info_enfasis = <Enfasis><unknown>res;
-                this.eventChange.emit(true);
-                this.snackBar.open(this.translate.instant('enfasis.enfasis_creado'), '', {duration: 3000, panelClass: ['info-snackbar']});
-              } else {
-                this.snackBar.open(this.translate.instant('enfasis.enfasis_no_creado'), '', {duration: 3000, panelClass: ['error-snackbar']});
-              }
-            }, () => {
+          try {
+            const res:any = await firstValueFrom (
+              this.proyectoAcademicoService.post('enfasis', this.info_enfasis)
+            );
+            if (res.Type !== 'error') {
+              this.info_enfasis = <Enfasis><unknown>res;
+              this.eventChange.emit(true);
+              this.snackBar.open(this.translate.instant('enfasis.enfasis_creado'), '', {duration: 3000, panelClass: ['info-snackbar']});
+            } else {
               this.snackBar.open(this.translate.instant('enfasis.enfasis_no_creado'), '', {duration: 3000, panelClass: ['error-snackbar']});
-            });
+            }
+          } catch (error) {
+            this.snackBar.open(this.translate.instant('enfasis.enfasis_no_creado'), '', {duration: 3000, panelClass: ['error-snackbar']});
+          }
         }
       });
   }

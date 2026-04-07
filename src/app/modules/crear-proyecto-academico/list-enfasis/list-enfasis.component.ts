@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 import { ListEnfasisService } from 'src/app/services/list_enfasis.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 // @ts-ignore
@@ -42,22 +43,24 @@ export class ListEnfasisComponent implements OnInit {
     this.translate.use(language);
   }
 
-  loadData(): void {
-    this.proyectoAcademicoService.get('enfasis/?limit=0')
-      .subscribe((res: any) => {
-        if (res.Type !== 'error') {
-          const data = <Array<any>>res;
-          if (this.asDialog) {
-            // service
-            this.listEnfasisService.sendListEnfasis(res);
-          }
-          this.dataSource = new MatTableDataSource(data);
-        } else {
-          this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
+  async loadData(): Promise<void> {
+    try {
+      const res : any = await firstValueFrom(
+        this.proyectoAcademicoService.get('enfasis/?limit=-1')
+      );
+      if (res.Type !== 'error') {
+        const data = <Array<any>>res;
+        if (this.asDialog) {
+          // service
+          this.listEnfasisService.sendListEnfasis(res);
         }
-      }, () => {
+        this.dataSource = new MatTableDataSource(data);
+      } else {
         this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
-      });
+      }
+    } catch (error) {
+      this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
+    }
   }
 
   ngOnInit() {
@@ -73,7 +76,7 @@ export class ListEnfasisComponent implements OnInit {
     this.activetab();
   }
 
-  onDelete(event: any): void {
+  async onDelete(event: any): Promise<void> {
     const opt: any = {
       title: this.translate.instant('GLOBAL.eliminar'),
       text: this.translate.instant('enfasis.seguro_continuar_eliminar_enfasis'),
@@ -82,20 +85,22 @@ export class ListEnfasisComponent implements OnInit {
       showCancelButton: true,
     };
     Swal.fire(opt)
-      .then((willDelete: any) => {
+      .then(async (willDelete: any) => {
 
         if (willDelete.value) {
-          this.proyectoAcademicoService.delete('enfasis/', event)
-            .subscribe((res: any) => {
-              if (res.Type !== 'error') {
-                this.loadData();
-                this.snackBar.open(this.translate.instant('enfasis.enfasis_eliminado'), '', {duration: 3000,panelClass: ['info-snackbar']});
-              } else {
-                this.snackBar.open(this.translate.instant('enfasis.enfasis_no_eliminado'), '', {duration: 3000,panelClass: ['error-snackbar']});
-              }
-            }, () => {
+          try {
+            const res : any = await firstValueFrom(
+              this.proyectoAcademicoService.delete('enfasis/', event)
+            );
+            if (res.Type !== 'error') {
+              this.loadData();
+              this.snackBar.open(this.translate.instant('enfasis.enfasis_eliminado'), '', {duration: 3000,panelClass: ['info-snackbar']});
+            } else {
               this.snackBar.open(this.translate.instant('enfasis.enfasis_no_eliminado'), '', {duration: 3000,panelClass: ['error-snackbar']});
-            });
+            }
+          } catch (error) {
+            this.snackBar.open(this.translate.instant('enfasis.enfasis_no_eliminado'), '', {duration: 3000,panelClass: ['error-snackbar']});
+          }
         }
       });
   }

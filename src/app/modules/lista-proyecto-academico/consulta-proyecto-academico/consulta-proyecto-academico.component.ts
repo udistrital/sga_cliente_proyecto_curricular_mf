@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
-import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { OikosService } from 'src/app/services/oikos.service';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -29,10 +29,10 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
 
   basicform!: FormGroup;
   settings_emphasys: any;
-  espacio= [];
-  opcionSeleccionadoEspacio: boolean = false; 
+  espacio = [];
+  opcionSeleccionadoEspacio: boolean = false;
   opcionSeleccionadoEspacioString!: string;
-  CampoControl_espacio = new FormControl("", [Validators.required]);
+  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [Validators.required]);
   dataSource!: MatTableDataSource<any>;
 
   displayedColumns: string[] = ['nombre', 'activo'];
@@ -51,33 +51,33 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
 
 
     this.dataSource = new MatTableDataSource(data.enfasis);
-      this.settings_emphasys = {
-        actions: false,
-        mode: 'external',
-        hideSubHeader: true,
-        columns: {
-          EnfasisId: {
-            title: this.translate.instant('GLOBAL.nombre'),
-            valuePrepareFunction: (value: { Nombre: any; }) => {
-              return value.Nombre;
-            },
-            width: '80%',
+    this.settings_emphasys = {
+      actions: false,
+      mode: 'external',
+      hideSubHeader: true,
+      columns: {
+        EnfasisId: {
+          title: this.translate.instant('GLOBAL.nombre'),
+          valuePrepareFunction: (value: { Nombre: any; }) => {
+            return value.Nombre;
           },
-          Activo: {
-            title: this.translate.instant('GLOBAL.activo'),
-            valuePrepareFunction: (value: any) => {
-              return value ? translate.instant('GLOBAL.si') : translate.instant('GLOBAL.si');
-            },
-            width: '20%',
-          },
+          width: '80%',
         },
-      };
-    }
+        Activo: {
+          title: this.translate.instant('GLOBAL.activo'),
+          valuePrepareFunction: (value: any) => {
+            return value ? translate.instant('GLOBAL.si') : translate.instant('GLOBAL.si');
+          },
+          width: '20%',
+        },
+      },
+    };
+  }
 
 
-    onclick(): void {
-      this.dialogRef.close();
-    }
+  onclick(): void {
+    this.dialogRef.close();
+  }
 
   downloadActoFile(project: any) {
     const filesToGet = [
@@ -87,7 +87,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       },
     ];
     this.newNuxeoService.get(filesToGet).subscribe(
-      (      response: any) => {
+      (response: any) => {
         const filesResponse = <any>response;
         if (Object.keys(filesResponse).length === filesToGet.length) {
           filesToGet.forEach((file: any) => {
@@ -98,7 +98,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         Swal.fire({
-          icon:'error',
+          icon: 'error',
           title: error.status + '',
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
@@ -116,7 +116,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadespacio();
+    this.loadespacio(this.data.idfacultad);
     this.basicform = this.formBuilder.group({
       codigo_interno: ['', Validators.required],
       codigo_snies: ['', Validators.required],
@@ -135,7 +135,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       ofrece_proyecto: ['', Validators.required],
       enfasis_proyecto: ['', Validators.required],
       proyecto_padre_id: ['', Validators.required],
-   })
+    })
 
   }
 
@@ -147,26 +147,27 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
     const dialogRef = this.dialog.open(ListRegistroProyectoAcademicoComponent, {
       width: '1900px',
       height: '700px',
-      data: {Id: this.data.Id},
+      data: { Id: this.data.Id },
     });
     dialogRef.afterClosed().subscribe((result: any) => {
     });
   }
 
-  loadespacio() {
+  loadespacio(idFacultad: any) {
+    /*
     this.oikosService
-      .get("dependencia_tipo_dependencia/?query=TipoDependenciaId:1&limit=0")
+      .get(`asignacion_espacio_fisico_dependencia?query=DependenciaId:${idFacultad},EspacioFisicoId__TipoEspacioFisicoId__CodigoAbreviacion:TIPO_2&limit=0`)
       .subscribe(
         (res: any) => {
           const r = <any>res;
           if (res !== null && r.Type !== "error") {
-            this.espacio = res.map((data: any) => data.DependenciaId);
-            
+            this.espacio = res.map((data: any) => data.EspacioFisicoId);
+
             this.espacio.forEach((esp: any) => {
               if (esp.Id === Number(this.data.iddependencia)) {
-                 this.opcionSeleccionadoEspacio = esp;
-               }
-             });
+                this.opcionSeleccionadoEspacio = esp;
+              }
+            });
           }
         },
         (error: HttpErrorResponse) => {
@@ -178,6 +179,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
           });
         }
       );
+    */
   }
 
 }
