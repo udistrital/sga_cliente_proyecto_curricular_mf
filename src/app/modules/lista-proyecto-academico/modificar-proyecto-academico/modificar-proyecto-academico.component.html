@@ -1,6 +1,6 @@
 <mat-tab-group>
   <mat-tab label="{{ 'editarproyecto.tag_informacionbasica' | translate }}">
-    <mat-card style="margin: 1em">
+    <mat-card appearance="outlined" style="margin: 1em">
       <mat-card-content>
         <mat-accordion multi>
           <mat-expansion-panel>
@@ -10,7 +10,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <!-- DATOS BASICOS -->
-            <mat-card class="m-4 text-center" color="accent" align="center" style="margin: 1em">
+            <mat-card appearance="outlined" class="m-4 text-center" color="accent" align="center" style="margin: 1em">
               <mat-card-header>
                 <mat-card-title>
                   {{ "proyecto.basica" | translate }}
@@ -218,7 +218,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <!-- ENFASIS -->
-            <mat-card class="m-4" color="accent" style="margin: 1em">
+            <mat-card appearance="outlined" class="m-4" color="accent" style="margin: 1em">
               <mat-card-header>
                 <mat-card-title>
                   {{ "proyecto.enfasis" | translate }}
@@ -286,7 +286,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <!-- COMPLEMENTARIOS -->
-            <mat-card class="m-4" color="accent">
+            <mat-card appearance="outlined" class="m-4" color="accent">
               <mat-card-header>
                 <mat-card-title>
                   {{ "proyecto.complementarios" | translate }}
@@ -364,7 +364,7 @@
     </mat-card>
 
     <!-- BOTONES DE NAVEGACION -->
-    <mat-card style="margin: 1em">
+    <mat-card appearance="outlined" style="margin: 1em">
       <mat-card-content>
         <div class="container-buttons">
           <button mat-flat-button color="primary" (click)="onclick()">
@@ -383,7 +383,7 @@
   </mat-tab>
 
   <mat-tab label="{{ 'editarproyecto.tag_acta' | translate }}">
-    <mat-card style="margin: 1em">
+    <mat-card appearance="outlined" style="margin: 1em">
       <mat-card-header>
         <mat-card-title>
           {{ "proyecto.acto" | translate }}
@@ -438,7 +438,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card style="margin: 1em">
+    <mat-card appearance="outlined" style="margin: 1em">
       <mat-card-content>
         <div class="container-buttons">
           <button mat-flat-button color="primary" (click)="onclick()">
@@ -456,7 +456,7 @@
   </mat-tab>
 
   <mat-tab label="{{ 'editarproyecto.tag_asigcoordinador' | translate }}">
-    <mat-card style="margin: 1em">
+    <mat-card appearance="outlined" style="margin: 1em">
       <mat-card-header><mat-card-title>{{
           "editarproyecto.coordinacion" | translate
           }}</mat-card-title>
@@ -515,7 +515,7 @@
   <mat-tab label="{{ 'editarproyecto.tag_registro' | translate }}">
     <div [ngClass]="{ 'form-grid2': checkalta }">
       <div [ngClass]="{ 'form-col1': checkalta }">
-        <mat-card color="accent" style="margin: 1em">
+        <mat-card appearance="outlined" color="accent" style="margin: 1em">
           <mat-card-header>
             <mat-card-title>
               <b>{{ "proyecto.registro" | translate }}</b>
@@ -643,7 +643,7 @@
         </mat-card>
       </div>
       <div [ngClass]="{ 'form-col1': checkalta }">
-        <mat-card *ngIf="checkalta" color="accent" style="margin: 1em">
+        <mat-card appearance="outlined" *ngIf="checkalta" color="accent" style="margin: 1em">
           <mat-card-header><b>{{
               "editarproyecto.registro_alta" | translate
               }}</b></mat-card-header>
@@ -740,7 +740,7 @@
       </div>
     </div>
 
-    <mat-card style="margin: 0.5em;">
+    <mat-card appearance="outlined" style="margin: 0.5em;">
       <mat-card-content>
         <div class="container-buttons">
           <button mat-flat-button color="primary" (click)="onclick()">

@@ -504,7 +504,7 @@
               (change)="onChange($event, c)"
             />
             <div class="{{ c.clase }}">
-              <mat-card size="small">
+              <mat-card appearance="outlined" size="small">
                 <mat-card-content>
                   <img class="carousel-image" src="{{ c.img }}" alt="imagen" />
                 </mat-card-content>
@@ -537,7 +537,7 @@
 
   <!-- Form  mini -->
   <form class="form-horizontal" *ngSwitchCase="'mini'">
-    <mat-card>
+    <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title>
           {{ normalform.titulo }}
@@ -848,7 +848,7 @@
                 {{ c.requerido ? "* " + c.label : c.label }}
               </label>
 
-              <mat-card>
+              <mat-card appearance="outlined">
                 <mat-card-header> Tiny MCE </mat-card-header>
                 <mat-card-content>
                   <ngx-tiny-mce
