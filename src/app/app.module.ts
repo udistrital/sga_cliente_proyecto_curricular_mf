@@ -9,7 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegistroProyectoAcademicoComponent } from './modules/lista-proyecto-academico/registro-proyecto-academico/registro-proyecto-academico.component';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from 'src/environments/environment';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -54,78 +54,72 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
 }
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    RegistroProyectoAcademicoComponent,
-    ListRegistroProyectoAcademicoComponent,
-    ConsultaProyectoAcademicoComponent,
-    ListProyectoAcademicoComponent,
-    CrudProyectoAcademicoComponent,
-    ModificarProyectoAcademicoComponent,
-    ListEnfasisComponent,
-    CrudEnfasisComponent,
-    DynamicFormComponent
-  ],
-  imports: [
-    MatSnackBarModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
-    MatStepperModule,
-    MatTabsModule,
-    MatDatepickerModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDatepickerModule,
-    MatProgressSpinnerModule,
-    MatNativeDateModule,
-    MatTableModule, 
-    MatPaginatorModule,
-    MatDialogModule,
-    CommonModule,
-    MatTableModule,
-    MatSortModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatIconModule,
-    MatExpansionModule,
-    SpinnerUtilModule,
-    MatMenuModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
-  ],
-  exports:[
-    MatDialogModule,
-  ],
-  providers: [
-    { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef, useValue: {} },
-    { provide: HTTP_INTERCEPTORS, useClass: SpinnerUtilInterceptor, multi: true },
-    DocumentoService,
-    OikosService,
-    AnyService,
-    NewNuxeoService,
-    ProyectoAcademicoService,
-    DependenciasService,
-    TercerosService,
-    ParametrosService,
-    ListEnfasisService,
-    RequestService
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        RegistroProyectoAcademicoComponent,
+        ListRegistroProyectoAcademicoComponent,
+        ConsultaProyectoAcademicoComponent,
+        ListProyectoAcademicoComponent,
+        CrudProyectoAcademicoComponent,
+        ModificarProyectoAcademicoComponent,
+        ListEnfasisComponent,
+        CrudEnfasisComponent,
+        DynamicFormComponent
+    ],
+    exports: [
+        MatDialogModule,
+    ],
+    bootstrap: [AppComponent], imports: [MatSnackBarModule,
+        MatAutocompleteModule,
+        MatCheckboxModule,
+        MatStepperModule,
+        MatTabsModule,
+        MatDatepickerModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDatepickerModule,
+        MatProgressSpinnerModule,
+        MatNativeDateModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        CommonModule,
+        MatTableModule,
+        MatSortModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatIconModule,
+        MatExpansionModule,
+        SpinnerUtilModule,
+        MatMenuModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        })], providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} },
+        { provide: HTTP_INTERCEPTORS, useClass: SpinnerUtilInterceptor, multi: true },
+        DocumentoService,
+        OikosService,
+        AnyService,
+        NewNuxeoService,
+        ProyectoAcademicoService,
+        DependenciasService,
+        TercerosService,
+        ParametrosService,
+        ListEnfasisService,
+        RequestService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
