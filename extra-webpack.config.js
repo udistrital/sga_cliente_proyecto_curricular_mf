@@ -1,8 +1,24 @@
-const singleSpaAngularWebpack = require('single-spa-angular/lib/webpack').default;
+const { merge } = require("webpack-merge");
+const singleSpaAngularWebpack =
+  require("single-spa-angular/lib/webpack").default;
 
 module.exports = (config, options) => {
   const singleSpaWebpackConfig = singleSpaAngularWebpack(config, options);
 
-  // Feel free to modify this webpack config however you'd like to
-  return singleSpaWebpackConfig;
+  if (singleSpaWebpackConfig.output) {
+    singleSpaWebpackConfig.output.sourceMapFilename =
+      "[file].[contenthash].map[query]";
+  }
+
+  return merge(singleSpaWebpackConfig, {
+    devServer: {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods":
+          "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Headers":
+          "X-Requested-With, content-type, Authorization",
+      },
+    },
+  });
 };
