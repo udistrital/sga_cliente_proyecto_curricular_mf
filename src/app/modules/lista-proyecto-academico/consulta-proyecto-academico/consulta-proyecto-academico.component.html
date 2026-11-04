@@ -27,7 +27,7 @@
                   formControlName="codigo_interno"
                   name="codigo_interno"
                   [(ngModel)]="data.codigointerno"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -40,7 +40,7 @@
                   formControlName="codigo_snies"
                   name="codigo_snies"
                   [(ngModel)]="data.codigosnies"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -53,7 +53,7 @@
                   formControlName="facultad"
                   name="facultad"
                   [(ngModel)]="data.facultad"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -63,14 +63,15 @@
                   [formControl]="CampoControl_espacio"
                   required
                   [(ngModel)]="opcionSeleccionadoEspacio"
-                >
-                  <mat-option>--</mat-option>
-                  <mat-option
-                    *ngFor="let nombreespacio of espacio"
-                    [value]="nombreespacio"
                   >
-                    {{ nombreespacio["Nombre"] }}
-                  </mat-option>
+                  <mat-option>--</mat-option>
+                  @for (nombreespacio of espacio; track nombreespacio) {
+                    <mat-option
+                      [value]="nombreespacio"
+                      >
+                      {{ nombreespacio["Nombre"] }}
+                    </mat-option>
+                  }
                 </mat-select>
               </mat-form-field>
             </div>
@@ -87,7 +88,7 @@
                   formControlName="nombre_proyecto"
                   name="nombre_proyecto"
                   [(ngModel)]="data.nombre"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -102,7 +103,7 @@
                   formControlName="nivel_proyecto"
                   name="nivel_proyecto"
                   [(ngModel)]="data.nivel"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -119,7 +120,7 @@
                   formControlName="metodologia_proyecto"
                   name="metodologia_proyecto"
                   [(ngModel)]="data.metodologia"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -136,7 +137,7 @@
                   formControlName="abreviacion_proyecto"
                   name="abreviacion_proyecto"
                   [(ngModel)]="data.abreviacion"
-                />
+                  />
               </mat-form-field>
             </div>
           </div>
@@ -155,7 +156,7 @@
                   formControlName="correo_proyecto"
                   name="correo_proyecto"
                   [(ngModel)]="data.correo"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -170,7 +171,7 @@
                   formControlName="creditos_proyecto"
                   name="creditos_proyecto"
                   [(ngModel)]="data.numerocreditos"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -185,7 +186,7 @@
                   formControlName="duracion_proyecto"
                   name="duracion_proyecto"
                   [(ngModel)]="data.duracion"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -200,7 +201,7 @@
                   formControlName="tipo_duracion_proyecto"
                   name="tipo_duracion_proyecto"
                   [(ngModel)]="data.tipoduracion"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -215,7 +216,7 @@
                   formControlName="ciclos_proyecto"
                   name="ciclos_proyecto"
                   [(ngModel)]="data.ciclos"
-                />
+                  />
               </mat-form-field>
             </div>
             <div class="form-col1">
@@ -230,21 +231,23 @@
                   formControlName="ofrece_proyecto"
                   name="ofrece_proyecto"
                   [(ngModel)]="data.ofrece"
-                />
+                  />
               </mat-form-field>
             </div>
           </div>
         </form>
-        <mat-form-field class="form-field" *ngIf="data.proyecto_padre_id">
-          <input
-            readonly
-            matInput
-            placeholder="{{ 'proyecto.proyecto_padre' | translate }}"
-            formControlName="proyecto_padre_id"
-            name="proyecto_padre_id"
-            [(ngModel)]="data.proyecto_padre_id.Nombre"
-          />
-        </mat-form-field>
+        @if (data.proyecto_padre_id) {
+          <mat-form-field class="form-field">
+            <input
+              readonly
+              matInput
+              placeholder="{{ 'proyecto.proyecto_padre' | translate }}"
+              formControlName="proyecto_padre_id"
+              name="proyecto_padre_id"
+              [(ngModel)]="data.proyecto_padre_id.Nombre"
+              />
+          </mat-form-field>
+        }
       </mat-card-content>
     </mat-card>
     <!-- TABLA -->
@@ -272,8 +275,12 @@
                   <b>{{ "GLOBAL.activo" | translate }}</b>
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                  <p *ngIf="row.Activo">{{ "GLOBAL.si" | translate }}</p>
-                  <p *ngIf="!row.Activo">{{ "GLOBAL.no" | translate }}</p>
+                  @if (row.Activo) {
+                    <p>{{ "GLOBAL.si" | translate }}</p>
+                  }
+                  @if (!row.Activo) {
+                    <p>{{ "GLOBAL.no" | translate }}</p>
+                  }
                 </mat-cell>
               </ng-container>
 
