@@ -7,7 +7,7 @@ import {
 } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { InstitucionEnfasis } from 'src/app/models/institucion_enfasis';
 import { NuevoRegistro } from 'src/app/models/nuevo_registro';
@@ -25,6 +25,7 @@ import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-c
   selector: 'app-registro-proyecto-academico',
   templateUrl: './registro-proyecto-academico.component.html',
   styleUrls: ['./registro-proyecto-academico.component.scss'],
+  standalone: false,
 })
 export class RegistroProyectoAcademicoComponent implements OnInit {
   settings: any;
@@ -76,7 +77,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
     private newNuxeoService: NewNuxeoService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService
+    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
   ) {
     this.resoluform = formBuilder.group({
       resolucion: ['', Validators.required],
@@ -92,7 +93,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
       this.fecha_creacion,
       this.resoluform.value.ano_vigencia,
       this.resoluform.value.mes_vigencia,
-      0
+      0,
     );
     this.fecha_calculada_vencimiento = this.fecha_vencimiento_mostrar;
   }
@@ -101,7 +102,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
     date: Date,
     years: number,
     months: number,
-    days: number
+    days: number,
   ): Date {
     const convertDate = moment(date)
       .add(years, 'year')
@@ -136,7 +137,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         this.snackBar.open(
           this.translate.instant('ERROR.formato_documento_pdf'),
           '',
-          { duration: 3000, panelClass: ['error-snackbar'] }
+          { duration: 3000, panelClass: ['error-snackbar'] },
         );
       }
     }
@@ -145,14 +146,14 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
   uploadFilesCreacionRegistro(files: any) {
     return new Promise((resolve, reject) => {
       files.forEach((file: any) => {
-        (file.Id = file.nombre),
+        ((file.Id = file.nombre),
           (file.nombre =
             'soporte_' +
             file.IdDocumento +
             '_actualizacion_registro_proyecto_' +
             this.data.IdProyecto +
             '_tipo_registro_' +
-            Number(this.data.tipo_registro));
+            Number(this.data.tipo_registro)));
         // file.key = file.Id;
         file.key = 'soporte_' + file.IdDocumento;
       });
@@ -169,7 +170,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         },
         (error) => {
           reject(error);
-        }
+        },
       );
     });
   }
@@ -178,7 +179,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
     date: Date,
     years: number,
     months: number,
-    days: number
+    days: number,
   ): Date {
     const convertDate = moment(date)
       .add(years, 'year')
@@ -195,7 +196,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         this.fecha_creacion,
         this.resoluform.value.ano_vigencia,
         this.resoluform.value.mes_vigencia,
-        0
+        0,
       );
 
       this.registro_nuevo = {
@@ -224,7 +225,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
       const opt: any = {
         title: this.translate.instant('GLOBAL.crear'),
         text: this.translate.instant(
-          'historial_registro.seguro_continuar_registrar'
+          'historial_registro.seguro_continuar_registrar',
         ),
         icon: 'warning',
         buttons: true,
@@ -239,7 +240,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
             this.sgaProyectoCurricularMidService
               .post(
                 'proyecto-academico/' + String(this.data.endpoint),
-                this.registro_nuevo
+                this.registro_nuevo,
               )
               .subscribe((res: any) => {
                 if (res.succes) {
@@ -251,26 +252,26 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
                   });
                   this.snackBar.open(
                     this.translate.instant(
-                      'historial_registro.registro_no_creado'
+                      'historial_registro.registro_no_creado',
                     ),
                     '',
-                    { duration: 3000, panelClass: ['error-snackbar'] }
+                    { duration: 3000, panelClass: ['error-snackbar'] },
                   );
                 } else {
                   const opt1: any = {
                     title: this.translate.instant('historial_registro.creado'),
                     text: this.translate.instant(
-                      'historial_registro.registro_creado'
+                      'historial_registro.registro_creado',
                     ),
                     icon: 'success',
                     buttons: true,
                     dangerMode: true,
                     showCancelButton: true,
-                  }; Swal.fire(opt1)
-                    .then((willDelete: any) => {
-                      if (willDelete.value) {
-                      }
-                    });
+                  };
+                  Swal.fire(opt1).then((willDelete: any) => {
+                    if (willDelete.value) {
+                    }
+                  });
                   this.dialogRef.close();
                 }
               });
@@ -286,7 +287,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
           this.snackBar.open(
             this.translate.instant('historial_registro.registro_no_creado'),
             '',
-            { duration: 3000, panelClass: ['error-snackbar'] }
+            { duration: 3000, panelClass: ['error-snackbar'] },
           );
         });
     } else {
@@ -297,12 +298,11 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         buttons: true,
         dangerMode: true,
         showCancelButton: true,
-      }; Swal.fire(opt1)
-        .then((willDelete: any) => {
-          if (willDelete.value) {
-
-          }
-        });
+      };
+      Swal.fire(opt1).then((willDelete: any) => {
+        if (willDelete.value) {
+        }
+      });
     }
   }
 }

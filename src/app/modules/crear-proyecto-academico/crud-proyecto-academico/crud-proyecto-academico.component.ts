@@ -15,7 +15,7 @@ import { MatSelect } from '@angular/material/select';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Subscription, take } from 'rxjs';
 import { Enfasis } from 'src/app/models/enfasis';
 import { InstitucionEnfasis } from 'src/app/models/institucion_enfasis';
@@ -50,6 +50,7 @@ import { navigateToUrl } from 'single-spa';
   selector: 'app-crud-proyecto-academico',
   templateUrl: './crud-proyecto-academico.component.html',
   styleUrls: ['./crud-proyecto-academico.component.scss'],
+  standalone: false,
 })
 export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   @ViewChild('autosize', { static: false }) autosize!: CdkTextareaAutosize;
@@ -122,7 +123,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     new ProyectoAcademicoInstitucion();
 
   CampoControl = new FormControl('', [Validators.required]);
-  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [Validators.required]);
+  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [
+    Validators.required,
+  ]);
   Campo1Control = new FormControl('', [Validators.required]);
   Campo2Control = new FormControl('', [Validators.required]);
   Campo3Control = new FormControl('', [Validators.required]);
@@ -214,7 +217,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     private newNuxeoService: NewNuxeoService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private dependenciasService: DependenciasService
+    private dependenciasService: DependenciasService,
   ) {
     this.dpDayPickerConfig = {
       locale: 'es',
@@ -301,7 +304,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     const emphasys = event.value;
     if (
       !this.arr_enfasis_proyecto.find(
-        (enfasis: any) => emphasys.Id === enfasis.Id
+        (enfasis: any) => emphasys.Id === enfasis.Id,
       ) &&
       emphasys.Id
     ) {
@@ -330,7 +333,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     };
     this.arr_enfasis_proyecto.splice(
       findInArray(event.Id, this.arr_enfasis_proyecto, 'Id'),
-      1
+      1,
     );
     this.dataSource = new MatTableDataSource(this.arr_enfasis_proyecto);
   }
@@ -340,7 +343,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       this.fecha_creacion,
       this.resoluform.value.ano_vigencia,
       this.resoluform.value.mes_vigencia,
-      0
+      0,
     );
     this.fecha_calculada_vencimiento = this.fecha_vencimiento_mostrar;
   }
@@ -349,7 +352,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     date: Date,
     years: number,
     months: number,
-    days: number
+    days: number,
   ): Date {
     const convertDate = moment(date)
       .add(years, 'year')
@@ -410,7 +413,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             this.loadespacio(proyecto_a_clonar.IdDependenciaFacultad);
             // enfasis
             this.arr_enfasis_proyecto = proyecto_a_clonar.Enfasis.map(
-              (enfasis: any) => enfasis.EnfasisId
+              (enfasis: any) => enfasis.EnfasisId,
             );
             // checks
             this.checkciclos =
@@ -421,35 +424,35 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             this.opcionSeleccionadoUnidad = this.unidad.find(
               (unidad_temp: any) =>
                 unidad_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.UnidadTiempoId
+                proyecto_a_clonar.ProyectoAcademico.UnidadTiempoId,
             );
             this.opcionSeleccionadoNivel = this.nivel.find(
               (nivel_temp: any) =>
                 nivel_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.NivelFormacionId.Id
+                proyecto_a_clonar.ProyectoAcademico.NivelFormacionId.Id,
             );
             this.opcionSeleccionadoMeto = this.metodo.find(
               (metodologia_temp: any) =>
                 metodologia_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.MetodologiaId.Id
+                proyecto_a_clonar.ProyectoAcademico.MetodologiaId.Id,
             );
             this.opcionSeleccionadoFacultad = this.facultad.find(
               (facultad_temp: any) =>
-                facultad_temp.Id === proyecto_a_clonar.IdDependenciaFacultad
+                facultad_temp.Id === proyecto_a_clonar.IdDependenciaFacultad,
             );
             this.opcionSeleccionadoArea = this.area.find(
               (area_temp: any) =>
                 area_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.AreaConocimientoId
+                proyecto_a_clonar.ProyectoAcademico.AreaConocimientoId,
             );
             this.opcionSeleccionadoNucleo = this.nucleo.find(
               (nucleo_temp: any) =>
                 nucleo_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.NucleoBaseId
+                proyecto_a_clonar.ProyectoAcademico.NucleoBaseId,
             );
             this.opcionSeleccionadoEspacioFisico = this.espacio_fisico.find(
               (espacio_fisico_temp: any) =>
-                espacio_fisico_temp.Id === proyecto_a_clonar.IdEspacioFisico
+                espacio_fisico_temp.Id === proyecto_a_clonar.IdEspacioFisico,
             );
             // info basica
             this.basicform = this.formBuilder.group({
@@ -507,19 +510,19 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             this.compleform = this.formBuilder.group({
               titulacion_snies: [
                 proyecto_a_clonar.Titulaciones.find(
-                  (titulacion: any) => titulacion.TipoTitulacionId.Id === 1
+                  (titulacion: any) => titulacion.TipoTitulacionId.Id === 1,
                 ).Nombre,
                 Validators.required,
               ],
               titulacion_mujer: [
                 proyecto_a_clonar.Titulaciones.find(
-                  (titulacion: any) => titulacion.TipoTitulacionId.Id === 3
+                  (titulacion: any) => titulacion.TipoTitulacionId.Id === 3,
                 ).Nombre,
                 Validators.required,
               ],
               titulacion_hombre: [
                 proyecto_a_clonar.Titulaciones.find(
-                  (titulacion: any) => titulacion.TipoTitulacionId.Id === 2
+                  (titulacion: any) => titulacion.TipoTitulacionId.Id === 2,
                 ).Nombre,
                 Validators.required,
               ],
@@ -532,7 +535,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             this.snackBar.open(
               this.translate.instant('proyecto.proyecto_no_cargado'),
               '',
-              { duration: 3000, panelClass: ['error-snackbar'] }
+              { duration: 3000, panelClass: ['error-snackbar'] },
             );
           }
         },
@@ -540,9 +543,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           this.snackBar.open(
             this.translate.instant('proyecto.proyecto_no_cargado'),
             '',
-            { duration: 3000, panelClass: ['error-snackbar'] }
+            { duration: 3000, panelClass: ['error-snackbar'] },
           );
-        }
+        },
       );
   }
 
@@ -563,7 +566,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         this.snackBar.open(
           this.translate.instant('ERROR.formato_documento_pdf'),
           '',
-          { duration: 3000, panelClass: ['error-snackbar'] }
+          { duration: 3000, panelClass: ['error-snackbar'] },
         );
       }
     }
@@ -582,7 +585,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         this.snackBar.open(
           this.translate.instant('ERROR.formato_documento_pdf'),
           '',
-          { duration: 3000, panelClass: ['error-snackbar'] }
+          { duration: 3000, panelClass: ['error-snackbar'] },
         );
       }
     }
@@ -627,13 +630,13 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
               if (file.IdDocumento === 9) {
                 this.uidResolucion = file.uid;
                 let f = responseNux.find(
-                  (res) => res.res.Nombre == file.nombre
+                  (res) => res.res.Nombre == file.nombre,
                 );
                 this.idDocumentoResolucion = f.res.Id;
               } else if (file.IdDocumento === 10) {
                 this.uidActoAdministrativo = file.uid;
                 let f = responseNux.find(
-                  (res) => res.res.Nombre == file.nombre
+                  (res) => res.res.Nombre == file.nombre,
                 );
                 this.idDocumentoAdministrativo = f.res.Id;
               }
@@ -643,7 +646,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         },
         (error) => {
           reject(error);
-        }
+        },
       );
     });
   }
@@ -665,7 +668,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             text: this.translate.instant('ERROR.' + error.status),
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
-        }
+        },
       );
   }
 
@@ -702,7 +705,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   loadarea() {
     this.parametrosService
       .get(
-        'parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id__isnull:true&limit=0'
+        'parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id__isnull:true&limit=0',
       )
       .subscribe(
         (res) => {
@@ -718,7 +721,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             text: this.translate.instant('ERROR.' + error.status),
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
-        }
+        },
       );
   }
 
@@ -739,27 +742,29 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             text: this.translate.instant('ERROR.' + error.status),
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
-        }
+        },
       );
   }
 
   loadenfasis() {
-    this.proyectoacademicoService.get('enfasis/?query=Activo:true&limit=-1').subscribe(
-      (res) => {
-        const r = <any>res;
-        if (res !== null && r.Type !== 'error') {
-          this.enfasis = <any>res;
-        }
-      },
-      (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.status + '',
-          text: this.translate.instant('ERROR.' + error.status),
-          confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-        });
-      }
-    );
+    this.proyectoacademicoService
+      .get('enfasis/?query=Activo:true&limit=-1')
+      .subscribe(
+        (res) => {
+          const r = <any>res;
+          if (res !== null && r.Type !== 'error') {
+            this.enfasis = <any>res;
+          }
+        },
+        (error: HttpErrorResponse) => {
+          Swal.fire({
+            icon: 'error',
+            title: error.status + '',
+            text: this.translate.instant('ERROR.' + error.status),
+            confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
+          });
+        },
+      );
   }
 
   loadnivel() {
@@ -777,7 +782,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-      }
+      },
     );
   }
 
@@ -796,7 +801,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-      }
+      },
     );
   }
 
@@ -804,7 +809,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     date: Date,
     years: number,
     months: number,
-    days: number
+    days: number,
   ): Date {
     const convertDate = moment(date)
       .add(years, 'year')
@@ -818,7 +823,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   loadnucleo(id: number) {
     this.parametrosService
       .get(
-        `parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id:${id}&limit=0`
+        `parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id:${id}&limit=0`,
       )
       .subscribe(
         (res) => {
@@ -834,7 +839,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             text: this.translate.instant('ERROR.' + error.status),
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
-        }
+        },
       );
   }
   onBlurCodigoSnies(codigo: string) {
@@ -847,7 +852,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
               title: this.translate.instant('proyecto.proyecto_no_encontrado'),
               html: this.translate.instant(
                 'proyecto.detalle_proyecto_no_encontrado',
-                { codigo_snies: codigo }
+                { codigo_snies: codigo },
               ),
               icon: 'error',
               buttons: true,
@@ -872,7 +877,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                   codigo_snies: codigo,
                   codigo_interno: proyecto.codigo_proyecto,
                   nombre_proyecto: proyecto.nombre_proyecto,
-                }
+                },
               ),
               icon: 'warning',
               buttons: true,
@@ -907,7 +912,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
               this.basicform.get('nombre_proyecto').setValue('');
             }
           });
-        }
+        },
       );
     }
   }
@@ -925,9 +930,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     try {
       if (
         this.basicform.valid &
-        this.resoluform.valid &
-        this.compleform.valid &
-        this.actoform.valid &&
+          this.resoluform.valid &
+          this.compleform.valid &
+          this.actoform.valid &&
         this.arr_enfasis_proyecto.length > 0 &&
         this.fileActoAdministrativo
       ) {
@@ -971,7 +976,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           this.fecha_creacion,
           this.resoluform.value.ano_vigencia,
           this.resoluform.value.mes_vigencia,
-          0
+          0,
         );
         this.registro_califacado_acreditacion = {
           Id: 0,
@@ -1070,7 +1075,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         const opt: any = {
           title: this.translate.instant('GLOBAL.registrar'),
           text: this.translate.instant(
-            'proyecto.seguro_continuar_registrar_proyecto'
+            'proyecto.seguro_continuar_registrar_proyecto',
           ),
           icon: 'warning',
           buttons: true,
@@ -1119,7 +1124,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                     this.snackBar.open(
                       this.translate.instant('proyecto.proyecto_no_creado'),
                       '',
-                      { duration: 3000, panelClass: ['error-snackbar'] }
+                      { duration: 3000, panelClass: ['error-snackbar'] },
                     );
 
                     Swal.close();
@@ -1142,7 +1147,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                 (error: any) => {
                   this.isLoading = false; // Ocultar indicador de carga
                   Swal.close();
-                }
+                },
               );
           } else {
             this.isLoading = false; // Ocultar indicador de carga

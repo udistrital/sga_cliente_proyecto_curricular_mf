@@ -24,7 +24,6 @@ import { RowProyecto } from 'src/app/models/proyecto_academico/proyecto_academic
 import { ApiResponse } from 'src/app/models/api-response.interface';
 import { firstValueFrom } from 'rxjs';
 
-
 const TRANSLATIONS = {
   INHABILITAR: {
     TITLE: 'consultaproyecto.inhabilitar_proyecto',
@@ -44,6 +43,7 @@ const TRANSLATIONS = {
   selector: 'app-list-proyecto-academico.component',
   templateUrl: './list-proyecto-academico.component.component.html',
   styleUrls: ['./list-proyecto-academico.component.component.scss'],
+  standalone: false,
 })
 export class ListProyectoAcademicoComponent implements OnInit {
   displayedColumns: string[] = [
@@ -74,14 +74,16 @@ export class ListProyectoAcademicoComponent implements OnInit {
     private proyectoacademicoService: ProyectoAcademicoService,
     private proyectoCurricularService: ProyectoCurricularService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {
     this.loadproyectos();
     // this.loadData();
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value
+      .trim()
+      .toLowerCase();
     this.dataSource.filter = filterValue;
 
     this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
@@ -100,7 +102,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
   async loadData(): Promise<void> {
     try {
       const res = await firstValueFrom(
-        this.proyectoCurricularService.getProyectosAcademicos()
+        this.proyectoCurricularService.getProyectosAcademicos(),
       );
       this.dataSource = new MatTableDataSource(res);
       setTimeout(() => {
@@ -158,7 +160,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => { });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   openDialogModificar(id: number, proyectoData: any): void {
@@ -224,7 +226,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
         activo: proyectoData.activo,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => { });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   filterPredicate(data: string, filter: string): boolean {
@@ -237,13 +239,13 @@ export class ListProyectoAcademicoComponent implements OnInit {
     this.translate.use(language);
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   async loadproyectos() {
     try {
-      const res = await firstValueFrom( 
-        this.proyectoCurricularService.getProyectosAcademicos()
-       );
+      const res = await firstValueFrom(
+        this.proyectoCurricularService.getProyectosAcademicos(),
+      );
       res.sort((a, b) => {
         const dateA = new Date(a.ProyectoAcademico.FechaModificacion);
         const dateB = new Date(b.ProyectoAcademico.FechaModificacion);
@@ -256,23 +258,22 @@ export class ListProyectoAcademicoComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.filterPredicate = (data: any, filter: string) =>
         this.filterPredicate(data.ProyectoAcademico.Nombre, filter);
-      
-    } catch (error:any) {
+    } catch (error: any) {
       Swal.fire({
-          icon: 'error',
-          title: this.translate.instant('GLOBAL.error'),
-          text: error.message || this.translate.instant('GLOBAL.error_message'),
-          confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-        });
+        icon: 'error',
+        title: this.translate.instant('GLOBAL.error'),
+        text: error.message || this.translate.instant('GLOBAL.error_message'),
+        confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
+      });
     }
   }
 
   async obteneridporid_consulta(id: number) {
     try {
       const res = await firstValueFrom(
-        this.proyectoCurricularService.getProyectoAcademicoPorId(id)
+        this.proyectoCurricularService.getProyectoAcademicoPorId(id),
       );
-      if (res != null){
+      if (res != null) {
         try {
           const proyectoConsultaData = {
             codigo: res.ProyectoAcademico.Codigo,
@@ -297,12 +298,10 @@ export class ListProyectoAcademicoComponent implements OnInit {
           };
 
           this.openDialogConsulta(id, proyectoConsultaData);
-
-          } catch (error) {
-            console.info(error);
-          }
+        } catch (error) {
+          console.info(error);
+        }
       }
-
     } catch (error: any) {
       Swal.fire({
         icon: 'error',
@@ -311,7 +310,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
         confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
       });
     }
-    
   }
 
   async obteneridporid_modificar(id: number) {
@@ -324,14 +322,18 @@ export class ListProyectoAcademicoComponent implements OnInit {
     const coordinador = await this.consultacoordinador(id);
 
     try {
-      const res = await firstValueFrom( 
-        this.proyectoCurricularService.getProyectoAcademicoPorId(id)
+      const res = await firstValueFrom(
+        this.proyectoCurricularService.getProyectoAcademicoPorId(id),
       );
       if (!res) throw new Error('No se encontró el proyecto');
 
       try {
-        const registroCalificado = res.Registro?.find(r => r.TipoRegistroId.CodigoAbreviacion === 'REGACR');
-        const registroAltaCalidad = res.Registro?.find(r => r.TipoRegistroId.CodigoAbreviacion === 'REGREN');
+        const registroCalificado = res.Registro?.find(
+          (r) => r.TipoRegistroId.CodigoAbreviacion === 'REGACR',
+        );
+        const registroAltaCalidad = res.Registro?.find(
+          (r) => r.TipoRegistroId.CodigoAbreviacion === 'REGREN',
+        );
 
         const parseVigencia = (texto: string) => {
           if (!texto) return { meses: '', anos: '' };
@@ -339,12 +341,18 @@ export class ListProyectoAcademicoComponent implements OnInit {
           const anosMatch = texto.match(/Años:(\d+)/);
           return {
             meses: mesesMatch ? mesesMatch[1] : '',
-            anos: anosMatch ? anosMatch[1] : ''
+            anos: anosMatch ? anosMatch[1] : '',
           };
         };
 
-        const vigenciaCalificado = parseVigencia(registroCalificado?.VigenciaActoAdministrativo || '');
-        const vigenciaAlta = parseVigencia(registroAltaCalidad?.VigenciaActoAdministrativo || res.VigenciaActoAdministrativoAltaCalidad || '');
+        const vigenciaCalificado = parseVigencia(
+          registroCalificado?.VigenciaActoAdministrativo || '',
+        );
+        const vigenciaAlta = parseVigencia(
+          registroAltaCalidad?.VigenciaActoAdministrativo ||
+            res.VigenciaActoAdministrativoAltaCalidad ||
+            '',
+        );
 
         const datosProyecto = {
           codigo: res.ProyectoAcademico.Codigo,
@@ -373,20 +381,36 @@ export class ListProyectoAcademicoComponent implements OnInit {
           competencias: res.ProyectoAcademico.Competencias,
           idarea: res.ProyectoAcademico.AreaConocimientoId,
           idnucleo: res.ProyectoAcademico.NucleoBaseId,
-          resolucion_acreditacion: registroCalificado ? registroCalificado.NumeroActoAdministrativo : '',
+          resolucion_acreditacion: registroCalificado
+            ? registroCalificado.NumeroActoAdministrativo
+            : '',
           iddependencia: res.ProyectoAcademico.DependenciaId,
-          resolucion_acreditacion_ano: registroCalificado ? registroCalificado.AnoActoAdministrativoId : '',
-          fecha_creacion_resolucion: registroCalificado ? new Date(registroCalificado.FechaCreacionActoAdministrativo) : null,
+          resolucion_acreditacion_ano: registroCalificado
+            ? registroCalificado.AnoActoAdministrativoId
+            : '',
+          fecha_creacion_resolucion: registroCalificado
+            ? new Date(registroCalificado.FechaCreacionActoAdministrativo)
+            : null,
           vigencia_resolucion_meses: vigenciaCalificado.meses,
           vigencia_resolucion_anos: vigenciaCalificado.anos,
-          id_documento_registor_calificado: registroCalificado ? registroCalificado.EnlaceActo : '',
+          id_documento_registor_calificado: registroCalificado
+            ? registroCalificado.EnlaceActo
+            : '',
           numero_acto: res.ProyectoAcademico.NumeroActoAdministrativo,
           ano_acto: res.ProyectoAcademico.AnoActoAdministrativo,
           existe_registro_alta_calidad: Boolean(res.TieneRegistroAltaCalidad),
-          resolucion_alta_calidad: registroAltaCalidad ? registroAltaCalidad.NumeroActoAdministrativo : res.NumeroActoAdministrativoAltaCalidad,
-          resolucion_alta_calidad_ano: registroAltaCalidad ? registroAltaCalidad.AnoActoAdministrativoId : res.AnoActoAdministrativoIdAltaCalidad,
-          fecha_creacion_resolucion_alta_calidad: registroAltaCalidad ? new Date(registroAltaCalidad.FechaCreacionActoAdministrativo) : new Date(res.FechaCreacionActoAdministrativoAltaCalidad),
-          id_documento_alta_calidad: registroAltaCalidad ? registroAltaCalidad.EnlaceActo : res.EnlaceActoAdministrativoAltaCalidad,
+          resolucion_alta_calidad: registroAltaCalidad
+            ? registroAltaCalidad.NumeroActoAdministrativo
+            : res.NumeroActoAdministrativoAltaCalidad,
+          resolucion_alta_calidad_ano: registroAltaCalidad
+            ? registroAltaCalidad.AnoActoAdministrativoId
+            : res.AnoActoAdministrativoIdAltaCalidad,
+          fecha_creacion_resolucion_alta_calidad: registroAltaCalidad
+            ? new Date(registroAltaCalidad.FechaCreacionActoAdministrativo)
+            : new Date(res.FechaCreacionActoAdministrativoAltaCalidad),
+          id_documento_alta_calidad: registroAltaCalidad
+            ? registroAltaCalidad.EnlaceActo
+            : res.EnlaceActoAdministrativoAltaCalidad,
           id_documento_acto: res.ProyectoAcademico.EnlaceActoAdministrativo,
           vigencia_resolucion_meses_alta_calidad: vigenciaAlta.meses,
           vigencia_resolucion_anos_alta_calidad: vigenciaAlta.anos,
@@ -400,8 +424,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       } catch (error) {
         console.info(error);
       }
-      
-    } catch (error:any) {
+    } catch (error: any) {
       Swal.fire({
         icon: 'error',
         title: error.status + '',
@@ -435,10 +458,10 @@ export class ListProyectoAcademicoComponent implements OnInit {
 
   async consultacoordinador(id: number): Promise<any> {
     try {
-      const res : any = await firstValueFrom( 
+      const res: any = await firstValueFrom(
         this.proyectoacademicoService.get(
-          `proyecto_academico_rol_tercero_dependencia/?query=ProyectoAcademicoInstitucionId.Id:${id}`
-        )
+          `proyecto_academico_rol_tercero_dependencia/?query=ProyectoAcademicoInstitucionId.Id:${id}`,
+        ),
       );
 
       if (res !== null && res.Type !== 'error') {
@@ -473,7 +496,8 @@ export class ListProyectoAcademicoComponent implements OnInit {
 
     Swal.fire(opt).then((result: any) => {
       if (result.isConfirmed) {
-        this.proyectoCurricularService.cambiarHabilidadProyecto(row)
+        this.proyectoCurricularService
+          .cambiarHabilidadProyecto(row)
           .then((res: ApiResponse<any>) => {
             this.handleResponseInhabilitar(res, translationKey);
           })
@@ -484,7 +508,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
               {
                 duration: 6000,
                 panelClass: ['error-snackbar'],
-              }
+              },
             );
           });
       }
@@ -493,7 +517,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
 
   private handleResponseInhabilitar(
     res: ApiResponse<any>,
-    translationKey: any
+    translationKey: any,
   ) {
     if (res.Success) {
       this.loadproyectos();

@@ -12,25 +12,34 @@ import Swal from 'sweetalert2/dist/sweetalert2';
 @Component({
   selector: 'app-list-enfasis',
   templateUrl: './list-enfasis.component.html',
-  styleUrls: ['./list-enfasis.component.scss']
+  styleUrls: ['./list-enfasis.component.scss'],
+  standalone: false,
 })
 export class ListEnfasisComponent implements OnInit {
-
   uid!: number;
   cambiotab: boolean = false;
   settings: any;
 
-  displayedColumns = ['acciones', 'nombre', 'descripcion', 'codigo_abreviacion', 'activo', 'numero_orden'];
+  displayedColumns = [
+    'acciones',
+    'nombre',
+    'descripcion',
+    'codigo_abreviacion',
+    'activo',
+    'numero_orden',
+  ];
 
   dataSource!: MatTableDataSource<any>;
 
-  constructor(private translate: TranslateService, private proyectoAcademicoService: ProyectoAcademicoService,
+  constructor(
+    private translate: TranslateService,
+    private proyectoAcademicoService: ProyectoAcademicoService,
     private dialogRef: MatDialogRef<ListEnfasisComponent>,
     private listEnfasisService: ListEnfasisService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+  ) {
     this.loadData();
-    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
-    });
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {});
   }
 
   @Input() asDialog!: boolean;
@@ -38,15 +47,14 @@ export class ListEnfasisComponent implements OnInit {
     this.dialogRef.close();
   }
 
-
   useLanguage(language: string) {
     this.translate.use(language);
   }
 
   async loadData(): Promise<void> {
     try {
-      const res : any = await firstValueFrom(
-        this.proyectoAcademicoService.get('enfasis/?limit=-1')
+      const res: any = await firstValueFrom(
+        this.proyectoAcademicoService.get('enfasis/?limit=-1'),
       );
       if (res.Type !== 'error') {
         const data = <Array<any>>res;
@@ -56,15 +64,20 @@ export class ListEnfasisComponent implements OnInit {
         }
         this.dataSource = new MatTableDataSource(data);
       } else {
-        this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
+        this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        });
       }
     } catch (error) {
-      this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {duration: 3000,panelClass: ['error-snackbar']});
+      this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+      });
     }
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onEdit(event: any): void {
     this.uid = event.Id;
@@ -81,28 +94,38 @@ export class ListEnfasisComponent implements OnInit {
       title: this.translate.instant('GLOBAL.eliminar'),
       text: this.translate.instant('enfasis.seguro_continuar_eliminar_enfasis'),
       icon: 'warning',
-      
+
       showCancelButton: true,
     };
-    Swal.fire(opt)
-      .then(async (willDelete: any) => {
-
-        if (willDelete.value) {
-          try {
-            const res : any = await firstValueFrom(
-              this.proyectoAcademicoService.delete('enfasis/', event)
+    Swal.fire(opt).then(async (willDelete: any) => {
+      if (willDelete.value) {
+        try {
+          const res: any = await firstValueFrom(
+            this.proyectoAcademicoService.delete('enfasis/', event),
+          );
+          if (res.Type !== 'error') {
+            this.loadData();
+            this.snackBar.open(
+              this.translate.instant('enfasis.enfasis_eliminado'),
+              '',
+              { duration: 3000, panelClass: ['info-snackbar'] },
             );
-            if (res.Type !== 'error') {
-              this.loadData();
-              this.snackBar.open(this.translate.instant('enfasis.enfasis_eliminado'), '', {duration: 3000,panelClass: ['info-snackbar']});
-            } else {
-              this.snackBar.open(this.translate.instant('enfasis.enfasis_no_eliminado'), '', {duration: 3000,panelClass: ['error-snackbar']});
-            }
-          } catch (error) {
-            this.snackBar.open(this.translate.instant('enfasis.enfasis_no_eliminado'), '', {duration: 3000,panelClass: ['error-snackbar']});
+          } else {
+            this.snackBar.open(
+              this.translate.instant('enfasis.enfasis_no_eliminado'),
+              '',
+              { duration: 3000, panelClass: ['error-snackbar'] },
+            );
           }
+        } catch (error) {
+          this.snackBar.open(
+            this.translate.instant('enfasis.enfasis_no_eliminado'),
+            '',
+            { duration: 3000, panelClass: ['error-snackbar'] },
+          );
         }
-      });
+      }
+    });
   }
 
   activetab(): void {
@@ -124,7 +147,5 @@ export class ListEnfasisComponent implements OnInit {
     }
   }
 
-
-  itemselec(event: any): void {
-  }
+  itemselec(event: any): void {}
 }

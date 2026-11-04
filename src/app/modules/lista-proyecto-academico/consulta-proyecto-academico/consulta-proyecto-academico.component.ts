@@ -3,10 +3,19 @@ import { Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';
 import { ListRegistroProyectoAcademicoComponent } from '../list-registro-proyecto-academico/list-registro-proyecto-academico.component';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 import { Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
@@ -16,15 +25,17 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-consulta-proyecto-academico',
   templateUrl: './consulta-proyecto-academico.component.html',
-  styleUrls: ['./consulta-proyecto-academico.component.scss']
+  styleUrls: ['./consulta-proyecto-academico.component.scss'],
+  standalone: false,
 })
 export class ConsultaProyectoAcademicoComponent implements OnInit {
-
   @ViewChild('autosize', { static: false }) autosize!: CdkTextareaAutosize;
 
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
+    this._ngZone.onStable
+      .pipe(take(1))
+      .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
   basicform!: FormGroup;
@@ -32,14 +43,15 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
   espacio = [];
   opcionSeleccionadoEspacio: boolean = false;
   opcionSeleccionadoEspacioString!: string;
-  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [Validators.required]);
+  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [
+    Validators.required,
+  ]);
   dataSource!: MatTableDataSource<any>;
 
   displayedColumns: string[] = ['nombre', 'activo'];
 
-
-
-  constructor(private translate: TranslateService,
+  constructor(
+    private translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     private _ngZone: NgZone,
@@ -47,9 +59,8 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
     private routerService: Router,
     private oikosService: OikosService,
     private newNuxeoService: NewNuxeoService,
-    private formBuilder: FormBuilder) {
-
-
+    private formBuilder: FormBuilder,
+  ) {
     this.dataSource = new MatTableDataSource(data.enfasis);
     this.settings_emphasys = {
       actions: false,
@@ -58,7 +69,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       columns: {
         EnfasisId: {
           title: this.translate.instant('GLOBAL.nombre'),
-          valuePrepareFunction: (value: { Nombre: any; }) => {
+          valuePrepareFunction: (value: { Nombre: any }) => {
             return value.Nombre;
           },
           width: '80%',
@@ -66,14 +77,15 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
         Activo: {
           title: this.translate.instant('GLOBAL.activo'),
           valuePrepareFunction: (value: any) => {
-            return value ? translate.instant('GLOBAL.si') : translate.instant('GLOBAL.si');
+            return value
+              ? translate.instant('GLOBAL.si')
+              : translate.instant('GLOBAL.si');
           },
           width: '20%',
         },
       },
     };
   }
-
 
   onclick(): void {
     this.dialogRef.close();
@@ -103,7 +115,8 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-      });
+      },
+    );
   }
 
   cloneProject(project: any): void {
@@ -135,12 +148,11 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       ofrece_proyecto: ['', Validators.required],
       enfasis_proyecto: ['', Validators.required],
       proyecto_padre_id: ['', Validators.required],
-    })
-
+    });
   }
 
   prueba() {
-    this.openDialogRegistro()
+    this.openDialogRegistro();
   }
 
   openDialogRegistro(): void {
@@ -149,8 +161,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       height: '700px',
       data: { Id: this.data.Id },
     });
-    dialogRef.afterClosed().subscribe((result: any) => {
-    });
+    dialogRef.afterClosed().subscribe((result: any) => {});
   }
 
   loadespacio(idFacultad: any) {
@@ -181,5 +192,4 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       );
     */
   }
-
 }

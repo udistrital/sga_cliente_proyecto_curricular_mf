@@ -12,7 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import * as momentTimezone from 'moment-timezone';
 import { Coordinador } from 'src/app/models/coordinador';
 import { Enfasis } from 'src/app/models/enfasis';
@@ -46,6 +46,7 @@ import { firstValueFrom } from 'rxjs';
   selector: 'app-modificar-proyecto-academico',
   templateUrl: './modificar-proyecto-academico.component.html',
   styleUrls: ['./modificar-proyecto-academico.component.scss'],
+  standalone: false,
 })
 export class ModificarProyectoAcademicoComponent {
   settings: any;
@@ -116,7 +117,9 @@ export class ModificarProyectoAcademicoComponent {
   dataSource!: MatTableDataSource<any>;
 
   CampoControl = new FormControl('', [Validators.required]);
-  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [Validators.required]);
+  CampoControl_espacio = new FormControl({ value: '', disabled: true }, [
+    Validators.required,
+  ]);
   Campo1Control = new FormControl('', [Validators.required]);
   Campo2Control = new FormControl('', [Validators.required]);
   Campo3Control = new FormControl('', [Validators.required]);
@@ -216,7 +219,7 @@ export class ModificarProyectoAcademicoComponent {
     private newNuxeoService: NewNuxeoService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService
+    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
   ) {
     this.dpDayPickerConfig = {
       locale: 'es',
@@ -300,7 +303,7 @@ export class ModificarProyectoAcademicoComponent {
     this.fecha_creacion_calificado = new Date(
       momentTimezone
         .tz(this.data.fecha_creacion_registro, 'America/Bogota')
-        .format('YYYY-MM-DDTHH:mm')
+        .format('YYYY-MM-DDTHH:mm'),
     );
     this.checkalta = Boolean(JSON.parse(this.data.tieneregistroaltacalidad));
 
@@ -311,7 +314,7 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   onSelectionChanged(event: any) {
-    this.loadnucleo(event.value.Id)
+    this.loadnucleo(event.value.Id);
   }
 
   onChangeFacultad(event: any) {
@@ -325,7 +328,7 @@ export class ModificarProyectoAcademicoComponent {
       this.fecha_creacion_alta = new Date(
         momentTimezone
           .tz(this.data.fecha_creacion_registro_alta, 'America/Bogota')
-          .format('YYYY-MM-DD HH:mm')
+          .format('YYYY-MM-DD HH:mm'),
       );
     }
   }
@@ -337,7 +340,7 @@ export class ModificarProyectoAcademicoComponent {
       this.fecha_creacion_cordin = new Date(
         momentTimezone
           .tz(this.data.fechainiciocoordinador, 'America/Bogota')
-          .format('YYYY-MM-DD HH:mm')
+          .format('YYYY-MM-DD HH:mm'),
       );
     }
   }
@@ -359,7 +362,7 @@ export class ModificarProyectoAcademicoComponent {
         this.snackBar.open(
           this.translate.instant('ERROR.formato_documento_pdf'),
           '',
-          { duration: 3000, panelClass: ['error-snackbar'] }
+          { duration: 3000, panelClass: ['error-snackbar'] },
         );
       }
     }
@@ -378,7 +381,7 @@ export class ModificarProyectoAcademicoComponent {
         this.snackBar.open(
           this.translate.instant('ERROR.formato_documento_pdf'),
           '',
-          { duration: 3000, panelClass: ['error-snackbar'] }
+          { duration: 3000, panelClass: ['error-snackbar'] },
         );
       }
     }
@@ -397,7 +400,7 @@ export class ModificarProyectoAcademicoComponent {
         this.snackBar.open(
           this.translate.instant('ERROR.formato_documento_pdf'),
           '',
-          { duration: 3000, panelClass: ['error-snackbar'] }
+          { duration: 3000, panelClass: ['error-snackbar'] },
         );
       }
     }
@@ -427,25 +430,27 @@ export class ModificarProyectoAcademicoComponent {
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-      }
+      },
     );
   }
 
   async loadenfasis() {
     try {
-      const res:any = await firstValueFrom(
-        this.proyectoacademicoService.get('enfasis/?query=Activo:true&limit=-1')
+      const res: any = await firstValueFrom(
+        this.proyectoacademicoService.get(
+          'enfasis/?query=Activo:true&limit=-1',
+        ),
       );
       if (res !== null && res.Type !== 'error') {
         this.enfasis = <any>res;
       }
-    } catch (error:any) {
+    } catch (error: any) {
       Swal.fire({
-          icon: 'error',
-          title: error.status + '',
-          text: this.translate.instant('ERROR.' + error.status),
-          confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-        });
+        icon: 'error',
+        title: error.status + '',
+        text: this.translate.instant('ERROR.' + error.status),
+        confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
+      });
     }
   }
 
@@ -453,7 +458,7 @@ export class ModificarProyectoAcademicoComponent {
     const emphasys = event.value;
     if (
       !this.arr_enfasis_proyecto.find(
-        (enfasis: any) => emphasys.Id === enfasis.EnfasisId.Id
+        (enfasis: any) => emphasys.Id === enfasis.EnfasisId.Id,
       ) &&
       emphasys.Id
     ) {
@@ -463,10 +468,10 @@ export class ModificarProyectoAcademicoComponent {
       enfasis_temporal.ProyectoAcademicoInstitucionId = this.data.proyectoJson;
       enfasis_temporal.esNuevo = true;
       enfasis_temporal.FechaCreacion = new Date(
-        momentTimezone.tz('America/Bogota').format('YYYY-MM-DDTHH:mm')
+        momentTimezone.tz('America/Bogota').format('YYYY-MM-DDTHH:mm'),
       );
       enfasis_temporal.FechaModificacion = new Date(
-        momentTimezone.tz('America/Bogota').format('YYYY-MM-DDTHH:mm')
+        momentTimezone.tz('America/Bogota').format('YYYY-MM-DDTHH:mm'),
       );
       this.arr_enfasis_proyecto.push(enfasis_temporal);
       this.dataSource = new MatTableDataSource(this.arr_enfasis_proyecto);
@@ -493,12 +498,12 @@ export class ModificarProyectoAcademicoComponent {
     };
     const to_delete =
       this.arr_enfasis_proyecto[
-      findInArray(event.EnfasisId.Id, this.arr_enfasis_proyecto, 'Id')
+        findInArray(event.EnfasisId.Id, this.arr_enfasis_proyecto, 'Id')
       ];
     if (to_delete.esNuevo) {
       this.arr_enfasis_proyecto.splice(
         findInArray(event.EnfasisId.Id, this.arr_enfasis_proyecto, 'Id'),
-        1
+        1,
       );
     } else {
       to_delete.Activo = !to_delete.Activo;
@@ -518,7 +523,7 @@ export class ModificarProyectoAcademicoComponent {
     this.dialogRef.close();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   loadterceros(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -546,7 +551,7 @@ export class ModificarProyectoAcademicoComponent {
           },
           (error: HttpErrorResponse) => {
             reject(error);
-          }
+          },
         );
     });
   }
@@ -555,7 +560,7 @@ export class ModificarProyectoAcademicoComponent {
     date: Date,
     years: number,
     months: number,
-    days: number
+    days: number,
   ): Date {
     const convertDate = moment(date)
       .add(years, 'year')
@@ -570,7 +575,7 @@ export class ModificarProyectoAcademicoComponent {
     date: Date,
     years: number,
     months: number,
-    days: number
+    days: number,
   ): Date {
     const convertDate = moment(date)
       .add(years, 'year')
@@ -603,7 +608,7 @@ export class ModificarProyectoAcademicoComponent {
             text: this.translate.instant('ERROR.' + error.status),
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
-        }
+        },
       );
   }
 
@@ -656,7 +661,7 @@ export class ModificarProyectoAcademicoComponent {
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-      }
+      },
     );
   }
 
@@ -680,12 +685,13 @@ export class ModificarProyectoAcademicoComponent {
           text: this.translate.instant('ERROR.' + error.status),
           confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
         });
-      }
+      },
     );
   }
 
   loadunidadtiempo() {
-    this.parametrosService.get('parametro?query=TipoParametroId:7,Activo:true&limit=0')
+    this.parametrosService
+      .get('parametro?query=TipoParametroId:7,Activo:true&limit=0')
       .subscribe(
         (res) => {
           const r = <any>res;
@@ -705,12 +711,15 @@ export class ModificarProyectoAcademicoComponent {
             text: this.translate.instant('ERROR.' + error.status),
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
-        }
+        },
       );
   }
 
   loadarea() {
-    this.parametrosService.get('parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id__isnull:true&limit=0')
+    this.parametrosService
+      .get(
+        'parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id__isnull:true&limit=0',
+      )
       .subscribe(
         (res) => {
           const r = <any>res;
@@ -730,12 +739,15 @@ export class ModificarProyectoAcademicoComponent {
             text: this.translate.instant('ERROR.' + error.status),
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
-        }
+        },
       );
   }
 
   loadnucleo(id: number) {
-    this.parametrosService.get(`parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id:${id}&limit=0`)
+    this.parametrosService
+      .get(
+        `parametro?query=Activo:true,TipoParametroId:4,ParametroPadreId__Id:${id}&limit=0`,
+      )
       .subscribe(
         (res) => {
           const r = <any>res;
@@ -755,7 +767,7 @@ export class ModificarProyectoAcademicoComponent {
             text: this.translate.instant('ERROR.' + error.status),
             confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
           });
-        }
+        },
       );
   }
 
@@ -768,16 +780,16 @@ export class ModificarProyectoAcademicoComponent {
           IdDocumento: string;
           key: string;
         }) => {
-          (file.Id = file.nombre),
+          ((file.Id = file.nombre),
             (file.nombre =
               'soporte_' +
               file.IdDocumento +
               '_modificacion_proyecto_curricular_' +
               this.basicform.value.codigo_snies +
               '_' +
-              this.basicform.value.nombre_proyecto);
+              this.basicform.value.nombre_proyecto));
           file.key = 'soporte_' + file.IdDocumento;
-        }
+        },
       );
       this.newNuxeoService.uploadFiles(files).subscribe(
         (responseNux: any[]) => {
@@ -791,7 +803,7 @@ export class ModificarProyectoAcademicoComponent {
         },
         (error) => {
           reject(error);
-        }
+        },
       );
     });
   }
@@ -881,7 +893,7 @@ export class ModificarProyectoAcademicoComponent {
         const opt: any = {
           title: this.translate.instant('GLOBAL.actualizar'),
           text: this.translate.instant(
-            'editarproyecto.seguro_continuar_actualizar_proyecto'
+            'editarproyecto.seguro_continuar_actualizar_proyecto',
           ),
           icon: 'warning',
           buttons: true,
@@ -904,8 +916,8 @@ export class ModificarProyectoAcademicoComponent {
             this.proyectoacademicoService
               .put(
                 'tr_proyecto_academico/informacion_basica/' +
-                Number(this.data.Id),
-                informacion_basicaPut
+                  Number(this.data.Id),
+                informacion_basicaPut,
               )
               .subscribe((res: any) => {
                 if (res.Type === 'error') {
@@ -917,10 +929,10 @@ export class ModificarProyectoAcademicoComponent {
                   });
                   this.snackBar.open(
                     this.translate.instant(
-                      'editarproyecto.proyecto_no_actualizado'
+                      'editarproyecto.proyecto_no_actualizado',
                     ),
                     '',
-                    { duration: 3000, panelClass: ['error-snackbar'] }
+                    { duration: 3000, panelClass: ['error-snackbar'] },
                   );
                 } else {
                   this.arr_enfasis_proyecto.forEach((enfasis_temp: any) => {
@@ -930,7 +942,7 @@ export class ModificarProyectoAcademicoComponent {
                   const opt1: any = {
                     title: this.translate.instant('editarproyecto.actualizado'),
                     text: this.translate.instant(
-                      'editarproyecto.proyecto_actualizado'
+                      'editarproyecto.proyecto_actualizado',
                     ),
                     icon: 'success',
                     buttons: true,
@@ -1018,7 +1030,7 @@ export class ModificarProyectoAcademicoComponent {
           this.data.fecha_creacion_registro[0],
           this.resoluform.value.ano_vigencia,
           this.resoluform.value.mes_vigencia,
-          0
+          0,
         );
 
         this.registro_califacado_acreditacion = {
@@ -1049,17 +1061,17 @@ export class ModificarProyectoAcademicoComponent {
             this.fecha_creacion_alta,
             this.resolualtaform.value.ano_vigencia,
             this.resolualtaform.value.mes_vigencia,
-            0
+            0,
           );
         }
 
         this.registro_califacado_alta_calidad = {
           Id: 0,
           AnoActoAdministrativoId: String(
-            this.resolualtaform.value.ano_resolucion
+            this.resolualtaform.value.ano_resolucion,
           ),
           NumeroActoAdministrativo: Number(
-            this.resolualtaform.value.resolucion
+            this.resolualtaform.value.resolucion,
           ),
           // FechaCreacionActoAdministrativo: this.fecha_creacion_alta + ':00Z',
           FechaCreacionActoAdministrativo:
@@ -1091,7 +1103,7 @@ export class ModificarProyectoAcademicoComponent {
         const opt: any = {
           title: this.translate.instant('GLOBAL.actualizar'),
           text: this.translate.instant(
-            'editarproyecto.seguro_continuar_actualizar_proyecto'
+            'editarproyecto.seguro_continuar_actualizar_proyecto',
           ),
           icon: 'warning',
           buttons: true,
@@ -1119,8 +1131,8 @@ export class ModificarProyectoAcademicoComponent {
             this.proyectoacademicoService
               .put(
                 'tr_proyecto_academico/registro/' +
-                Number(this.data.idproyecto),
-                registro_put
+                  Number(this.data.idproyecto),
+                registro_put,
               )
               .subscribe((res: any) => {
                 if (res.Type === 'error') {
@@ -1132,17 +1144,17 @@ export class ModificarProyectoAcademicoComponent {
                   });
                   this.snackBar.open(
                     this.translate.instant(
-                      'editarproyecto.proyecto_no_actualizado'
+                      'editarproyecto.proyecto_no_actualizado',
                     ),
                     '',
-                    { duration: 3000, panelClass: ['error-snackbar'] }
+                    { duration: 3000, panelClass: ['error-snackbar'] },
                   );
                 } else {
                   this.dialogRef.close();
                   const opt1: any = {
                     title: this.translate.instant('editarproyecto.actualizado'),
                     text: this.translate.instant(
-                      'editarproyecto.proyecto_actualizado'
+                      'editarproyecto.proyecto_actualizado',
                     ),
                     icon: 'success',
                     buttons: true,
@@ -1212,7 +1224,7 @@ export class ModificarProyectoAcademicoComponent {
           this.data.fecha_creacion_registro[0],
           this.resoluform.value.ano_vigencia,
           this.resoluform.value.mes_vigencia,
-          0
+          0,
         );
 
         this.registro_califacado_acreditacion = {
@@ -1245,7 +1257,7 @@ export class ModificarProyectoAcademicoComponent {
         const opt: any = {
           title: this.translate.instant('GLOBAL.actualizar'),
           text: this.translate.instant(
-            'editarproyecto.seguro_continuar_actualizar_proyecto'
+            'editarproyecto.seguro_continuar_actualizar_proyecto',
           ),
           icon: 'warning',
           buttons: true,
@@ -1266,8 +1278,8 @@ export class ModificarProyectoAcademicoComponent {
             this.proyectoacademicoService
               .put(
                 'tr_proyecto_academico/registro/' +
-                Number(this.data.idproyecto),
-                registro_put
+                  Number(this.data.idproyecto),
+                registro_put,
               )
               .subscribe((res: any) => {
                 if (res.Type === 'error') {
@@ -1279,17 +1291,17 @@ export class ModificarProyectoAcademicoComponent {
                   });
                   this.snackBar.open(
                     this.translate.instant(
-                      'editarproyecto.proyecto_no_actualizado'
+                      'editarproyecto.proyecto_no_actualizado',
                     ),
                     '',
-                    { duration: 3000, panelClass: ['error-snackbar'] }
+                    { duration: 3000, panelClass: ['error-snackbar'] },
                   );
                 } else {
                   this.dialogRef.close();
                   const opt1: any = {
                     title: this.translate.instant('editarproyecto.actualizado'),
                     text: this.translate.instant(
-                      'editarproyecto.proyecto_actualizado'
+                      'editarproyecto.proyecto_actualizado',
                     ),
                     icon: 'success',
                     buttons: true,
@@ -1334,7 +1346,7 @@ export class ModificarProyectoAcademicoComponent {
         this.snackBar.open(
           this.translate.instant('ERROR.formato_documento_pdf'),
           '',
-          { duration: 3000, panelClass: ['error-snackbar'] }
+          { duration: 3000, panelClass: ['error-snackbar'] },
         );
       }
     }
@@ -1350,7 +1362,7 @@ export class ModificarProyectoAcademicoComponent {
         // FechaInicio: this.coordinador.value.fecha_creacion_coordinador + ':00Z',
         FechaInicio:
           moment(this.coordinador.value.fecha_creacion_coordinador).format(
-            'YYYY-MM-DDTHH:mm'
+            'YYYY-MM-DDTHH:mm',
           ) + ':00Z',
         ProyectoAcademicoInstitucionId: {
           Id: Number(this.data.idproyecto),
@@ -1372,7 +1384,7 @@ export class ModificarProyectoAcademicoComponent {
                 this.fileResolucionCoordinador,
               ]);
             this.coordinador_data.ResolucionAsignacionId = Number(
-              idFileResolucionCoordinador
+              idFileResolucionCoordinador,
             );
           }
           this.sgaProyectoCurricularMidService
@@ -1387,17 +1399,17 @@ export class ModificarProyectoAcademicoComponent {
                 });
                 this.snackBar.open(
                   this.translate.instant(
-                    'editarproyecto.coordinador_no_asignado'
+                    'editarproyecto.coordinador_no_asignado',
                   ),
                   '',
-                  { duration: 3000, panelClass: ['error-snackbar'] }
+                  { duration: 3000, panelClass: ['error-snackbar'] },
                 );
               } else {
                 this.dialogRef.close();
                 const opt1: any = {
                   title: this.translate.instant('editarproyecto.creado'),
                   text: this.translate.instant(
-                    'editarproyecto.coordinador_asignado'
+                    'editarproyecto.coordinador_asignado',
                   ),
                   icon: 'succes',
                   buttons: true,

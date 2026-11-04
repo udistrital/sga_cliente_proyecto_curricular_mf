@@ -6,7 +6,7 @@ import {
   Proyecto,
   ProyectoAcademico,
 } from '../models/api/sga_proyecto_curricular_mid/proyecto_curricular.models';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ApiResponse } from '../models/api-response.interface';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2.js';
@@ -18,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class ProyectoCurricularService {
   constructor(
     private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
-    private translate: TranslateService
+    private translate: TranslateService,
   ) {}
 
   getProyectosAcademicos() {
@@ -30,13 +30,13 @@ export class ProyectoCurricularService {
             if (proyectoAcademico.FechaVenimientoAcreditacion) {
               proyectoAcademico.FechaVenimientoAcreditacion = moment(
                 proyectoAcademico.FechaVenimientoAcreditacion,
-                'YYYY-MM-DD'
+                'YYYY-MM-DD',
               ).format('DD-MM-YYYY');
             }
             if (proyectoAcademico.FechaVenimientoCalidad) {
               proyectoAcademico.FechaVenimientoCalidad = moment(
                 proyectoAcademico.FechaVenimientoCalidad,
-                'YYYY-MM-DD'
+                'YYYY-MM-DD',
               ).format('DD-MM-YYYY');
             }
             return {
@@ -55,9 +55,9 @@ export class ProyectoCurricularService {
       catchError((error) => {
         console.error('Error en el servicio de proyectos academicos', error);
         throw new Error(
-          error.message || 'Error al obtener proyectos academicos'
+          error.message || 'Error al obtener proyectos academicos',
         );
-      })
+      }),
     );
   }
 
@@ -76,9 +76,9 @@ export class ProyectoCurricularService {
         }),
         catchError((error) => {
           throw new Error(
-            error.message || 'Error al obtener proyecto academico'
+            error.message || 'Error al obtener proyecto academico',
           );
-        })
+        }),
       );
   }
 
@@ -89,10 +89,10 @@ export class ProyectoCurricularService {
     } else {
       const seOfrece = await Swal.fire({
         title: this.translate.instant(
-          'proyecto.confirmar_activacion_oferta_titulo'
+          'proyecto.confirmar_activacion_oferta_titulo',
         ),
         text: this.translate.instant(
-          'proyecto.confirmar_activacion_oferta_texto'
+          'proyecto.confirmar_activacion_oferta_texto',
         ),
         confirmButtonText: this.translate.instant('GLOBAL.si'),
         showCancelButton: true,
@@ -103,9 +103,11 @@ export class ProyectoCurricularService {
         proyecto.Oferta = true;
       }
     }
-    return await firstValueFrom( 
-      this.sgaProyectoCurricularMidService
-      .put(`/proyecto-academico/${proyecto.Id}/inhabilitar`, proyecto) 
+    return await firstValueFrom(
+      this.sgaProyectoCurricularMidService.put(
+        `/proyecto-academico/${proyecto.Id}/inhabilitar`,
+        proyecto,
+      ),
     );
   }
 }

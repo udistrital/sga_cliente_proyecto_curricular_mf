@@ -1,5 +1,5 @@
-@import 'sweetalert2/src/variables';
-@import './animations';
+@import "sweetalert2/src/sweetalert2";
+@import "./animations";
 
 // Colores personalizados basados en tu paleta
 $custom-blue: #145a95;
@@ -24,8 +24,8 @@ $swal2-title-color: $swal2-dark-theme-white;
 $swal2-backdrop: rgba(0, 0, 0, 0.5);
 
 // Animaciones
-$swal2-show-animation: fadeInUpTiny .5s;
-$swal2-hide-animation: fadeOut .25s;
+$swal2-show-animation: fadeInUpTiny 0.5s;
+$swal2-hide-animation: fadeOut 0.25s;
 
 // HTML CONTAINER
 $swal2-html-container-color: #000000; // Oscurecer el texto del contenedor
@@ -53,7 +53,10 @@ $swal2-question: $custom-blue;
 
 // FOOTER
 $swal2-footer-border-color: rgba(159, 175, 190, 0.168);
-$swal2-footer-color: lighten($swal2-html-container-color, 40%); // Aclarar el texto del footer
+$swal2-footer-color: lighten(
+  $swal2-html-container-color,
+  40%
+); // Aclarar el texto del footer
 $swal2-footer-font-weight: 100; // Hacer el texto del footer más delgado
 
 // INPUT
@@ -90,7 +93,8 @@ $swal2-confirm-button-border: 0;
 $swal2-confirm-button-border-radius: 3px;
 $swal2-confirm-button-color: white;
 $swal2-confirm-button-font-size: 13px;
-$swal2-confirm-button-focus-box-shadow: 0 0 0 3px rgba($swal2-confirm-button-background-color, .5);
+$swal2-confirm-button-focus-box-shadow: 0 0 0 3px
+  rgba($swal2-confirm-button-background-color, 0.5);
 
 // BOTÓN DE DENEGACIÓN
 $swal2-deny-button-font-size: 13px;
@@ -99,7 +103,7 @@ $swal2-deny-button-font-size: 13px;
 $swal2-cancel-button-font-size: 13px;
 
 // TOAST
-$swal2-toast-show-animation: fadeInUpBig .65s;
+$swal2-toast-show-animation: fadeInUpBig 0.65s;
 $swal2-toast-hide-animation: fadeOut 0.5s;
 $swal2-toast-background: $swal2-dark-theme-black;
 $swal2-toast-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -115,10 +119,10 @@ $swal2-toast-buttons-font-size: 13px;
 $swal2-toast-footer-font-size: 13px;
 
 // BARRA DE PROGRESO DEL TEMPORIZADOR
-$swal2-timer-progress-bar-height: .25em;
+$swal2-timer-progress-bar-height: 0.25em;
 $swal2-timer-progress-bar-background: $custom-blue;
 
-@import 'sweetalert2/src/sweetalert2';
+@import "sweetalert2/src/sweetalert2";
 
 .swal2-success-ring {
   display: none;
