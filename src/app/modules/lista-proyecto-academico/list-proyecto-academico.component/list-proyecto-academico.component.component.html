@@ -63,8 +63,8 @@
               class="badge"
               [ngStyle]="{
                 backgroundColor: row.ProyectoAcademico.Activo
-                ? 'var(--success-accent)'
-                : 'var(--danger-base)'
+                  ? 'var(--success-accent)'
+                  : 'var(--danger-base)',
               }"
             ></div>
             {{ row.ProyectoAcademico.Nombre }}
@@ -155,47 +155,53 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button
-                mat-menu-item
-                (click)="promesaid_consulta(row.ProyectoAcademico.Id)"
-                title="{{ 'consultaproyecto.consulta' | translate }}"
-              >
-                <mat-icon>search_outline</mat-icon>
-                <span>{{ "consultaproyecto.consulta" | translate }}</span>
-              </button>
-              <button
-                mat-menu-item
-                (click)="promesaid_modificar(row.ProyectoAcademico.Id)"
-                title="{{ 'consultaproyecto.editar' | translate }}"
-              >
-                <mat-icon color="accent">edit_outline</mat-icon>
-                <span>{{ "consultaproyecto.editar" | translate }}</span>
-              </button>
-              <button
-                mat-menu-item
-                (click)="inhabilitarProyecto(row.ProyectoAcademico)"
-                title="{{
-                  row.ProyectoAcademico.Activo
-                    ? ('consultaproyecto.inhabilitar' | translate)
-                    : ('consultaproyecto.habilitar' | translate)
-                }}"
-              >
-                <mat-icon
-                  [ngStyle]="{
-                    color: row.ProyectoAcademico.Activo
-                      ? 'var(--danger-base)'
-                      : 'var(--success-accent)'
-                  }"
-                  >{{
-                    row.ProyectoAcademico.Activo ? "cancel" : "check_circle"
-                  }}</mat-icon
+              @if (canLectura) {
+                <button
+                  mat-menu-item
+                  (click)="promesaid_consulta(row.ProyectoAcademico.Id)"
+                  title="{{ 'consultaproyecto.consulta' | translate }}"
                 >
-                <span>{{
-                  row.ProyectoAcademico.Activo
-                    ? ("consultaproyecto.inhabilitar" | translate)
-                    : ("consultaproyecto.habilitar" | translate)
-                }}</span>
-              </button>
+                  <mat-icon>search_outline</mat-icon>
+                  <span>{{ "consultaproyecto.consulta" | translate }}</span>
+                </button>
+              }
+              @if (canEditar) {
+                <button
+                  mat-menu-item
+                  (click)="promesaid_modificar(row.ProyectoAcademico.Id)"
+                  title="{{ 'consultaproyecto.editar' | translate }}"
+                >
+                  <mat-icon color="accent">edit_outline</mat-icon>
+                  <span>{{ "consultaproyecto.editar" | translate }}</span>
+                </button>
+              }
+              @if (canInhabilitar) {
+                <button
+                  mat-menu-item
+                  (click)="inhabilitarProyecto(row.ProyectoAcademico)"
+                  title="{{
+                    row.ProyectoAcademico.Activo
+                      ? ('consultaproyecto.inhabilitar' | translate)
+                      : ('consultaproyecto.habilitar' | translate)
+                  }}"
+                >
+                  <mat-icon
+                    [ngStyle]="{
+                      color: row.ProyectoAcademico.Activo
+                        ? 'var(--danger-base)'
+                        : 'var(--success-accent)',
+                    }"
+                    >{{
+                      row.ProyectoAcademico.Activo ? "cancel" : "check_circle"
+                    }}</mat-icon
+                  >
+                  <span>{{
+                    row.ProyectoAcademico.Activo
+                      ? ("consultaproyecto.inhabilitar" | translate)
+                      : ("consultaproyecto.habilitar" | translate)
+                  }}</span>
+                </button>
+              }
             </mat-menu>
           </mat-cell>
         </ng-container>

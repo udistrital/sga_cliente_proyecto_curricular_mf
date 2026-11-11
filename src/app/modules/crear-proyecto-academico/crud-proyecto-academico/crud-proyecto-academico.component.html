@@ -350,11 +350,6 @@
                     </mat-option>
                   }
                 </mat-select>
-                @if (Campo2Control.hasError("required")) {
-                  <mat-error>{{
-                    "proyecto.erro_selec_enfasis" | translate
-                  }}</mat-error>
-                }
               </mat-form-field>
 
               <div class="container-table">
@@ -397,17 +392,18 @@
                 <br />
               </div>
             </mat-card-content>
-
-            <mat-card-actions>
-              <button
-                mat-flat-button
-                color="accent"
-                (click)="openListEnfasisComponent()"
-                type="submit"
-              >
-                {{ "enfasis.administrar_enfasis" | translate }}
-              </button>
-            </mat-card-actions>
+            @if (canCrearEnfasis) {
+              <mat-card-actions>
+                <button
+                  mat-flat-button
+                  color="accent"
+                  (click)="openListEnfasisComponent()"
+                  type="submit"
+                >
+                  {{ "enfasis.administrar_enfasis" | translate }}
+                </button>
+              </mat-card-actions>
+            }
           </mat-card>
 
           <div style="display: flex; gap: 1em; flex-wrap: wrap">
@@ -863,16 +859,18 @@
             <button mat-flat-button color="primary" (click)="stepper.reset()">
               {{ "proyecto.reset" | translate }}
             </button>
-            <button
-              mat-flat-button
-              color="accent"
-              [disabled]="checkregistro || isLoading"
-              (click)="registroproyecto()"
-              type="submit"
-              color="primary"
-            >
-              {{ "proyecto.registro_proyecto" | translate }}
-            </button>
+            @if (canCrear) {
+              <button
+                mat-flat-button
+                color="accent"
+                [disabled]="checkregistro || isLoading"
+                (click)="registroproyecto()"
+                type="submit"
+                color="primary"
+              >
+                {{ "proyecto.registro_proyecto" | translate }}
+              </button>
+            }
           </div>
         </form>
       </mat-step>

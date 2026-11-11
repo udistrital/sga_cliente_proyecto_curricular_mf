@@ -46,6 +46,7 @@ import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-c
 import { ApiResponse } from 'src/app/models/api-response.interface';
 import { DependenciasService } from 'src/app/services/dependencias.service';
 import { navigateToUrl } from 'single-spa';
+import { Permission } from './crud-proyecto-academico-constrants';
 @Component({
   selector: 'app-crud-proyecto-academico',
   templateUrl: './crud-proyecto-academico.component.html',
@@ -127,7 +128,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     Validators.required,
   ]);
   Campo1Control = new FormControl('', [Validators.required]);
-  Campo2Control = new FormControl('', [Validators.required]);
+  Campo2Control = new FormControl('');
   Campo3Control = new FormControl('', [Validators.required]);
   Campo4Control = new FormControl('', [Validators.required]);
   Campo5Control = new FormControl('', [Validators.required]);
@@ -202,6 +203,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
 
   dpDayPickerConfig: any;
 
+  menuPermisos: any[] = [];
+
   constructor(
     private translate: TranslateService,
     private oikosService: OikosService,
@@ -219,6 +222,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private dependenciasService: DependenciasService,
   ) {
+    this.permisos();
     this.dpDayPickerConfig = {
       locale: 'es',
       format: 'YYYY-MM-DD HH:mm',
@@ -298,6 +302,45 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           // do not do anything on error
         }
       });
+  }
+
+  get canCrear(): boolean {
+    return this.buscarPermisoLectura(this.menuPermisos, Permission.CREAR);
+  }
+
+  get canCrearEnfasis(): boolean {
+    return this.buscarPermisoLectura(
+      this.menuPermisos,
+      Permission.CREAR_ENFASIS,
+    );
+  }
+
+  private buscarPermisoLectura(
+    listaPermisos: any[],
+    permisoBuscado: string,
+  ): boolean {
+    // Agrega este log para depuración
+    if (!listaPermisos || listaPermisos.length === 0) {
+      return false;
+    }
+
+    return listaPermisos.some((permiso: any) => {
+      if (permiso.Nombre === permisoBuscado) {
+        return true;
+      }
+
+      if (permiso.Opciones && permiso.Opciones.length > 0) {
+        return this.buscarPermisoLectura(permiso.Opciones, permisoBuscado);
+      }
+
+      return false;
+    });
+  }
+
+  permisos() {
+    const menuInfo = localStorage.getItem('menu');
+    this.menuPermisos = menuInfo ? JSON.parse(atob(menuInfo)) : null;
+    console.log(this.menuPermisos);
   }
 
   onCreateEmphasys(event: any) {
@@ -933,7 +976,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           this.resoluform.valid &
           this.compleform.valid &
           this.actoform.valid &&
-        this.arr_enfasis_proyecto.length > 0 &&
         this.fileActoAdministrativo
       ) {
         this.metodologia = {

@@ -23,6 +23,7 @@ import {
 import { RowProyecto } from 'src/app/models/proyecto_academico/proyecto_academico.models';
 import { ApiResponse } from 'src/app/models/api-response.interface';
 import { firstValueFrom } from 'rxjs';
+import { Permission } from './list.proyecto-academico.constants';
 
 const TRANSLATIONS = {
   INHABILITAR: {
@@ -66,7 +67,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
   idproyecto: any;
   coordinador: any = null;
   existe_registro_alta_calidad: boolean = false;
-
+  menuPermisos: any[] = [];
   listaDatos: any[] = [];
 
   constructor(
@@ -77,7 +78,46 @@ export class ListProyectoAcademicoComponent implements OnInit {
     private snackBar: MatSnackBar,
   ) {
     this.loadproyectos();
-    // this.loadData();
+    this.permisos();
+  }
+
+  get canInhabilitar(): boolean {
+    return this.buscarPermisoLectura(this.menuPermisos, Permission.INHABILITAR);
+  }
+
+  get canEditar(): boolean {
+    return this.buscarPermisoLectura(this.menuPermisos, Permission.EDITAR);
+  }
+
+  get canLectura(): boolean {
+    return this.buscarPermisoLectura(this.menuPermisos, Permission.LECTURA);
+  }
+
+  private buscarPermisoLectura(
+    listaPermisos: any[],
+    permisoBuscado: string,
+  ): boolean {
+    // Agrega este log para depuración
+    if (!listaPermisos || listaPermisos.length === 0) {
+      return false;
+    }
+
+    return listaPermisos.some((permiso: any) => {
+      if (permiso.Nombre === permisoBuscado) {
+        return true;
+      }
+
+      if (permiso.Opciones && permiso.Opciones.length > 0) {
+        return this.buscarPermisoLectura(permiso.Opciones, permisoBuscado);
+      }
+
+      return false;
+    });
+  }
+
+  permisos() {
+    const menuInfo = localStorage.getItem('menu');
+    this.menuPermisos = menuInfo ? JSON.parse(atob(menuInfo)) : null;
   }
 
   applyFilter(event: Event) {
