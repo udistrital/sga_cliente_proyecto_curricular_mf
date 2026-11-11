@@ -56,7 +56,7 @@ export class ModificarProyectoAcademicoComponent {
   actoform: any;
   compleform: any;
   coordinador: any;
-  facultad = [];
+  facultad: Dependencia[] = [];
   espacio = [];
   area = [];
   opcionSeleccionadoFacultad: any;
@@ -116,7 +116,9 @@ export class ModificarProyectoAcademicoComponent {
   creandoAutor: boolean = true;
   dataSource!: MatTableDataSource<any>;
 
-  CampoControl = new FormControl('', [Validators.required]);
+  CampoControl = new FormControl<Dependencia | null>(null, [
+    Validators.required,
+  ]);
   CampoControl_espacio = new FormControl({ value: '', disabled: true }, [
     Validators.required,
   ]);
@@ -594,11 +596,13 @@ export class ModificarProyectoAcademicoComponent {
           const r = <any>res;
           if (res !== null && r.Type !== 'error') {
             this.facultad = res.map((data: any) => data.DependenciaId);
-            this.facultad.forEach((fac: any) => {
-              if (fac.Id === Number(this.data.idfacultad)) {
-                this.opcionSeleccionadoFacultad = fac;
-              }
-            });
+            const facultadSeleccionada = this.facultad.find(
+              (fac) => fac.Id === Number(this.data.idfacultad),
+            );
+            if (facultadSeleccionada) {
+              this.opcionSeleccionadoFacultad = facultadSeleccionada;
+              this.CampoControl.setValue(facultadSeleccionada);
+            }
           }
         },
         (error: HttpErrorResponse) => {
@@ -898,6 +902,7 @@ export class ModificarProyectoAcademicoComponent {
           icon: 'warning',
           buttons: true,
           dangerMode: true,
+          target: 'mat-dialog-container',
           showCancelButton: true,
         };
 
@@ -1108,6 +1113,7 @@ export class ModificarProyectoAcademicoComponent {
           icon: 'warning',
           buttons: true,
           dangerMode: true,
+          target: 'mat-dialog-container',
           showCancelButton: true,
         };
 
@@ -1262,6 +1268,7 @@ export class ModificarProyectoAcademicoComponent {
           icon: 'warning',
           buttons: true,
           dangerMode: true,
+          target: 'mat-dialog-container',
           showCancelButton: true,
         };
 
