@@ -411,10 +411,13 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   }
 
   openListEnfasisComponent() {
-    this.dialogService.open(ListEnfasisComponent, {
-      width: '1050px',
-      height: 'auto',
-    });
+    this.dialogService
+      .open(ListEnfasisComponent, {
+        width: '1050px',
+        height: 'auto',
+      })
+      .afterClosed()
+      .subscribe(() => this.loadenfasis());
   }
 
   useLanguage(language: string) {
