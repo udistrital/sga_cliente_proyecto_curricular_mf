@@ -1,6 +1,7 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   NgZone,
@@ -71,25 +72,17 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   resoluform: any;
   actoform: any;
   compleform: any;
-  facultad = [];
+  facultad: any[] = [];
   espacio_fisico = [];
-  area = [];
-  opcionSeleccionadoFacultad: any;
+  area: any[] = [];
   opcionSeleccionadoEspacioFisico: any;
-  opcionSeleccionadoUnidad: any;
-  opcionSeleccionadoArea: any;
-  opcionSeleccionadoNucleo: any;
   opcionSeleccionadoEnfasis: any;
-  opcionSeleccionadoNivel: any;
-  opcionSeleccionadoMeto: any;
   checkenfasis: boolean = false;
-  checkciclos: boolean = false;
-  checkofrece: boolean = false;
-  nucleo = [];
-  unidad = [];
-  enfasis = [];
-  nivel = [];
-  metodo = [];
+  nucleo: any[] = [];
+  unidad: any[] = [];
+  enfasis: any[] = [];
+  nivel: any[] = [];
+  metodo: any[] = [];
   fecha_creacion!: Date;
   fecha_vencimiento!: string;
   fecha_vencimiento_mostrar!: string;
@@ -209,6 +202,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private oikosService: OikosService,
     private routerService: Router,
+    private _changeDetectorRef: ChangeDetectorRef,
     private _ngZone: NgZone,
     private parametrosService: ParametrosService,
     private proyectoacademicoService: ProyectoAcademicoService,
@@ -239,7 +233,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       numero_proyecto: ['', Validators.required],
       creditos_proyecto: ['', [Validators.required, Validators.maxLength(4)]],
       duracion_proyecto: ['', Validators.required],
-      selector: [''],
+      ciclosPropedeuticos: [false],
+      oferta: [false],
     });
     this.resoluform = formBuilder.group({
       resolucion: [
@@ -297,6 +292,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       .subscribe((listEnfasis) => {
         if (listEnfasis) {
           this.enfasis = listEnfasis;
+          this._changeDetectorRef.detectChanges();
         } else {
           // clear messages when empty message received
           // do not do anything on error
@@ -442,7 +438,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   }
 
   onSelectionChanged(value: any) {
-    this.loadnucleo(value.value.Id);
+    this.loadnucleo(value.value);
     this.resoluform.enable();
   }
 
@@ -460,41 +456,23 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
             this.arr_enfasis_proyecto = proyecto_a_clonar.Enfasis.map(
               (enfasis: any) => enfasis.EnfasisId,
             );
-            // checks
-            this.checkciclos =
-              proyecto_a_clonar.ProyectoAcademico.CiclosPropedeuticos;
-            this.checkofrece = proyecto_a_clonar.ProyectoAcademico.Oferta;
             // selects
-            // unidad de tiempo
-            this.opcionSeleccionadoUnidad = this.unidad.find(
-              (unidad_temp: any) =>
-                unidad_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.UnidadTiempoId,
+            this.Campo1Control.setValue(
+              proyecto_a_clonar.ProyectoAcademico.UnidadTiempoId,
             );
-            this.opcionSeleccionadoNivel = this.nivel.find(
-              (nivel_temp: any) =>
-                nivel_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.NivelFormacionId.Id,
+            this.Campo5Control.setValue(
+              proyecto_a_clonar.ProyectoAcademico.NivelFormacionId.Id,
             );
-            this.opcionSeleccionadoMeto = this.metodo.find(
-              (metodologia_temp: any) =>
-                metodologia_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.MetodologiaId.Id,
+            this.Campo6Control.setValue(
+              proyecto_a_clonar.ProyectoAcademico.MetodologiaId.Id,
             );
-            this.opcionSeleccionadoFacultad = this.facultad.find(
-              (facultad_temp: any) =>
-                facultad_temp.Id === proyecto_a_clonar.IdDependenciaFacultad,
+            this.CampoControl.setValue(proyecto_a_clonar.IdDependenciaFacultad);
+            this.Campo3Control.setValue(
+              proyecto_a_clonar.ProyectoAcademico.AreaConocimientoId,
             );
-            this.opcionSeleccionadoArea = this.area.find(
-              (area_temp: any) =>
-                area_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.AreaConocimientoId,
-            );
-            this.opcionSeleccionadoNucleo = this.nucleo.find(
-              (nucleo_temp: any) =>
-                nucleo_temp.Id ===
-                proyecto_a_clonar.ProyectoAcademico.NucleoBaseId,
-            );
+            this.resoluform
+              .get('Campo4Control')
+              ?.setValue(proyecto_a_clonar.ProyectoAcademico.NucleoBaseId);
             this.opcionSeleccionadoEspacioFisico = this.espacio_fisico.find(
               (espacio_fisico_temp: any) =>
                 espacio_fisico_temp.Id === proyecto_a_clonar.IdEspacioFisico,
@@ -543,7 +521,10 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                   Validators.pattern('^[0-9]*$'),
                 ],
               ],
-              selector: [''],
+              ciclosPropedeuticos: [
+                proyecto_a_clonar.ProyectoAcademico.CiclosPropedeuticos,
+              ],
+              oferta: [proyecto_a_clonar.ProyectoAcademico.Oferta],
             });
             // acto administrativo
             this.actoform = this.formBuilder.group({
@@ -704,6 +685,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           const r = <any>res;
           if (res !== null && r.Type !== 'error') {
             this.facultad = res.map((data: any) => data.DependenciaId);
+            this._changeDetectorRef.detectChanges();
           }
         },
         (error: HttpErrorResponse) => {
@@ -718,9 +700,8 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   }
 
   onChangeFacultad(event: any) {
-    this.opcionSeleccionadoFacultad = event.value;
-    if (this.opcionSeleccionadoFacultad) {
-      this.loadespacio(this.opcionSeleccionadoFacultad.Id);
+    if (event.value) {
+      this.loadespacio(event.value);
     }
   }
 
@@ -757,6 +738,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           const r = <any>res;
           if (res !== null && r.Type !== 'error') {
             this.area = <any>res.Data;
+            this._changeDetectorRef.detectChanges();
           }
         },
         (error: HttpErrorResponse) => {
@@ -778,6 +760,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           const r = <any>res;
           if (res !== null && r.Type !== 'error') {
             this.unidad = <any>res.Data;
+            this._changeDetectorRef.detectChanges();
           }
         },
         (error: HttpErrorResponse) => {
@@ -799,6 +782,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           const r = <any>res;
           if (res !== null && r.Type !== 'error') {
             this.enfasis = <any>res;
+            this._changeDetectorRef.detectChanges();
           }
         },
         (error: HttpErrorResponse) => {
@@ -818,6 +802,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
           this.nivel = <any>res;
+          this._changeDetectorRef.detectChanges();
         }
       },
       (error: HttpErrorResponse) => {
@@ -837,6 +822,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         const r = <any>res;
         if (res !== null && r.Type !== 'error') {
           this.metodo = <any>res;
+          this._changeDetectorRef.detectChanges();
         }
       },
       (error: HttpErrorResponse) => {
@@ -875,6 +861,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           const r = <any>res;
           if (res !== null && r.Type !== 'error') {
             this.nucleo = <any>res.Data;
+            this._changeDetectorRef.detectChanges();
           }
         },
         (error: HttpErrorResponse) => {
@@ -980,11 +967,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           this.actoform.valid &&
         this.fileActoAdministrativo
       ) {
-        this.metodologia = {
-          Id: this.opcionSeleccionadoMeto['Id'],
-        };
+        this.metodologia = { Id: Number(this.Campo6Control.value) };
         this.nivel_formacion = <NivelFormacion>{
-          Id: this.opcionSeleccionadoNivel['Id'],
+          Id: Number(this.Campo5Control.value),
         };
         this.proyecto_academico = {
           Id: 0,
@@ -994,20 +979,20 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           Duracion: Number(this.basicform.value.duracion_proyecto),
           NumeroCreditos: Number(this.basicform.value.creditos_proyecto),
           CorreoElectronico: this.basicform.value.correo_proyecto,
-          CiclosPropedeuticos: this.checkciclos,
+          CiclosPropedeuticos: this.basicform.value.ciclosPropedeuticos,
           NumeroActoAdministrativo: Number(this.actoform.value.acto),
           EnlaceActoAdministrativo: 'Pruebalinkdocumento.udistrital.edu.co',
           Competencias: this.compleform.value.competencias,
           CodigoAbreviacion: this.basicform.value.abreviacion_proyecto,
           Activo: true,
-          Oferta: this.checkofrece,
-          UnidadTiempoId: this.opcionSeleccionadoUnidad['Id'],
+          Oferta: this.basicform.value.oferta,
+          UnidadTiempoId: Number(this.Campo1Control.value),
           AnoActoAdministrativoId: this.actoform.value.ano_acto,
           // DependenciaId: this.opcionSeleccionadoEspacioFisico['Id'],
           DependenciaId: null,
-          FacultadId: this.opcionSeleccionadoFacultad['Id'],
-          AreaConocimientoId: this.opcionSeleccionadoArea['Id'],
-          NucleoBaseId: this.opcionSeleccionadoNucleo['Id'],
+          FacultadId: Number(this.CampoControl.value),
+          AreaConocimientoId: Number(this.Campo3Control.value),
+          NucleoBaseId: Number(this.resoluform.get('Campo4Control')?.value),
           MetodologiaId: this.metodologia,
           NivelFormacionId: this.nivel_formacion,
           AnoActoAdministrativo: this.actoform.value.ano_acto,
@@ -1096,7 +1081,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
         };
         const tr_dependencia_padre_post: TrDependenciaPadre = {
           PadreId: {
-            Id: this.opcionSeleccionadoFacultad['Id'],
+            Id: Number(this.CampoControl.value),
             Nombre: '',
             TelefonoDependencia: '',
             CorreoElectronico: '',

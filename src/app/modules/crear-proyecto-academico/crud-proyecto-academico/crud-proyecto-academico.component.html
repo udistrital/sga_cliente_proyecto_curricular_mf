@@ -50,14 +50,10 @@
                       <mat-label>{{
                         "proyecto.nivel_proyecto" | translate
                       }}</mat-label>
-                      <mat-select
-                        [formControl]="Campo5Control"
-                        required
-                        [(ngModel)]="opcionSeleccionadoNivel"
-                      >
+                      <mat-select [formControl]="Campo5Control" required>
                         <mat-option>--</mat-option>
-                        @for (nivelproyecto of nivel; track nivelproyecto) {
-                          <mat-option [value]="nivelproyecto">
+                        @for (nivelproyecto of nivel; track nivelproyecto.Id) {
+                          <mat-option [value]="nivelproyecto.Id">
                             {{ nivelproyecto["Nombre"] }}
                           </mat-option>
                         }
@@ -117,14 +113,13 @@
                       <mat-label>{{
                         "proyecto.metodologia_proyecto" | translate
                       }}</mat-label>
-                      <mat-select
-                        [formControl]="Campo6Control"
-                        required
-                        [(ngModel)]="opcionSeleccionadoMeto"
-                      >
+                      <mat-select [formControl]="Campo6Control" required>
                         <mat-option>--</mat-option>
-                        @for (metodoproyecto of metodo; track metodoproyecto) {
-                          <mat-option [value]="metodoproyecto">
+                        @for (
+                          metodoproyecto of metodo;
+                          track metodoproyecto.Id
+                        ) {
+                          <mat-option [value]="metodoproyecto.Id">
                             {{ metodoproyecto["Nombre"] }}
                           </mat-option>
                         }
@@ -165,15 +160,14 @@
                       <mat-select
                         [formControl]="CampoControl"
                         required
-                        [(ngModel)]="opcionSeleccionadoFacultad"
                         (selectionChange)="onChangeFacultad($event)"
                       >
                         <mat-option>--</mat-option>
                         @for (
                           nombrefacultad of facultad;
-                          track nombrefacultad
+                          track nombrefacultad.Id
                         ) {
-                          <mat-option [value]="nombrefacultad">
+                          <mat-option [value]="nombrefacultad.Id">
                             {{ nombrefacultad["Nombre"] }}
                           </mat-option>
                         }
@@ -211,14 +205,10 @@
                       <mat-label>{{
                         "proyecto.tipo_duracion" | translate
                       }}</mat-label>
-                      <mat-select
-                        [formControl]="Campo1Control"
-                        required
-                        [(ngModel)]="opcionSeleccionadoUnidad"
-                      >
+                      <mat-select [formControl]="Campo1Control" required>
                         <mat-option>--</mat-option>
-                        @for (unidadtiempo of unidad; track unidadtiempo) {
-                          <mat-option [value]="unidadtiempo">
+                        @for (unidadtiempo of unidad; track unidadtiempo.Id) {
+                          <mat-option [value]="unidadtiempo.Id">
                             {{ unidadtiempo["Nombre"] }}
                           </mat-option>
                         }
@@ -295,26 +285,20 @@
                     </mat-form-field>
                   </div>
                   <div class="form-col1">
-                    <mat-checkbox
-                      formControlName="selector"
-                      [(ngModel)]="checkciclos"
-                      >{{ "proyecto.ciclo_proyecto" | translate }}</mat-checkbox
-                    >
+                    <mat-checkbox formControlName="ciclosPropedeuticos">{{
+                      "proyecto.ciclo_proyecto" | translate
+                    }}</mat-checkbox>
                   </div>
                   <div class="form-col1">
-                    <mat-checkbox
-                      formControlName="selector"
-                      [(ngModel)]="checkofrece"
-                      >{{
-                        "proyecto.ofrece_proyecto" | translate
-                      }}</mat-checkbox
-                    >
+                    <mat-checkbox formControlName="oferta">{{
+                      "proyecto.ofrece_proyecto" | translate
+                    }}</mat-checkbox>
                   </div>
                 </div>
               </mat-card-content>
             </mat-card>
           </div>
-          <div>
+          <div class="step-actions">
             <button
               mat-button
               class="boton-primary"
@@ -344,7 +328,7 @@
                   (selectionChange)="onCreateEmphasys($event)"
                 >
                   <mat-option>--</mat-option>
-                  @for (enfasisproyecto of enfasis; track enfasisproyecto) {
+                  @for (enfasisproyecto of enfasis; track enfasisproyecto.Id) {
                     <mat-option [value]="enfasisproyecto">
                       {{ enfasisproyecto["Nombre"] }}
                     </mat-option>
@@ -406,7 +390,7 @@
             }
           </mat-card>
 
-          <div style="display: flex; gap: 1em; flex-wrap: wrap">
+          <div class="step-actions">
             <button
               mat-flat-button
               color="primary"
@@ -436,12 +420,11 @@
                     <mat-select
                       [formControl]="Campo3Control"
                       required
-                      [(ngModel)]="opcionSeleccionadoArea"
                       (selectionChange)="onSelectionChanged($event)"
                     >
                       <mat-option>--</mat-option>
-                      @for (areacono of area; track areacono) {
-                        <mat-option [value]="areacono">
+                      @for (areacono of area; track areacono.Id) {
+                        <mat-option [value]="areacono.Id">
                           {{ areacono["Nombre"] }}
                         </mat-option>
                       }
@@ -457,14 +440,10 @@
                 <div class="form-col1">
                   <mat-form-field class="form-field">
                     <mat-label>{{ "proyecto.nucleo" | translate }}</mat-label>
-                    <mat-select
-                      formControlName="Campo4Control"
-                      required
-                      [(ngModel)]="opcionSeleccionadoNucleo"
-                    >
+                    <mat-select formControlName="Campo4Control" required>
                       <mat-option>--</mat-option>
-                      @for (nucleocomun of nucleo; track nucleocomun) {
-                        <mat-option [value]="nucleocomun">
+                      @for (nucleocomun of nucleo; track nucleocomun.Id) {
+                        <mat-option [value]="nucleocomun.Id">
                           {{ nucleocomun["Nombre"] }}
                         </mat-option>
                       }
@@ -531,7 +510,7 @@
                       matInput
                       [matDatepicker]="picker"
                       (blur)="mostrarfecha()"
-                      [(ngModel)]="fecha_creacion"
+                      (dateChange)="fecha_creacion = $event.value"
                     />
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle
@@ -632,7 +611,7 @@
             </mat-card-content>
           </mat-card>
 
-          <div style="display: flex; gap: 1em; flex-wrap: wrap">
+          <div class="step-actions">
             <button mat-flat-button color="primary" matStepperPrevious>
               {{ "proyecto.regresar" | translate }}
             </button>
@@ -730,7 +709,7 @@
             </mat-card-content>
           </mat-card>
 
-          <div style="display: flex; gap: 1em; flex-wrap: wrap">
+          <div class="step-actions">
             <button mat-flat-button color="primary" matStepperPrevious>
               {{ "proyecto.regresar" | translate }}
             </button>
@@ -742,7 +721,7 @@
       </mat-step>
 
       <mat-step [stepControl]="compleform">
-        <form [formGroup]="compleform" (ngSubmit)="registroproyecto()">
+        <form [formGroup]="compleform">
           <ng-template matStepLabel>{{
             "proyecto.complementarios" | translate
           }}</ng-template>
@@ -852,7 +831,7 @@
             </mat-card-content>
           </mat-card>
 
-          <div style="display: flex; gap: 1em; flex-wrap: wrap">
+          <div class="step-actions">
             <button mat-flat-button color="primary" matStepperPrevious>
               {{ "proyecto.regresar" | translate }}
             </button>
@@ -879,8 +858,7 @@
 </mat-card>
 
 <!-- Indicador de carga SVG -->
-@if (isLoading) {
-  <div class="loading-indicator">
+<div class="loading-indicator" [hidden]="!isLoading">
     <svg
       class="loading-svg"
       xmlns="http://www.w3.org/2000/svg"
@@ -945,4 +923,3 @@
       </rect>
     </svg>
   </div>
-}

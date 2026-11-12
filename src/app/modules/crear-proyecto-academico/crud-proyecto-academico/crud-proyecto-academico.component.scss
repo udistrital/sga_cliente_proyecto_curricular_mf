@@ -308,6 +308,18 @@ label {
   justify-content: center;
 }
 
+.step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.mat-mdc-card-actions {
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
 .loading-indicator {
     display: flex;
     justify-content: center;
@@ -320,6 +332,10 @@ label {
     width: 100%;
     z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
   }
+
+.loading-indicator[hidden] {
+  display: none;
+}
   
   .loading-svg {
     width: 100px; /* Ajusta el tamaño del SVG */
