@@ -340,7 +340,6 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   permisos() {
     const menuInfo = localStorage.getItem('menu');
     this.menuPermisos = menuInfo ? JSON.parse(atob(menuInfo)) : null;
-    console.log(this.menuPermisos);
   }
 
   onCreateEmphasys(event: any) {

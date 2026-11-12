@@ -106,6 +106,7 @@ export class CrudEnfasisComponent implements OnInit {
       icon: 'warning',
 
       showCancelButton: true,
+      target: 'mat-dialog-container',
     };
     Swal.fire(opt).then(async (willDelete: any) => {
       if (willDelete.value) {
@@ -152,6 +153,7 @@ export class CrudEnfasisComponent implements OnInit {
       icon: 'warning',
 
       showCancelButton: true,
+      target: 'mat-dialog-container',
     };
 
     Swal.fire(opt).then(async (willDelete: any) => {

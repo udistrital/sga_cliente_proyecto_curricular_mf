@@ -46,9 +46,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
+import { SpinnerUtilModule } from 'spinner-util';
 import {MatMenuModule} from '@angular/material/menu';
 import { DependenciasService } from './services/dependencias.service';
+import { SpinnerHttpInterceptor } from './services/spinner-http.interceptor';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
@@ -109,7 +110,7 @@ export function createTranslateLoader(http: HttpClient) {
         })], providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
-        { provide: HTTP_INTERCEPTORS, useClass: SpinnerUtilInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: SpinnerHttpInterceptor, multi: true },
         DocumentoService,
         OikosService,
         AnyService,

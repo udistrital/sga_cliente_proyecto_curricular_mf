@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
@@ -29,7 +29,7 @@ export class ListEnfasisComponent implements OnInit {
     'numero_orden',
   ];
 
-  dataSource!: MatTableDataSource<any>;
+  dataSource = new MatTableDataSource<any>([]);
 
   constructor(
     private translate: TranslateService,
@@ -37,8 +37,8 @@ export class ListEnfasisComponent implements OnInit {
     private dialogRef: MatDialogRef<ListEnfasisComponent>,
     private listEnfasisService: ListEnfasisService,
     private snackBar: MatSnackBar,
+    private ngZone: NgZone,
   ) {
-    this.loadData();
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {});
   }
 
@@ -56,28 +56,33 @@ export class ListEnfasisComponent implements OnInit {
       const res: any = await firstValueFrom(
         this.proyectoAcademicoService.get('enfasis/?limit=-1'),
       );
-      if (res.Type !== 'error') {
-        const data = <Array<any>>res;
-        if (this.asDialog) {
-          // service
-          this.listEnfasisService.sendListEnfasis(res);
+      this.ngZone.run(() => {
+        if (res.Type !== 'error') {
+          const data = <Array<any>>res;
+          if (this.asDialog) {
+            this.listEnfasisService.sendListEnfasis(res);
+          }
+          this.dataSource.data = data;
+        } else {
+          this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {
+            duration: 3000,
+            panelClass: ['error-snackbar'],
+          });
         }
-        this.dataSource = new MatTableDataSource(data);
-      } else {
+      });
+    } catch (error) {
+      this.ngZone.run(() => {
         this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {
           duration: 3000,
           panelClass: ['error-snackbar'],
         });
-      }
-    } catch (error) {
-      this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {
-        duration: 3000,
-        panelClass: ['error-snackbar'],
       });
     }
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.loadData();
+  }
 
   onEdit(event: any): void {
     this.uid = event.Id;
@@ -96,6 +101,7 @@ export class ListEnfasisComponent implements OnInit {
       icon: 'warning',
 
       showCancelButton: true,
+      target: 'mat-dialog-container',
     };
     Swal.fire(opt).then(async (willDelete: any) => {
       if (willDelete.value) {
