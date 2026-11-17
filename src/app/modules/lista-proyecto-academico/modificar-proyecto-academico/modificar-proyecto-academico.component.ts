@@ -1,5 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Inject,
+  Output,
+} from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -57,8 +63,8 @@ export class ModificarProyectoAcademicoComponent {
   compleform: any;
   coordinador: any;
   facultad: Dependencia[] = [];
-  espacio = [];
-  area = [];
+  espacio: any[] = [];
+  area: any[] = [];
   opcionSeleccionadoFacultad: any;
   opcionSeleccionadoEspacio: any;
   opcionSeleccionadoUnidad: any;
@@ -71,11 +77,11 @@ export class ModificarProyectoAcademicoComponent {
   checkciclos: boolean = false;
   checkalta: boolean = false;
   checkofrece: boolean = false;
-  nucleo = [];
-  unidad = [];
+  nucleo: any[] = [];
+  unidad: any[] = [];
   enfasis = [];
-  nivel = [];
-  metodo = [];
+  nivel: any[] = [];
+  metodo: any[] = [];
   fecha_creacion_calificado: Date;
   fecha_creacion_alta!: Date | null;
   fecha_inicio_coordinador!: Date;
@@ -102,7 +108,6 @@ export class ModificarProyectoAcademicoComponent {
   tipo_registro: TipoRegistro = new TipoRegistro();
   enfasis_proyecto: InstitucionEnfasis = new InstitucionEnfasis();
   coordinador_data: Coordinador = new Coordinador();
-  coordinadorSeleccionado: Tercero = new Tercero();
   enfasis_basico: Enfasis = new Enfasis();
   titulacion_proyecto_snies: Titulacion = new Titulacion();
   titulacion_proyecto_mujer: Titulacion = new Titulacion();
@@ -116,18 +121,16 @@ export class ModificarProyectoAcademicoComponent {
   creandoAutor: boolean = true;
   dataSource!: MatTableDataSource<any>;
 
-  CampoControl = new FormControl<Dependencia | null>(null, [
-    Validators.required,
-  ]);
+  CampoControl = new FormControl<number | null>(null, [Validators.required]);
   CampoControl_espacio = new FormControl({ value: '', disabled: true }, [
     Validators.required,
   ]);
-  Campo1Control = new FormControl('', [Validators.required]);
+  Campo1Control = new FormControl<number | null>(null, [Validators.required]);
   Campo2Control = new FormControl('', [Validators.required]);
-  Campo3Control = new FormControl('', [Validators.required]);
-  Campo4Control = new FormControl('', [Validators.required]);
-  Campo5Control = new FormControl('', [Validators.required]);
-  Campo6Control = new FormControl('', [Validators.required]);
+  Campo3Control = new FormControl<number | null>(null, [Validators.required]);
+  Campo4Control = new FormControl<number | null>(null, [Validators.required]);
+  Campo5Control = new FormControl<number | null>(null, [Validators.required]);
+  Campo6Control = new FormControl<number | null>(null, [Validators.required]);
   Campo7Control = new FormControl('', [Validators.required]);
   Campo8Control = new FormControl('', [Validators.required]);
   Campo9Control = new FormControl('', [Validators.required]);
@@ -184,7 +187,7 @@ export class ModificarProyectoAcademicoComponent {
     Validators.required,
     Validators.maxLength(2),
   ]);
-  Campo29Control = new FormControl('', [Validators.required]);
+  Campo29Control = new FormControl<number | null>(null, [Validators.required]);
   Campo30Control = new FormControl('', [Validators.required]);
 
   selectFormControl = new FormControl('', Validators.required);
@@ -222,6 +225,7 @@ export class ModificarProyectoAcademicoComponent {
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.dpDayPickerConfig = {
       locale: 'es',
@@ -289,6 +293,20 @@ export class ModificarProyectoAcademicoComponent {
       fecha_creacion_coordinador: ['', Validators.required],
     });
 
+    const coordinadorId = Number(this.data.idcoordinador);
+    if (Number.isFinite(coordinadorId) && coordinadorId > 0) {
+      this.Campo29Control.setValue(coordinadorId);
+    }
+    const facultadId = Number(this.data.idfacultad);
+    if (Number.isFinite(facultadId) && facultadId > 0) {
+      this.CampoControl.setValue(facultadId);
+    }
+    this.Campo1Control.setValue(this.toValidId(this.data.idunidad));
+    this.Campo3Control.setValue(this.toValidId(this.data.idarea));
+    this.Campo4Control.setValue(this.toValidId(this.data.idnucleo));
+    this.Campo5Control.setValue(this.toValidId(this.data.idnivel));
+    this.Campo6Control.setValue(this.toValidId(this.data.idmetodo));
+
     this.loadfacultad();
     this.loadespacio(this.data.idfacultad);
     this.loadnivel();
@@ -316,12 +334,57 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   onSelectionChanged(event: any) {
-    this.loadnucleo(event.value.Id);
+    const areaId = Number(event.value);
+    this.opcionSeleccionadoArea = this.area.find((area) => area.Id === areaId);
+    this.loadnucleo(areaId);
   }
 
   onChangeFacultad(event: any) {
-    this.opcionSeleccionadoFacultad = event.value;
-    this.loadespacio(event.value.Id);
+    const facultadId = Number(event.value);
+    this.opcionSeleccionadoFacultad = this.facultad.find(
+      (facultad) => facultad.Id === facultadId,
+    );
+    this.loadespacio(facultadId);
+  }
+
+  onChangeEspacio(event: any) {
+    const espacioId = Number(event.value);
+    this.opcionSeleccionadoEspacio = this.espacio.find(
+      (espacio) => espacio.Id === espacioId,
+    );
+  }
+
+  onChangeNivel(event: any) {
+    const nivelId = Number(event.value);
+    this.opcionSeleccionadoNivel = this.nivel.find(
+      (nivel) => nivel.Id === nivelId,
+    );
+  }
+
+  onChangeMetodologia(event: any) {
+    const metodologiaId = Number(event.value);
+    this.opcionSeleccionadoMeto = this.metodo.find(
+      (metodologia) => metodologia.Id === metodologiaId,
+    );
+  }
+
+  onChangeUnidad(event: any) {
+    const unidadId = Number(event.value);
+    this.opcionSeleccionadoUnidad = this.unidad.find(
+      (unidad) => unidad.Id === unidadId,
+    );
+  }
+
+  onChangeNucleo(event: any) {
+    const nucleoId = Number(event.value);
+    this.opcionSeleccionadoNucleo = this.nucleo.find(
+      (nucleo) => nucleo.Id === nucleoId,
+    );
+  }
+
+  private toValidId(value: unknown): number | null {
+    const id = Number(value);
+    return Number.isFinite(id) && id > 0 ? id : null;
   }
   loadfechaaltacalidad() {
     if (this.data.fecha_creacion_registro_alta == null) {
@@ -445,6 +508,7 @@ export class ModificarProyectoAcademicoComponent {
       );
       if (res !== null && res.Type !== 'error') {
         this.enfasis = <any>res;
+        this.changeDetectorRef.detectChanges();
       }
     } catch (error: any) {
       Swal.fire({
@@ -533,18 +597,13 @@ export class ModificarProyectoAcademicoComponent {
         .get('vinculacion?query=TipoVinculacionId:292&limit=0')
         .subscribe(
           (res: Vinculacion[]) => {
-            if (Object.keys(res[0]).length > 0) {
+            if (res.length > 0) {
               // Extracción de tercero desde vinculación
-              this.vinculaciones = <Array<Vinculacion>>res;
-              this.vinculaciones.forEach((vinculacion: Vinculacion) => {
-                this.terceros.push(vinculacion.TerceroPrincipalId);
-              });
-
-              this.terceros.forEach((tercero: Tercero) => {
-                if (tercero.Id === Number(this.data.idcoordinador)) {
-                  this.coordinadorSeleccionado = tercero;
-                }
-              });
+              this.vinculaciones = res;
+              this.terceros = this.vinculaciones.map(
+                (vinculacion: Vinculacion) => vinculacion.TerceroPrincipalId,
+              );
+              this.changeDetectorRef.detectChanges();
               resolve(true);
             } else {
               this.terceros = [];
@@ -601,8 +660,8 @@ export class ModificarProyectoAcademicoComponent {
             );
             if (facultadSeleccionada) {
               this.opcionSeleccionadoFacultad = facultadSeleccionada;
-              this.CampoControl.setValue(facultadSeleccionada);
             }
+            this.changeDetectorRef.detectChanges();
           }
         },
         (error: HttpErrorResponse) => {
@@ -656,6 +715,7 @@ export class ModificarProyectoAcademicoComponent {
               this.opcionSeleccionadoNivel = niv;
             }
           });
+          this.changeDetectorRef.detectChanges();
         }
       },
       (error: HttpErrorResponse) => {
@@ -680,6 +740,7 @@ export class ModificarProyectoAcademicoComponent {
               this.opcionSeleccionadoMeto = met;
             }
           });
+          this.changeDetectorRef.detectChanges();
         }
       },
       (error: HttpErrorResponse) => {
@@ -706,6 +767,7 @@ export class ModificarProyectoAcademicoComponent {
                 this.opcionSeleccionadoUnidad = uni;
               }
             });
+            this.changeDetectorRef.detectChanges();
           }
         },
         (error: HttpErrorResponse) => {
@@ -734,6 +796,7 @@ export class ModificarProyectoAcademicoComponent {
                 this.opcionSeleccionadoArea = are;
               }
             });
+            this.changeDetectorRef.detectChanges();
           }
         },
         (error: HttpErrorResponse) => {
@@ -762,6 +825,7 @@ export class ModificarProyectoAcademicoComponent {
                 this.opcionSeleccionadoNucleo = nuc;
               }
             });
+            this.changeDetectorRef.detectChanges();
           }
         },
         (error: HttpErrorResponse) => {
@@ -953,6 +1017,7 @@ export class ModificarProyectoAcademicoComponent {
                     buttons: true,
                     dangerMode: true,
                     showCancelButton: true,
+                    target: 'mat-dialog-container',
                   };
                   Swal.fire(opt1).then((willDelete: any) => {
                     if (willDelete.value) {
@@ -971,6 +1036,7 @@ export class ModificarProyectoAcademicoComponent {
           buttons: true,
           dangerMode: true,
           showCancelButton: true,
+          target: 'mat-dialog-container',
         };
         Swal.fire(opt1).then((willDelete: any) => {
           if (willDelete.value) {
@@ -985,6 +1051,7 @@ export class ModificarProyectoAcademicoComponent {
         buttons: true,
         dangerMode: true,
         showCancelButton: true,
+        target: 'mat-dialog-container',
       };
       Swal.fire(opt1).then((willDelete: any) => {
         if (willDelete.value) {
@@ -1360,9 +1427,14 @@ export class ModificarProyectoAcademicoComponent {
   }
 
   registrocoordinador() {
-    if (this.coordinador.valid && this.fileResolucionCoordinador) {
+    const coordinadorSeleccionado = this.Campo29Control.value;
+    if (
+      this.coordinador.valid &&
+      coordinadorSeleccionado &&
+      this.fileResolucionCoordinador
+    ) {
       this.coordinador_data = {
-        TerceroId: this.coordinadorSeleccionado['Id'],
+        TerceroId: coordinadorSeleccionado,
         DependenciaId: 0,
         Activo: true,
         ResolucionAsignacionId: this.data.id_documento_registro_coordinador,

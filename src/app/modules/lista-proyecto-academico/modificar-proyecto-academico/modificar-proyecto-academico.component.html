@@ -56,11 +56,11 @@
                         <mat-label>{{
                           "proyecto.facultad" | translate
                         }}</mat-label>
-                        <mat-select [formControl]="CampoControl" required [(ngModel)]="opcionSeleccionadoFacultad"
+                        <mat-select [formControl]="CampoControl" required
                           (selectionChange)="onChangeFacultad($event)">
                           <mat-option>--</mat-option>
-                          @for (nombrefacultad of facultad; track nombrefacultad) {
-                            <mat-option [value]="nombrefacultad">
+                          @for (nombrefacultad of facultad; track nombrefacultad.Id) {
+                            <mat-option [value]="nombrefacultad.Id">
                               {{ nombrefacultad["Nombre"] }}
                             </mat-option>
                           }
@@ -77,10 +77,10 @@
                           "proyecto.oikos" | translate
                         }}</mat-label>
                         <mat-select [formControl]="CampoControl_espacio" required
-                          [(ngModel)]="opcionSeleccionadoEspacio">
+                          (selectionChange)="onChangeEspacio($event)">
                           <mat-option>--</mat-option>
-                          @for (nombreespacio of espacio; track nombreespacio) {
-                            <mat-option [value]="nombreespacio">
+                          @for (nombreespacio of espacio; track nombreespacio.Id) {
+                            <mat-option [value]="nombreespacio.Id">
                               {{ nombreespacio["Nombre"] }}
                             </mat-option>
                           }
@@ -111,10 +111,14 @@
                         <mat-label>{{
                           "proyecto.nivel_proyecto" | translate
                         }}</mat-label>
-                        <mat-select [formControl]="Campo5Control" required [(ngModel)]="opcionSeleccionadoNivel">
+                        <mat-select
+                          [formControl]="Campo5Control"
+                          required
+                          (selectionChange)="onChangeNivel($event)"
+                        >
                           <mat-option>--</mat-option>
-                          @for (nivelproyecto of nivel; track nivelproyecto) {
-                            <mat-option [value]="nivelproyecto">
+                          @for (nivelproyecto of nivel; track nivelproyecto.Id) {
+                            <mat-option [value]="nivelproyecto.Id">
                               {{ nivelproyecto["Nombre"] }}
                             </mat-option>
                           }
@@ -130,10 +134,11 @@
                         <mat-label>{{
                           "proyecto.metodologia_proyecto" | translate
                         }}</mat-label>
-                        <mat-select [formControl]="Campo6Control" required [(ngModel)]="opcionSeleccionadoMeto">
+                        <mat-select [formControl]="Campo6Control" required
+                          (selectionChange)="onChangeMetodologia($event)">
                           <mat-option>--</mat-option>
-                          @for (metodoproyecto of metodo; track metodoproyecto) {
-                            <mat-option [value]="metodoproyecto">
+                          @for (metodoproyecto of metodo; track metodoproyecto.Id) {
+                            <mat-option [value]="metodoproyecto.Id">
                               {{ metodoproyecto["Nombre"] }}
                             </mat-option>
                           }
@@ -208,10 +213,11 @@
                         <mat-label>{{
                           "proyecto.tipo_duracion" | translate
                         }}</mat-label>
-                        <mat-select [formControl]="Campo1Control" required [(ngModel)]="opcionSeleccionadoUnidad">
+                        <mat-select [formControl]="Campo1Control" required
+                          (selectionChange)="onChangeUnidad($event)">
                           <mat-option>--</mat-option>
-                          @for (unidadtiempo of unidad; track unidadtiempo) {
-                            <mat-option [value]="unidadtiempo">
+                          @for (unidadtiempo of unidad; track unidadtiempo.Id) {
+                            <mat-option [value]="unidadtiempo.Id">
                               {{ unidadtiempo["Nombre"] }}
                             </mat-option>
                           }
@@ -475,13 +481,13 @@
         <label>{{ "proyecto.text_document_acto" | translate }}</label>
 
         <div style="display: flex; gap: 0.5em">
-          <button mat-flat-button color="accent" type="button" (click)="fileInputActoAdministrativo.click()">
+          <button class="document-icon-button" mat-flat-button color="accent" type="button" (click)="fileInputActoAdministrativo.click()">
             <mat-icon>attach_file</mat-icon>
             <input #fileInputActoAdministrativo type="file" (change)="onInputActoAdministrativo($event)"
               style="display: none" accept="application/pdf" data-max-size="5120" />
           </button>
 
-          <button mat-flat-button color="accent" type="button" (click)="downloadFile(data.id_documento_acto)">
+          <button class="document-icon-button" mat-flat-button color="accent" type="button" (click)="downloadFile(data.id_documento_acto)">
             <mat-icon>cloud_download</mat-icon>
           </button>
         </div>
@@ -523,10 +529,10 @@
         <mat-label>*{{
           "editarproyecto.agregar_coordinado" | translate
         }}:</mat-label>
-        <mat-select [formControl]="Campo29Control" required [(ngModel)]="coordinadorSeleccionado">
+        <mat-select [formControl]="Campo29Control" required>
           <mat-option>--{{ "GLOBAL.seleccionar" | translate }}--</mat-option>
-          @for (tercero of terceros; track tercero) {
-            <mat-option [value]="tercero">
+          @for (tercero of terceros; track tercero.Id) {
+            <mat-option [value]="tercero.Id">
               {{ tercero.NombreCompleto }}
             </mat-option>
           }
@@ -552,14 +558,14 @@
       <label class="label col-sm-9 col-form-label">{{
         "proyecto.text_document" | translate
       }}</label>
-      <button mat-flat-button color="accent" type="button" (click)="fileInputResolucionCoordinador.click()">
+      <button class="document-icon-button" mat-flat-button color="accent" type="button" (click)="fileInputResolucionCoordinador.click()">
         <mat-icon>attach_file</mat-icon>
         <input #fileInputResolucionCoordinador type="file" (change)="onInputResolucionCoordinador($event)"
           style="display: none" accept="application/pdf" data-max-size="5120" />
       </button>
 
       @if (data.id_documento_registro_coordinador) {
-        <button mat-flat-button color="accent" type="button"
+        <button class="document-icon-button" mat-flat-button color="accent" type="button"
           (click)="downloadFile(data.id_documento_registro_coordinador)">
           <mat-icon>cloud_download</mat-icon>
         </button>
@@ -591,11 +597,11 @@
           <form id="resoluForm" [formGroup]="resoluform">
             <mat-form-field class="input-acto">
               <mat-label>{{ "proyecto.area" | translate }}</mat-label>
-              <mat-select [formControl]="Campo3Control" required [(ngModel)]="opcionSeleccionadoArea"
+              <mat-select [formControl]="Campo3Control" required
                 (selectionChange)="onSelectionChanged($event)">
                 <mat-option>--</mat-option>
-                @for (areacono of area; track areacono) {
-                  <mat-option [value]="areacono">
+                @for (areacono of area; track areacono.Id) {
+                  <mat-option [value]="areacono.Id">
                     {{ areacono["Nombre"] }}
                   </mat-option>
                 }
@@ -609,10 +615,11 @@
 
             <mat-form-field class="input-acto">
               <mat-label>{{ "proyecto.nucleo" | translate }}</mat-label>
-              <mat-select [formControl]="Campo4Control" required [(ngModel)]="opcionSeleccionadoNucleo">
+              <mat-select [formControl]="Campo4Control" required
+                (selectionChange)="onChangeNucleo($event)">
                 <mat-option>--</mat-option>
-                @for (nucleocomun of nucleo; track nucleocomun) {
-                  <mat-option [value]="nucleocomun">
+                @for (nucleocomun of nucleo; track nucleocomun.Id) {
+                  <mat-option [value]="nucleocomun.Id">
                     {{ nucleocomun["Nombre"] }}
                   </mat-option>
                 }
@@ -657,13 +664,13 @@
             <label class="label col-form-label">{{
               "proyecto.text_document" | translate
             }}</label>
-            <button class="boton-primary" mat-button type="button" (click)="fileInputRegistroCalificado.click()">
+            <button class="boton-primary document-icon-button" mat-button type="button" (click)="fileInputRegistroCalificado.click()">
               <mat-icon>attach_file</mat-icon>
               <input #fileInputRegistroCalificado type="file" (change)="onInputRegistroCalificado($event)"
                 style="display: none" accept="application/pdf" data-max-size="5120" />
             </button>
 
-            <button class="boton-primary" mat-button type="button"
+            <button class="boton-primary document-icon-button" mat-button type="button"
               (click)="downloadFile(data.id_documento_registor_calificado)">
               <mat-icon>cloud_download</mat-icon>
             </button>
@@ -767,13 +774,13 @@
               <label class="label col-form-label">{{
                 "proyecto.text_document" | translate
               }}</label>
-              <button class="boton-primary" mat-button type="button" (click)="fileInputRegistroAltaCalidad.click()">
+              <button class="boton-primary document-icon-button" mat-button type="button" (click)="fileInputRegistroAltaCalidad.click()">
                 <mat-icon>attach_file</mat-icon>
                 <input #fileInputRegistroAltaCalidad type="file" (change)="onInputRegistroAltaCalidad($event)"
                   style="display: none" accept="application/pdf" data-max-size="5120" />
               </button>
               @if (data.id_documento_alta_calidad) {
-                <button class="boton-primary" mat-button type="button"
+                <button class="boton-primary document-icon-button" mat-button type="button"
                   (click)="downloadFile(data.id_documento_alta_calidad)">
                   <mat-icon>cloud_download</mat-icon>
                 </button>
