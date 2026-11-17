@@ -132,6 +132,7 @@ export class ListEnfasisComponent implements OnInit {
         }
       }
     });
+    this.loadData();
   }
 
   activetab(): void {

@@ -339,7 +339,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       if (d.relacion === undefined) {
         d.relacion = true;
       }
-      if (!d.valor) {
+      if (d.valor === undefined || d.valor === null) {
         d.valor = '';
       }
       if (!d.deshabilitar) {

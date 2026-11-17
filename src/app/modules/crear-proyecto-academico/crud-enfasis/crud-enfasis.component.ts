@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 import { Enfasis } from 'src/app/models/enfasis';
@@ -35,6 +42,7 @@ export class CrudEnfasisComponent implements OnInit {
     private translate: TranslateService,
     private proyectoAcademicoService: ProyectoAcademicoService,
     private snackBar: MatSnackBar,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.formEnfasis = FORM_ENFASIS;
     this.construirForm();
@@ -78,6 +86,7 @@ export class CrudEnfasisComponent implements OnInit {
           (res: any) => {
             if (res.Type !== 'error') {
               this.info_enfasis = <Enfasis>res[0];
+              this.changeDetectorRef.detectChanges();
             } else {
               this.snackBar.open(this.translate.instant('GLOBAL.error'), '', {
                 duration: 3000,

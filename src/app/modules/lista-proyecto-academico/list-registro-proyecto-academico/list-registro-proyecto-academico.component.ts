@@ -39,7 +39,7 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
     'Documento',
   ];
 
-  dataSource!: MatTableDataSource<any>;
+  dataSource = new MatTableDataSource<any>([]);
 
   listaDatos = [];
   proyectoJson: any;
@@ -80,8 +80,8 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
               element.VencimientoActoAdministrativo = momentTimezone
                 .tz(element.VencimientoActoAdministrativo, 'America/Bogota')
                 .format('DD-MM-YYYY');
-              this.dataSource = new MatTableDataSource(data);
             });
+            this.dataSource.data = data;
           } else {
             Swal.fire(opt1).then((willDelete: any) => {
               if (willDelete.value) {
