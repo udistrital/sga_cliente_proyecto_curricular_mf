@@ -314,8 +314,15 @@
                     </mat-header-cell>
 
                     <mat-cell *matCellDef="let row">
-                      <mat-icon class="link icono" (click)="onDeleteEmphasys(row)" aria-hidden="false"
-                      fontIcon="delete_outline"></mat-icon>
+                      <button
+                        mat-icon-button
+                        type="button"
+                        class="link icono"
+                        (click)="onDeleteEmphasys(row)"
+                        [attr.aria-label]="'consultaproyecto.desactivar' | translate"
+                      >
+                        <mat-icon aria-hidden="true" fontIcon="delete_outline"></mat-icon>
+                      </button>
                     </mat-cell>
                   </ng-container>
 

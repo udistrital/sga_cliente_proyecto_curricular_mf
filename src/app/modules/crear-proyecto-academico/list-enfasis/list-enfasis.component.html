@@ -11,20 +11,26 @@
               ><b>{{ "consultaproyecto.acciones" | translate }}</b>
             </mat-header-cell>
             <mat-cell *matCellDef="let row">
-              <mat-icon
+              <button
+                mat-icon-button
+                type="button"
                 class="link icono"
                 (click)="onEdit(row)"
-                aria-hidden="false"
+                [attr.aria-label]="'consultaproyecto.editar' | translate"
                 title="{{ 'consultaproyecto.editar' | translate }}"
-                fontIcon="edit_outline"
-              ></mat-icon>
-              <mat-icon
+              >
+                <mat-icon aria-hidden="true" fontIcon="edit_outline"></mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
                 class="link icono"
                 (click)="onDelete(row)"
-                aria-hidden="false"
+                [attr.aria-label]="'consultaproyecto.desactivar' | translate"
                 title="{{ 'consultaproyecto.desactivar' | translate }}"
-                fontIcon="delete_outline"
-              ></mat-icon>
+              >
+                <mat-icon aria-hidden="true" fontIcon="delete_outline"></mat-icon>
+              </button>
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="nombre">

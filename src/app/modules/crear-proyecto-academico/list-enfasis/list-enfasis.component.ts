@@ -153,6 +153,4 @@ export class ListEnfasisComponent implements OnInit {
       this.cambiotab = !this.cambiotab;
     }
   }
-
-  itemselec(event: any): void {}
 }

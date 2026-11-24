@@ -23,7 +23,7 @@ import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-c
   styleUrls: ['./list-registro-proyecto-academico.component.scss'],
   standalone: false,
 })
-export class ListRegistroProyectoAcademicoComponent implements OnInit {
+export class ListRegistroProyectoAcademicoComponent {
   settings: any;
   index: any;
   idproyecto: any;
@@ -140,8 +140,6 @@ export class ListRegistroProyectoAcademicoComponent implements OnInit {
   useLanguage(language: string) {
     this.translate.use(language);
   }
-
-  ngOnInit() {}
 
   onclick(): void {
     this.dialogRef.close();

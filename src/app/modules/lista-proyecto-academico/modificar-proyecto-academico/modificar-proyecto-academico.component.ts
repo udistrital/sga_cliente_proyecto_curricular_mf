@@ -589,8 +589,6 @@ export class ModificarProyectoAcademicoComponent {
     this.dialogRef.close();
   }
 
-  ngOnInit() {}
-
   loadterceros(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.terceroService

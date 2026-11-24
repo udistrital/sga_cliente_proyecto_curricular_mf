@@ -46,7 +46,7 @@ const TRANSLATIONS = {
   styleUrls: ['./list-proyecto-academico.component.component.scss'],
   standalone: false,
 })
-export class ListProyectoAcademicoComponent implements OnInit {
+export class ListProyectoAcademicoComponent {
   displayedColumns: string[] = [
     'id',
     'nombre_proyecto',
@@ -278,8 +278,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
   useLanguage(language: string) {
     this.translate.use(language);
   }
-
-  ngOnInit() {}
 
   async loadproyectos() {
     try {

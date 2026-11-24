@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -27,7 +34,7 @@ import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-c
   styleUrls: ['./registro-proyecto-academico.component.scss'],
   standalone: false,
 })
-export class RegistroProyectoAcademicoComponent implements OnInit {
+export class RegistroProyectoAcademicoComponent {
   settings: any;
 
   resoluform: any;
@@ -70,6 +77,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
   idDocumento!: number;
 
   constructor(
+    private elementRef: ElementRef<HTMLElement>,
     private translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ListRegistroProyectoAcademicoComponent>,
@@ -116,9 +124,6 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
   useLanguage(language: string) {
     this.translate.use(language);
   }
-  ngOnInit() {}
-
-  registroproyecto() {}
 
   cleanURL(oldURL: string): SafeResourceUrl {
     return this.sanitization.bypassSecurityTrustUrl(oldURL);
@@ -231,6 +236,9 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         buttons: true,
         dangerMode: true,
         showCancelButton: true,
+        target:
+          this.elementRef.nativeElement.closest('mat-dialog-container') ??
+          document.body,
       };
       Swal.fire(opt)
         .then(async (willCreate: any) => {
@@ -267,6 +275,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
                     buttons: true,
                     dangerMode: true,
                     showCancelButton: true,
+                    target: 'mat-dialog-container',
                   };
                   Swal.fire(opt1).then((willDelete: any) => {
                     if (willDelete.value) {
