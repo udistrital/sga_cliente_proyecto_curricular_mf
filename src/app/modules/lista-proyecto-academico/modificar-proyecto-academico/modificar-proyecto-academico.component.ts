@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   Inject,
+  OnInit,
   Output,
 } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -54,7 +55,7 @@ import { firstValueFrom } from 'rxjs';
   styleUrls: ['./modificar-proyecto-academico.component.scss'],
   standalone: false,
 })
-export class ModificarProyectoAcademicoComponent {
+export class ModificarProyectoAcademicoComponent implements OnInit {
   settings: any;
   basicform: any;
   resoluform: any;
@@ -314,8 +315,6 @@ export class ModificarProyectoAcademicoComponent {
     this.loadunidadtiempo();
     this.loadarea();
     this.loadnucleo(this.data.idarea);
-    this.loadenfasis();
-    this.loadterceros();
     this.loadfechacoordinador();
     this.loadfechaaltacalidad();
     this.checkofrece = Boolean(JSON.parse(this.data.oferta_check));
@@ -331,6 +330,11 @@ export class ModificarProyectoAcademicoComponent {
     this.dataSource = new MatTableDataSource(data.enfasis);
 
     //console.log(this.data);
+  }
+
+  ngOnInit(): void {
+    this.loadenfasis();
+    this.loadterceros();
   }
 
   onSelectionChanged(event: any) {

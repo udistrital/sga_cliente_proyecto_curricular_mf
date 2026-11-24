@@ -46,7 +46,7 @@ const TRANSLATIONS = {
   styleUrls: ['./list-proyecto-academico.component.component.scss'],
   standalone: false,
 })
-export class ListProyectoAcademicoComponent {
+export class ListProyectoAcademicoComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'nombre_proyecto',
@@ -77,8 +77,11 @@ export class ListProyectoAcademicoComponent {
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
   ) {
-    this.loadproyectos();
     this.permisos();
+  }
+
+  ngOnInit(): void {
+    this.loadproyectos();
   }
 
   get canInhabilitar(): boolean {
