@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';
 import { ConsultaProyectoAcademicoComponent } from '../consulta-proyecto-academico/consulta-proyecto-academico.component';
@@ -13,7 +12,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProyectoCurricularService } from 'src/app/services/proyecto-curricular.service';
 import { Proyecto } from 'src/app/models/api/sga_proyecto_curricular_mid/proyecto_curricular.models';
-import { RowProyecto } from 'src/app/models/proyecto_academico/proyecto_academico.models';
 import { ApiResponse } from 'src/app/models/api-response.interface';
 import { firstValueFrom } from 'rxjs';
 import { Permission } from './list.proyecto-academico.constants';

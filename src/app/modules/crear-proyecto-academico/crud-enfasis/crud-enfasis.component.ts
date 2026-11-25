@@ -68,7 +68,7 @@ export class CrudEnfasisComponent implements OnInit {
     this.translate.use(language);
   }
 
-  getIndexForm(nombre: String): number {
+  getIndexForm(nombre: string): number {
     for (let index = 0; index < this.formEnfasis.campos.length; index++) {
       const element = this.formEnfasis.campos[index];
       if (element.nombre === nombre) {

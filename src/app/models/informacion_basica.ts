@@ -1,16 +1,15 @@
-
 export class InformacionBasica {
-    codigosnies!: Number;
-    facultad!: string;
-    nombre!: string;
-    nivel!: string;
-    metodologia!: string;
-    abreviacion!: string;
-    correo!: string;
-    numerocreditos!: Number;
-    duracion!: Number;
-    tipoduracion!: string;
-    ciclos!: Boolean;
-    activo!: Boolean;
-    enfasis!: string;
+  codigosnies!: number;
+  facultad!: string;
+  nombre!: string;
+  nivel!: string;
+  metodologia!: string;
+  abreviacion!: string;
+  correo!: string;
+  numerocreditos!: number;
+  duracion!: number;
+  tipoduracion!: string;
+  ciclos!: boolean;
+  activo!: boolean;
+  enfasis!: string;
 }
