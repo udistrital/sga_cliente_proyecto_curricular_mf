@@ -129,70 +129,65 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    if (changes.normalform !== undefined) {
-      if (changes.normalform.currentValue !== undefined) {
-        this.normalform = changes.normalform.currentValue;
-      }
+    if (changes.normalform?.currentValue !== undefined) {
+      this.normalform = changes.normalform.currentValue;
     }
-    if (changes.modeloData !== undefined) {
-      if (changes.modeloData.currentValue !== undefined) {
-        this.modeloData = changes.modeloData.currentValue;
-        if (this.normalform.campos) {
-          this.normalform.campos.forEach((element: any) => {
-            for (const i in this.modeloData) {
-              if (this.modeloData.hasOwnProperty(i)) {
-                if (i === element.nombre && this.modeloData[i] !== null) {
-                  switch (element.etiqueta) {
-                    case 'selectmultiple':
-                      element.valor = [];
-                      if (this.modeloData[i].length > 0) {
-                        this.modeloData[i].forEach((e1: any) =>
-                          element.opciones.forEach((e2: any) => {
-                            if (e1.Id === e2.Id) {
-                              element.valor.push(e2);
-                            }
-                          }),
-                        );
-                      }
-                      break;
-                    case 'select':
-                      if (element.hasOwnProperty('opciones')) {
-                        if (element.opciones != undefined) {
-                          element.opciones.forEach((e1: any) => {
-                            if (
-                              this.modeloData[i].Id !== null ||
-                              this.modeloData[i].Id !== undefined
-                            ) {
-                              if (e1.Id === this.modeloData[i].Id) {
-                                element.valor = e1;
-                              }
-                            }
-                          });
-                        }
-                      }
-                      break;
-                    case 'mat-date':
-                      element.valor = new Date(this.modeloData[i]);
-                      break;
-                    case 'file':
-                      element.url = this.cleanURL(this.modeloData[i]);
-                      element.urlTemp = this.modeloData[i];
-                      break;
-                    default:
-                      element.valor = this.modeloData[i];
-                  }
-                  this.validCampo(element);
-                }
-              }
-            }
-          });
-          this.setPercentage();
-        }
-      }
+    if (changes.modeloData?.currentValue !== undefined) {
+      this.updateModeloData(changes.modeloData.currentValue);
     }
     if (changes.clean !== undefined && this.init) {
       this.clearForm();
       this.clean = false;
+    }
+  }
+
+  private updateModeloData(modeloData: any): void {
+    this.modeloData = modeloData;
+    if (!this.normalform.campos) {
+      return;
+    }
+
+    this.normalform.campos.forEach((element: any) => {
+      if (!Object.prototype.hasOwnProperty.call(this.modeloData, element.nombre)) {
+        return;
+      }
+
+      const value = this.modeloData[element.nombre];
+      if (value === null) {
+        return;
+      }
+
+      this.updateFieldValue(element, value);
+      this.validCampo(element);
+    });
+    this.setPercentage();
+  }
+
+  private updateFieldValue(element: any, value: any): void {
+    switch (element.etiqueta) {
+      case 'selectmultiple':
+        element.valor = value.flatMap((selected: any) =>
+          element.opciones.filter((option: any) => selected.Id === option.Id),
+        );
+        break;
+      case 'select':
+        if (Object.prototype.hasOwnProperty.call(element, 'opciones') && element.opciones != undefined) {
+          element.opciones.forEach((option: any) => {
+            if (option.Id === value.Id) {
+              element.valor = option;
+            }
+          });
+        }
+        break;
+      case 'mat-date':
+        element.valor = new Date(value);
+        break;
+      case 'file':
+        element.url = this.cleanURL(value);
+        element.urlTemp = value;
+        break;
+      default:
+        element.valor = value;
     }
   }
 
@@ -359,171 +354,200 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   validCampo(c: any, emit = true): boolean {
     if (c.etiqueta === 'fileRev' && !c.ocultar) {
-      if (
-        c.requerido &&
-        !c.valor &&
-        (c.File === undefined ||
-          c.File === null ||
-          c.File === '' ||
-          c.urlTemp === undefined ||
-          c.urlTemp === null ||
-          c.urlTemp === '')
-      ) {
-        c.alerta = '** Debe llenar este campo';
-        c.clase = 'form-control form-control-danger';
-        return false;
-      }
-      if (c.File) {
-        if (c.tamanoMaximo) {
-          if (c.File.size > c.tamanoMaximo * 1024000) {
-            c.clase = 'form-control form-control-danger';
-            c.alerta =
-              'El tamaño del archivo es superior a : ' +
-              c.tamanoMaximo +
-              'MB. ';
-            return false;
-          }
-        }
-        if (c.tipo) {
-          if (c.tipo.indexOf(c.File.type.split('/')[1]) === -1) {
-            c.clase = 'form-control form-control-danger';
-            c.alerta = 'Solo se admiten los siguientes formatos: ' + c.formatos;
-            return false;
-          }
-        }
-      }
-      c.clase = 'form-control form-control-success';
-      c.alerta = '';
-      return true;
+      return this.validateRevisionFile(c);
     }
     if (c.etiqueta === 'file' && !!c.ocultar) {
       return true;
-      // console.info((c.etiqueta === 'file' && (c.valor)?true:c.valor.name === undefined));
     }
-    if (
-      (c.requerido &&
-        ((c.valor === '' && c.etiqueta !== 'file') ||
-          c.valor === null ||
-          c.valor === undefined ||
-          (JSON.stringify(c.valor) === '{}' && c.etiqueta !== 'file') ||
-          JSON.stringify(c.valor) === '[]')) ||
-      (c.etiqueta === 'file' &&
-        c.valor.name === undefined &&
-        c.etiqueta === 'file' &&
-        (c.urlTemp === undefined || c.urlTemp === '')) ||
-      (c.etiqueta === 'file' &&
-        c.valor.name === null &&
-        c.etiqueta === 'file' &&
-        (c.urlTemp === null || c.urlTemp === ''))
-    ) {
-      if (c.entrelazado && emit) {
-        this.interlaced.emit(c);
-        return true;
-      }
-      c.alerta = '** Debe llenar este campo';
-      c.clase = 'form-control form-control-danger';
+    if (!this.validateRequiredValue(c, emit)) {
       return false;
     }
-    if (
-      (c.etiqueta === 'input' || c.etiqueta === 'inputConfirmacion') &&
-      c.tipo === 'number'
-    ) {
-      c.valor = parseInt(c.valor, 10);
-      if (c.valor < c.minimo) {
-        c.clase = 'form-control form-control-danger';
-        c.alerta = 'El valor no puede ser menor que ' + c.minimo;
-        return false;
-      }
+    if (!this.validateInputField(c)) {
+      return false;
     }
-    if (
-      (c.etiqueta === 'input' || c.etiqueta === 'inputConfirmacion') &&
-      c.tipo === 'number'
-    ) {
-      c.valor = parseInt(c.valor, 10);
-      if (c.valor > c.maximolog) {
-        c.clase = 'form-control form-control-danger';
-        c.alerta = 'El valor no puede ser mayor que ' + c.maximolog;
-        return false;
-      }
+    if (!this.validateChoice(c)) {
+      return false;
     }
-    if (
-      (c.etiqueta === 'input' || c.etiqueta === 'inputConfirmacion') &&
-      c.tipo === 'email'
-    ) {
-      const pattern: RegExp =
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      let esValido: boolean = c.valor.match(pattern) ? true : false;
-      if (!esValido) {
-        c.clase = 'form-control form-control-danger';
-        c.alerta = 'No es un correo válido';
-        return false;
-      }
+    if (!this.validateOptionalFile(c)) {
+      return false;
     }
-    if (c.etiqueta === 'radio') {
-      if (c.valor.Id === undefined) {
-        c.clase = 'form-control form-control-danger';
-        c.alerta = 'Seleccione el campo';
-        return false;
-      }
-    }
-    if (c.etiqueta === 'select') {
-      if (c.valor == null) {
-        c.clase = 'form-control form-control-danger';
-        c.alerta = 'Seleccione el campo';
-        return false;
-      }
-    }
-    if (
-      c.etiqueta === 'file' &&
-      c.valor !== null &&
-      c.valor !== undefined &&
-      c.valor !== '' &&
-      !c.ocultar
-    ) {
-      if (c.valor.size > c.tamanoMaximo * 1024000) {
-        c.clase = 'form-control form-control-danger';
-        c.alerta =
-          'El tamaño del archivo es superior a : ' + c.tamanoMaximo + 'MB. ';
-        return false;
-      }
-      if (c.valor.type) {
-        if (c.formatos.indexOf(c.valor.type.split('/')[1]) === -1) {
-          c.clase = 'form-control form-control-danger';
-          c.alerta = 'Solo se admiten los siguientes formatos: ' + c.formatos;
-          return false;
-        }
-      }
-    }
-    if (c.entrelazado && emit) {
-      if (c.valor) {
-        this.interlaced.emit(c);
-      }
-    }
+    this.emitInterlaced(c, emit);
     if (c.etiqueta === 'textarea') {
-      const caracteresEspeciales1: RegExp = /[\"\\\/\b\f]/g; // pueden romper JSON string in api GO
-      const caracteresEspeciales2: RegExp = /[\t\n\r]/g; // pueden romper JSON string in api GO
-      const multiespacio: RegExp = /\s\s+/g; // bonus: quitar muchos espacios juntos
-      c.valor = c.valor.replace(caracteresEspeciales1, '');
-      c.valor = c.valor.replace(caracteresEspeciales2, ' '); // tabs y enter se reemplazan por espacio
-      c.valor = c.valor.replace(multiespacio, ' ');
-      if (c.cantidadCaracteres) {
-        if (c.valor.length > c.cantidadCaracteres) {
-          c.clase = 'form-control form-control-danger';
-          c.alerta =
-            'El texto supera el máximo de caracteres permitido (máximo: ' +
-            c.cantidadCaracteres +
-            ', actualmente: ' +
-            c.valor.length +
-            ')';
-          return false;
-        }
-      }
+      return this.validateTextarea(c);
     }
     // if (!this.normalform.btn) {
     //   if (this.validForm().valid) {
     //     this.resultSmart.emit(this.validForm());
     //   }
     // }
+    return this.setCampoSuccess(c);
+  }
+
+  private validateRevisionFile(c: any): boolean {
+    const missingFile =
+      c.File === undefined ||
+      c.File === null ||
+      c.File === '' ||
+      c.urlTemp === undefined ||
+      c.urlTemp === null ||
+      c.urlTemp === '';
+    if (c.requerido && !c.valor && missingFile) {
+      return this.setCampoError(c, '** Debe llenar este campo');
+    }
+
+    if (c.File && c.tamanoMaximo && c.File.size > c.tamanoMaximo * 1024000) {
+      return this.setCampoError(
+        c,
+        'El tamaño del archivo es superior a : ' + c.tamanoMaximo + 'MB. ',
+      );
+    }
+
+    if (c.File && c.tipo && c.tipo.indexOf(c.File.type.split('/')[1]) === -1) {
+      return this.setCampoError(
+        c,
+        'Solo se admiten los siguientes formatos: ' + c.formatos,
+      );
+    }
+
+    return this.setCampoSuccess(c);
+  }
+
+  private isMissingCampoValue(c: any): boolean {
+    const value = c.valor;
+    const missingRequiredValue =
+      c.requerido &&
+      ((value === '' && c.etiqueta !== 'file') ||
+        value === null ||
+        value === undefined ||
+        (JSON.stringify(value) === '{}' && c.etiqueta !== 'file') ||
+        JSON.stringify(value) === '[]');
+    const missingFileName =
+      c.etiqueta === 'file' &&
+      ((value?.name === undefined &&
+        (c.urlTemp === undefined || c.urlTemp === '')) ||
+        (value?.name === null && (c.urlTemp === null || c.urlTemp === '')));
+
+    return missingRequiredValue || missingFileName;
+  }
+
+  private validateRequiredValue(c: any, emit: boolean): boolean {
+    if (!this.isMissingCampoValue(c)) {
+      return true;
+    }
+    if (c.entrelazado && emit) {
+      this.interlaced.emit(c);
+      return true;
+    }
+    return this.setCampoError(c, '** Debe llenar este campo');
+  }
+
+  private validateInputField(c: any): boolean {
+    if (c.etiqueta !== 'input' && c.etiqueta !== 'inputConfirmacion') {
+      return true;
+    }
+    if (c.tipo === 'number') {
+      return this.validateNumber(c);
+    }
+    if (c.tipo === 'email') {
+      return this.validateEmail(c);
+    }
+    return true;
+  }
+
+  private validateChoice(c: any): boolean {
+    const invalidRadio = c.etiqueta === 'radio' && c.valor.Id === undefined;
+    const invalidSelect = c.etiqueta === 'select' && c.valor == null;
+    if (invalidRadio || invalidSelect) {
+      return this.setCampoError(c, 'Seleccione el campo');
+    }
+    return true;
+  }
+
+  private validateNumber(c: any): boolean {
+    c.valor = parseInt(c.valor, 10);
+    if (c.valor < c.minimo) {
+      return this.setCampoError(c, 'El valor no puede ser menor que ' + c.minimo);
+    }
+    if (c.valor > c.maximolog) {
+      return this.setCampoError(
+        c,
+        'El valor no puede ser mayor que ' + c.maximolog,
+      );
+    }
+    return true;
+  }
+
+  private validateEmail(c: any): boolean {
+    const pattern: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!pattern.test(c.valor)) {
+      return this.setCampoError(c, 'No es un correo válido');
+    }
+    return true;
+  }
+
+  private isVisibleFile(c: any): boolean {
+    return (
+      c.etiqueta === 'file' &&
+      c.valor !== null &&
+      c.valor !== undefined &&
+      c.valor !== '' &&
+      !c.ocultar
+    );
+  }
+
+  private validateFile(c: any): boolean {
+    if (c.valor.size > c.tamanoMaximo * 1024000) {
+      return this.setCampoError(
+        c,
+        'El tamaño del archivo es superior a : ' + c.tamanoMaximo + 'MB. ',
+      );
+    }
+    if (c.valor.type && c.formatos.indexOf(c.valor.type.split('/')[1]) === -1) {
+      return this.setCampoError(
+        c,
+        'Solo se admiten los siguientes formatos: ' + c.formatos,
+      );
+    }
+    return true;
+  }
+
+  private validateOptionalFile(c: any): boolean {
+    return !this.isVisibleFile(c) || this.validateFile(c);
+  }
+
+  private emitInterlaced(c: any, emit: boolean): void {
+    if (c.entrelazado && emit && c.valor) {
+      this.interlaced.emit(c);
+    }
+  }
+
+  private validateTextarea(c: any): boolean {
+    const caracteresEspeciales1: RegExp = /[\"\\\/\b\f]/g;
+    const caracteresEspeciales2: RegExp = /[\t\n\r]/g;
+    const multiespacio: RegExp = /\s\s+/g;
+    c.valor = c.valor.replace(caracteresEspeciales1, '');
+    c.valor = c.valor.replace(caracteresEspeciales2, ' ');
+    c.valor = c.valor.replace(multiespacio, ' ');
+    if (c.cantidadCaracteres && c.valor.length > c.cantidadCaracteres) {
+      return this.setCampoError(
+        c,
+        'El texto supera el máximo de caracteres permitido (máximo: ' +
+          c.cantidadCaracteres +
+          ', actualmente: ' +
+          c.valor.length +
+          ')',
+      );
+    }
+    return this.setCampoSuccess(c);
+  }
+
+  private setCampoError(c: any, alerta: string): false {
+    c.clase = 'form-control form-control-danger';
+    c.alerta = alerta;
+    return false;
+  }
+
+  private setCampoSuccess(c: any): true {
     c.clase = 'form-control form-control-success';
     c.alerta = '';
     return true;

@@ -45,9 +45,13 @@ import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.se
 import { TercerosService } from 'src/app/services/terceros.service copy';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 // @ts-ignore
-import Swal from 'sweetalert2/dist/sweetalert2';
+import SweetAlert from 'sweetalert2/dist/sweetalert2';
 import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-curricular-mid.service';
 import { firstValueFrom } from 'rxjs';
+
+const Swal = SweetAlert.mixin({
+  target: 'mat-dialog-container:last-of-type',
+});
 
 @Component({
   selector: 'app-modificar-proyecto-academico',
@@ -968,7 +972,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
           icon: 'warning',
           buttons: true,
           dangerMode: true,
-          target: 'mat-dialog-container',
+          target: 'mat-dialog-container:last-of-type',
           showCancelButton: true,
         };
 
@@ -1019,7 +1023,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
                     buttons: true,
                     dangerMode: true,
                     showCancelButton: true,
-                    target: 'mat-dialog-container',
+                    target: 'mat-dialog-container:last-of-type',
                   };
                   Swal.fire(opt1).then((willDelete: any) => {
                     if (willDelete.value) {
@@ -1038,7 +1042,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
           buttons: true,
           dangerMode: true,
           showCancelButton: true,
-          target: 'mat-dialog-container',
+          target: 'mat-dialog-container:last-of-type',
         };
         Swal.fire(opt1).then((willDelete: any) => {
           if (willDelete.value) {
@@ -1053,7 +1057,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
         buttons: true,
         dangerMode: true,
         showCancelButton: true,
-        target: 'mat-dialog-container',
+        target: 'mat-dialog-container:last-of-type',
       };
       Swal.fire(opt1).then((willDelete: any) => {
         if (willDelete.value) {
@@ -1182,7 +1186,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
           icon: 'warning',
           buttons: true,
           dangerMode: true,
-          target: 'mat-dialog-container',
+          target: 'mat-dialog-container:last-of-type',
           showCancelButton: true,
         };
 
@@ -1337,7 +1341,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
           icon: 'warning',
           buttons: true,
           dangerMode: true,
-          target: 'mat-dialog-container',
+          target: 'mat-dialog-container:last-of-type',
           showCancelButton: true,
         };
 

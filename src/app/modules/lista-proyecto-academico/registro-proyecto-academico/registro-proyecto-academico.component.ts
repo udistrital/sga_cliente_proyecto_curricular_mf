@@ -15,7 +15,7 @@ import {
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { InstitucionEnfasis } from 'src/app/models/institucion_enfasis';
 import { NuevoRegistro } from 'src/app/models/nuevo_registro';
 import { RegistroCalificadoAcreditacion } from 'src/app/models/registro_calificado_acreditacion';
@@ -148,35 +148,56 @@ export class RegistroProyectoAcademicoComponent {
     }
   }
 
-  uploadFilesCreacionRegistro(files: any) {
-    return new Promise((resolve, reject) => {
-      files.forEach((file: any) => {
-        ((file.Id = file.nombre),
-          (file.nombre =
-            'soporte_' +
-            file.IdDocumento +
-            '_actualizacion_registro_proyecto_' +
-            this.data.IdProyecto +
-            '_tipo_registro_' +
-            Number(this.data.tipo_registro)));
-        // file.key = file.Id;
-        file.key = 'soporte_' + file.IdDocumento;
-      });
-      this.newNuxeoService.uploadFiles(files).subscribe(
-        (responseNux: any[]) => {
-          if (Object.keys(responseNux).length === files.length) {
-            files.forEach((file: any) => {
-              this.uidDocumento = file.uid;
-              let f = responseNux.find((res) => res.res.Nombre == file.nombre);
-              this.idDocumento = f.res.Id;
-            });
-            resolve(true);
-          }
-        },
-        (error) => {
-          reject(error);
-        },
+  async uploadFilesCreacionRegistro(files: any[]): Promise<void> {
+    for (const file of files) {
+      this.prepareRegistrationFile(file);
+    }
+
+    const responseNux = await firstValueFrom(
+      this.newNuxeoService.uploadFiles(files),
+    );
+    if (responseNux.length !== files.length) {
+      throw new Error('Nuxeo devolvió una cantidad inesperada de archivos');
+    }
+
+    this.assignUploadedRegistrationFiles(files, responseNux);
+  }
+
+  private prepareRegistrationFile(file: any): void {
+    file.Id = file.nombre;
+    file.nombre =
+      'soporte_' +
+      file.IdDocumento +
+      '_actualizacion_registro_proyecto_' +
+      this.data.IdProyecto +
+      '_tipo_registro_' +
+      Number(this.data.tipo_registro);
+    file.key = 'soporte_' + file.IdDocumento;
+  }
+
+  private assignUploadedRegistrationFiles(
+    files: any[],
+    responseNux: any[],
+  ): void {
+    for (const file of files) {
+      const uploadedFile = responseNux.find(
+        (response) => response?.res?.Nombre === file.nombre,
       );
+      if (!uploadedFile?.res) {
+        throw new Error(`Nuxeo no devolvió el archivo ${file.nombre}`);
+      }
+
+      this.uidDocumento = file.uid;
+      this.idDocumento = uploadedFile.res.Id;
+    }
+  }
+
+  private showDialogAlert(options: any): Promise<any> {
+    return Swal.fire({
+      ...options,
+      target:
+        this.elementRef.nativeElement.closest('mat-dialog-container') ??
+        document.body,
     });
   }
 
@@ -240,10 +261,22 @@ export class RegistroProyectoAcademicoComponent {
           this.elementRef.nativeElement.closest('mat-dialog-container') ??
           document.body,
       };
-      Swal.fire(opt)
+      this.showDialogAlert(opt)
         .then(async (willCreate: any) => {
           if (willCreate.value) {
-            await this.uploadFilesCreacionRegistro([this.fileDocumento]);
+            try {
+              await this.uploadFilesCreacionRegistro([this.fileDocumento]);
+            } catch {
+              Swal.close();
+              this.snackBar.open(
+                this.translate.instant(
+                  'historial_registro.registro_no_creado',
+                ),
+                '',
+                { duration: 3000, panelClass: ['error-snackbar'] },
+              );
+              return;
+            }
             this.registro_nuevo.EnlaceActo = this.idDocumento + '';
             this.sgaProyectoCurricularMidService
               .post(
@@ -252,7 +285,7 @@ export class RegistroProyectoAcademicoComponent {
               )
               .subscribe((res: any) => {
                 if (res.succes) {
-                  Swal.fire({
+                  this.showDialogAlert({
                     icon: 'error',
                     title: res.Code,
                     text: this.translate.instant('ERROR.' + res.Code),
@@ -277,17 +310,15 @@ export class RegistroProyectoAcademicoComponent {
                     showCancelButton: true,
                     target: 'mat-dialog-container',
                   };
-                  Swal.fire(opt1).then((willDelete: any) => {
-                    if (willDelete.value) {
-                    }
+                  this.showDialogAlert(opt1).then(() => {
+                    this.dialogRef.close();
                   });
-                  this.dialogRef.close();
                 }
               });
           }
         })
         .catch((res: any) => {
-          Swal.fire({
+          this.showDialogAlert({
             icon: 'error',
             title: res.Code,
             text: this.translate.instant('ERROR.' + res.Code),
@@ -308,7 +339,7 @@ export class RegistroProyectoAcademicoComponent {
         dangerMode: true,
         showCancelButton: true,
       };
-      Swal.fire(opt1).then((willDelete: any) => {
+      this.showDialogAlert(opt1).then((willDelete: any) => {
         if (willDelete.value) {
         }
       });

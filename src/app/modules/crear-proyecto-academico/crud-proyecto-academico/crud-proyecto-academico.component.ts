@@ -17,7 +17,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
-import { Subscription, take } from 'rxjs';
+import { firstValueFrom, Subscription, take } from 'rxjs';
 import { Enfasis } from 'src/app/models/enfasis';
 import { InstitucionEnfasis } from 'src/app/models/institucion_enfasis';
 import { Metodologia } from 'src/app/models/metodologia';
@@ -617,64 +617,56 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     }
   }
 
-  uploadFilesCreacionProyecto(files: any) {
-    return new Promise((resolve, reject) => {
-      files.forEach(async (file: any) => {
-        // Genera el nombre base del archivo
-        let nombreArchivo =
-          'soporte_' +
-          file.IdDocumento +
-          '_creacion_proyecto_curricular_' +
-          this.basicform.value.codigo_snies +
-          '_' +
-          this.basicform.value.nombre_proyecto;
+  async uploadFilesCreacionProyecto(files: any[]): Promise<void> {
+    for (const file of files) {
+      this.prepareProjectFile(file);
+    }
 
-        /// Elimina caracteres no permitidos excepto puntos
-        nombreArchivo = nombreArchivo.replace(/[\/\\:\*\?"<>\|]/g, '');
+    const responseNux = await firstValueFrom(
+      this.newNuxeoService.uploadFiles(files),
+    );
+    if (responseNux.length !== files.length) {
+      throw new Error('Nuxeo devolvió una cantidad inesperada de archivos');
+    }
 
-        // Elimina todos los puntos de la cadena
-        nombreArchivo = nombreArchivo.split('.').join('');
+    this.assignUploadedProjectFiles(files, responseNux);
+  }
 
-        // Elimina espacios innecesarios
-        nombreArchivo = nombreArchivo.trim();
+  private prepareProjectFile(file: any): void {
+    let nombreArchivo =
+      'soporte_' +
+      file.IdDocumento +
+      '_creacion_proyecto_curricular_' +
+      this.basicform.value.codigo_snies +
+      '_' +
+      this.basicform.value.nombre_proyecto;
 
-        // Asigna el nombre generado al archivo
-        file.nombre = nombreArchivo;
+    nombreArchivo = nombreArchivo.replace(/[\/\\:\*\?"<>\|]/g, '');
+    nombreArchivo = nombreArchivo.split('.').join('');
+    nombreArchivo = nombreArchivo.trim();
 
-        // Asigna la clave del archivo
-        file.key = 'soporte_' + file.IdDocumento;
+    file.nombre = nombreArchivo;
+    file.key = 'soporte_' + file.IdDocumento;
+    file.Id = file.nombre;
+  }
 
-        // Opcional: Si necesitas mantener el ID del archivo
-        file.Id = file.nombre;
-      });
-      this.newNuxeoService.uploadFiles(files).subscribe(
-        (responseNux: any[]) => {
-          console.log('response nuxeo', responseNux);
-          if (Object.keys(responseNux).length === files.length) {
-            console.log('files', files);
-            files.forEach((file: any) => {
-              if (file.IdDocumento === 9) {
-                this.uidResolucion = file.uid;
-                let f = responseNux.find(
-                  (res) => res.res.Nombre == file.nombre,
-                );
-                this.idDocumentoResolucion = f.res.Id;
-              } else if (file.IdDocumento === 10) {
-                this.uidActoAdministrativo = file.uid;
-                let f = responseNux.find(
-                  (res) => res.res.Nombre == file.nombre,
-                );
-                this.idDocumentoAdministrativo = f.res.Id;
-              }
-            });
-            resolve(true);
-          }
-        },
-        (error) => {
-          reject(error);
-        },
+  private assignUploadedProjectFiles(files: any[], responseNux: any[]): void {
+    for (const file of files) {
+      const uploadedFile = responseNux.find(
+        (response) => response?.res?.Nombre === file.nombre,
       );
-    });
+      if (!uploadedFile?.res) {
+        throw new Error(`Nuxeo no devolvió el archivo ${file.nombre}`);
+      }
+
+      if (file.IdDocumento === 9) {
+        this.uidResolucion = file.uid;
+        this.idDocumentoResolucion = uploadedFile.res.Id;
+      } else if (file.IdDocumento === 10) {
+        this.uidActoAdministrativo = file.uid;
+        this.idDocumentoAdministrativo = uploadedFile.res.Id;
+      }
+    }
   }
 
   loadfacultad() {
@@ -1121,10 +1113,21 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
                 b.textContent = 'Subiendo Documentos ...';
               }
             }
-            await this.uploadFilesCreacionProyecto([
-              this.fileResolucion,
-              this.fileActoAdministrativo,
-            ]);
+            try {
+              await this.uploadFilesCreacionProyecto([
+                this.fileResolucion,
+                this.fileActoAdministrativo,
+              ]);
+            } catch {
+              this.isLoading = false;
+              Swal.close();
+              this.snackBar.open(
+                this.translate.instant('proyecto.proyecto_no_creado'),
+                '',
+                { duration: 3000, panelClass: ['error-snackbar'] },
+              );
+              return;
+            }
             content = Swal.getHtmlContainer();
             if (content) {
               const b: any = content.querySelector('b');
