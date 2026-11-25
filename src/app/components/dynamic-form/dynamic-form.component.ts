@@ -11,7 +11,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import {
   BehaviorSubject,
@@ -24,7 +24,6 @@ import {
   switchMap,
 } from 'rxjs';
 import { AnyService } from 'src/app/services/any.service';
-import { RequestService } from 'src/app/services/request.service';
 
 @Component({
   selector: 'ngx-dinamicform',

@@ -3,15 +3,10 @@ import {
   ElementRef,
   EventEmitter,
   Inject,
-  OnInit,
   Output,
 } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
@@ -20,7 +15,6 @@ import { InstitucionEnfasis } from 'src/app/models/institucion_enfasis';
 import { NuevoRegistro } from 'src/app/models/nuevo_registro';
 import { RegistroCalificadoAcreditacion } from 'src/app/models/registro_calificado_acreditacion';
 import { TipoRegistro } from 'src/app/models/tipo_registro';
-import { DocumentoService } from 'src/app/services/documento.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';

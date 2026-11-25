@@ -33,7 +33,6 @@ import { TipoRegistro } from 'src/app/models/tipo_registro';
 import { TipoTitulacion } from 'src/app/models/tipo_titulacion';
 import { Titulacion } from 'src/app/models/titulacion';
 import { ParametrosService } from 'src/app/services/parametros.service';
-import { DocumentoService } from 'src/app/services/documento.service';
 import { ListEnfasisService } from 'src/app/services/list_enfasis.service';
 import { OikosService } from 'src/app/services/oikos.service';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
