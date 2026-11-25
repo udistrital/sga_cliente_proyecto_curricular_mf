@@ -17,7 +17,7 @@
   <!-- Form  basic -->
   <form class="form-horizontal" *ngSwitchCase="'basic'">
     <fieldset>
-      <legend align="{{ normalform.alineacion_titulo }}">
+      <legend [style.text-align]="normalform.alineacion_titulo">
         <small>{{ normalform.titulo }}</small>
       </legend>
       <div class="row">
@@ -171,7 +171,7 @@
     </fieldset>
     <br />
     <!-- Botones de form con acción de botones -->
-    <div align="center">
+    <div style="text-align: center">
       <button
         class="btn btn-success btn-tiny"
         (click)="validForm()"
@@ -194,7 +194,7 @@
   <!-- Form grid -->
   <form class="form-horizontal" *ngSwitchCase="'grid'">
     <fieldset>
-      <legend align="{{ normalform.alineacion_titulo }}">
+      <legend [style.text-align]="normalform.alineacion_titulo">
         <small>{{ normalform.titulo }}</small>
       </legend>
       <div
@@ -340,7 +340,7 @@
       </div>
     </fieldset>
     <br />
-    <div align="center">
+    <div style="text-align: center">
       <button
         class="btn btn-success btn-tiny"
         (click)="validForm()"
@@ -516,7 +516,7 @@
     </div>
     <br />
     <!-- Botones de form con accaión de botones -->
-    <div align="center">
+    <div style="text-align: center">
       <button
         class="btn btn-success btn-tiny"
         (click)="validForm()"

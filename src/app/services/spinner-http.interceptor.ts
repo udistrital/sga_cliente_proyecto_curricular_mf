@@ -14,7 +14,7 @@ export class SpinnerHttpInterceptor implements HttpInterceptor {
   private spinnerVisible = false;
   private stateUpdate?: ReturnType<typeof setTimeout>;
 
-  constructor(private spinnerService: SpinnerUtilService) {}
+  constructor(private readonly spinnerService: SpinnerUtilService) {}
 
   intercept(
     request: HttpRequest<unknown>,
