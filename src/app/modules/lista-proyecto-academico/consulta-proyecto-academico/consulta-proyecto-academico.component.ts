@@ -51,15 +51,15 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
   displayedColumns: string[] = ['nombre', 'activo'];
 
   constructor(
-    private translate: TranslateService,
+    private readonly translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
-    private _ngZone: NgZone,
-    public dialogRef: MatDialogRef<ConsultaProyectoAcademicoComponent>,
-    private routerService: Router,
-    private oikosService: OikosService,
-    private newNuxeoService: NewNuxeoService,
-    private formBuilder: FormBuilder,
+    private readonly _ngZone: NgZone,
+    public readonly dialogRef: MatDialogRef<ConsultaProyectoAcademicoComponent>,
+    private readonly routerService: Router,
+    private readonly oikosService: OikosService,
+    private readonly newNuxeoService: NewNuxeoService,
+    private readonly formBuilder: FormBuilder,
   ) {
     this.dataSource = new MatTableDataSource(data.enfasis);
     this.settings_emphasys = {

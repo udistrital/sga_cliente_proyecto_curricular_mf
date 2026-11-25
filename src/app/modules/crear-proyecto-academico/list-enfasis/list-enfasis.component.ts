@@ -32,12 +32,12 @@ export class ListEnfasisComponent implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
 
   constructor(
-    private translate: TranslateService,
-    private proyectoAcademicoService: ProyectoAcademicoService,
-    private dialogRef: MatDialogRef<ListEnfasisComponent>,
-    private listEnfasisService: ListEnfasisService,
-    private snackBar: MatSnackBar,
-    private ngZone: NgZone,
+    private readonly translate: TranslateService,
+    private readonly proyectoAcademicoService: ProyectoAcademicoService,
+    private readonly dialogRef: MatDialogRef<ListEnfasisComponent>,
+    private readonly listEnfasisService: ListEnfasisService,
+    private readonly snackBar: MatSnackBar,
+    private readonly ngZone: NgZone,
   ) {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {});
   }

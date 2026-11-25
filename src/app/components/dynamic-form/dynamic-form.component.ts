@@ -50,9 +50,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   init!: boolean;
 
   constructor(
-    private sanitization: DomSanitizer,
-    private anyService: AnyService,
-    private matDialog: MatDialog,
+    private readonly sanitization: DomSanitizer,
+    private readonly anyService: AnyService,
+    private readonly matDialog: MatDialog,
   ) {
     this.data = {
       valid: true,
@@ -148,7 +148,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     }
 
     this.normalform.campos.forEach((element: any) => {
-      if (!Object.prototype.hasOwnProperty.call(this.modeloData, element.nombre)) {
+      if (
+        !Object.prototype.hasOwnProperty.call(this.modeloData, element.nombre)
+      ) {
         return;
       }
 
@@ -171,7 +173,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         );
         break;
       case 'select':
-        if (Object.prototype.hasOwnProperty.call(element, 'opciones') && element.opciones != undefined) {
+        if (
+          Object.prototype.hasOwnProperty.call(element, 'opciones') &&
+          element.opciones != undefined
+        ) {
           element.opciones.forEach((option: any) => {
             if (option.Id === value.Id) {
               element.valor = option;
@@ -466,7 +471,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   private validateNumber(c: any): boolean {
     c.valor = parseInt(c.valor, 10);
     if (c.valor < c.minimo) {
-      return this.setCampoError(c, 'El valor no puede ser menor que ' + c.minimo);
+      return this.setCampoError(
+        c,
+        'El valor no puede ser menor que ' + c.minimo,
+      );
     }
     if (c.valor > c.maximolog) {
       return this.setCampoError(

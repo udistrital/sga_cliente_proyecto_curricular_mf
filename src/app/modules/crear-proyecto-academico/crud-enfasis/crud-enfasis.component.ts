@@ -39,10 +39,10 @@ export class CrudEnfasisComponent implements OnInit {
   clean!: boolean;
 
   constructor(
-    private translate: TranslateService,
-    private proyectoAcademicoService: ProyectoAcademicoService,
-    private snackBar: MatSnackBar,
-    private changeDetectorRef: ChangeDetectorRef,
+    private readonly translate: TranslateService,
+    private readonly proyectoAcademicoService: ProyectoAcademicoService,
+    private readonly snackBar: MatSnackBar,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.formEnfasis = FORM_ENFASIS;
     this.construirForm();

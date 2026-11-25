@@ -8,9 +8,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class PopUpManager {
   constructor(
-    private snackBar: MatSnackBar,
-    private translate: TranslateService
-  ) { }
+    private readonly snackBar: MatSnackBar,
+    private readonly translate: TranslateService,
+  ) {}
 
   showToast(message: string, duration: number = 3000) {
     this.translate.get(message).subscribe((translatedMessage: string) => {
@@ -18,7 +18,7 @@ export class PopUpManager {
         duration: duration,
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
-        panelClass: ['success-snackbar']
+        panelClass: ['success-snackbar'],
       });
     });
   }
@@ -68,7 +68,10 @@ export class PopUpManager {
     });
   }
 
-  showConfirmAlert(text: string, title: string = this.translate.instant('GLOBAL.atencion')): Promise<any> {
+  showConfirmAlert(
+    text: string,
+    title: string = this.translate.instant('GLOBAL.atencion'),
+  ): Promise<any> {
     return Swal.fire({
       title: title,
       text: text,
@@ -79,7 +82,12 @@ export class PopUpManager {
     });
   }
 
-  showPopUpGeneric(title: string, text: string, type: any, cancelar: any): Promise<any> {
+  showPopUpGeneric(
+    title: string,
+    text: string,
+    type: any,
+    cancelar: any,
+  ): Promise<any> {
     return Swal.fire({
       title: title,
       html: text,
@@ -91,7 +99,11 @@ export class PopUpManager {
     });
   }
 
-  showPopUpForm(title: string, form: { html: string; ids: any[]; }, cancelar: any): Promise<any> {
+  showPopUpForm(
+    title: string,
+    form: { html: string; ids: any[] },
+    cancelar: any,
+  ): Promise<any> {
     return Swal.fire({
       title: title,
       html: form.html,
@@ -101,8 +113,10 @@ export class PopUpManager {
       cancelButtonText: this.translate.instant('GLOBAL.cancelar'),
       preConfirm: () => {
         const results: any = {};
-        form.ids.forEach(id => {
-          const element = <HTMLInputElement>Swal.getPopup()!.querySelector('#' + id);
+        form.ids.forEach((id) => {
+          const element = <HTMLInputElement>(
+            Swal.getPopup()!.querySelector('#' + id)
+          );
           //  results[id] = element.value;
         });
         return results;
@@ -127,7 +141,6 @@ export class PopUpManager {
 // import Swal from 'sweetalert2';
 // import { TranslateService } from '@ngx-translate/core';
 // import { NbToastrConfig } from '@nebular/theme/components/toastr/toastr-config';
-
 
 // @Injectable({
 //     providedIn: 'root',

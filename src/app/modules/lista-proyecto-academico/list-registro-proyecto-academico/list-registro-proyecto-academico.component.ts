@@ -46,14 +46,14 @@ export class ListRegistroProyectoAcademicoComponent {
   cardSize = 4;
 
   constructor(
-    private translate: TranslateService,
+    private readonly translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<ConsultaProyectoAcademicoComponent>,
-    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
-    private nuxeoService: NewNuxeoService,
-    private documentoService: DocumentoService,
-    private newNuxeoService: NewNuxeoService,
-    public dialog: MatDialog,
+    public readonly dialogRef: MatDialogRef<ConsultaProyectoAcademicoComponent>,
+    private readonly sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
+    private readonly nuxeoService: NewNuxeoService,
+    private readonly documentoService: DocumentoService,
+    private readonly newNuxeoService: NewNuxeoService,
+    public readonly dialog: MatDialog,
   ) {
     this.loadData();
   }

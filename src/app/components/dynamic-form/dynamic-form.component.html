@@ -818,10 +818,6 @@
               <mat-label
                 >{{ c.requerido ? "* " + c.label : c.label }}:</mat-label
               >
-              <!-- <input matInput type="text" class="inputAuto"
-                                            [placeholder]="c.valor?c.key?c.valor[c.key]?c.valor[c.key]:(c.valor|json):c.placeholder:c.placeholder"
-                                            aria-label="Number" [matAutocomplete]="auto" [disabled]="c.deshabilitar"
-                                            (keyup)="searchTerm$.next({text: $event.target.value, path: c.path, query: c.query, field: c, keyToFilter: c.keyToFilter})"> -->
               <mat-autocomplete
                 autoActiveFirstOption
                 #auto="matAutocomplete"

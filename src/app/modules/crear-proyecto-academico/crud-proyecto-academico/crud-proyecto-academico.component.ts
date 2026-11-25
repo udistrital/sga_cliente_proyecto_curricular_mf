@@ -199,22 +199,22 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   menuPermisos: any[] = [];
 
   constructor(
-    private translate: TranslateService,
-    private oikosService: OikosService,
-    private routerService: Router,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _ngZone: NgZone,
-    private parametrosService: ParametrosService,
-    private proyectoacademicoService: ProyectoAcademicoService,
-    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
-    private dialogService: MatDialog,
-    private activatedRoute: ActivatedRoute,
-    private sanitization: DomSanitizer,
-    private listEnfasisService: ListEnfasisService,
-    private newNuxeoService: NewNuxeoService,
-    private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
-    private dependenciasService: DependenciasService,
+    private readonly translate: TranslateService,
+    private readonly oikosService: OikosService,
+    private readonly routerService: Router,
+    private readonly _changeDetectorRef: ChangeDetectorRef,
+    private readonly _ngZone: NgZone,
+    private readonly parametrosService: ParametrosService,
+    private readonly proyectoacademicoService: ProyectoAcademicoService,
+    private readonly sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
+    private readonly dialogService: MatDialog,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly sanitization: DomSanitizer,
+    private readonly listEnfasisService: ListEnfasisService,
+    private readonly newNuxeoService: NewNuxeoService,
+    private readonly formBuilder: FormBuilder,
+    private readonly snackBar: MatSnackBar,
+    private readonly dependenciasService: DependenciasService,
   ) {
     this.permisos();
     this.dpDayPickerConfig = {

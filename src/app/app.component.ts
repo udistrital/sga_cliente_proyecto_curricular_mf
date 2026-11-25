@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
     this.validateLang();
   }
 
-  constructor(private translate: TranslateService) {}
+  constructor(private readonly translate: TranslateService) {}
 
   validateLang() {
     let lang = getCookie('lang') || 'es';

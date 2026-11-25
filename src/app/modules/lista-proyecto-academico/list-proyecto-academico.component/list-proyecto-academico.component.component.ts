@@ -71,11 +71,11 @@ export class ListProyectoAcademicoComponent implements OnInit {
   listaDatos: any[] = [];
 
   constructor(
-    private translate: TranslateService,
-    private proyectoacademicoService: ProyectoAcademicoService,
-    private proyectoCurricularService: ProyectoCurricularService,
-    public dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private readonly translate: TranslateService,
+    private readonly proyectoacademicoService: ProyectoAcademicoService,
+    private readonly proyectoCurricularService: ProyectoCurricularService,
+    public readonly dialog: MatDialog,
+    private readonly snackBar: MatSnackBar,
   ) {
     this.permisos();
   }

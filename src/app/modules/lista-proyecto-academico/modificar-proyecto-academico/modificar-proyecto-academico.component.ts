@@ -216,21 +216,21 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
   };
 
   constructor(
-    private translate: TranslateService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialog,
-    public dialogRef: MatDialogRef<ModificarProyectoAcademicoComponent>,
-    private sanitization: DomSanitizer,
-    private oikosService: OikosService,
-    private terceroService: TercerosService,
-    private parametrosService: ParametrosService,
-    private proyectoacademicoService: ProyectoAcademicoService,
-    private routerService: Router,
-    private newNuxeoService: NewNuxeoService,
-    private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
-    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private readonly translate: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public readonly data: any,
+    public readonly dialog: MatDialog,
+    public readonly dialogRef: MatDialogRef<ModificarProyectoAcademicoComponent>,
+    private readonly sanitization: DomSanitizer,
+    private readonly oikosService: OikosService,
+    private readonly terceroService: TercerosService,
+    private readonly parametrosService: ParametrosService,
+    private readonly proyectoacademicoService: ProyectoAcademicoService,
+    private readonly routerService: Router,
+    private readonly newNuxeoService: NewNuxeoService,
+    private readonly formBuilder: FormBuilder,
+    private readonly snackBar: MatSnackBar,
+    private readonly sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.dpDayPickerConfig = {
       locale: 'es',
@@ -846,40 +846,50 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
   }
 
   uploadFilesModificacionProyecto(files: any[]) {
-    return new Promise((resolve, reject) => {
-      files.forEach(
-        (file: {
-          Id: any;
-          nombre: string;
-          IdDocumento: string;
-          key: string;
-        }) => {
-          ((file.Id = file.nombre),
-            (file.nombre =
-              'soporte_' +
-              file.IdDocumento +
-              '_modificacion_proyecto_curricular_' +
-              this.basicform.value.codigo_snies +
-              '_' +
-              this.basicform.value.nombre_proyecto));
-          file.key = 'soporte_' + file.IdDocumento;
-        },
-      );
+    return new Promise<any>((resolve, reject) => {
+      for (const file of files) {
+        file.Id = file.nombre;
+        file.nombre =
+          'soporte_' +
+          file.IdDocumento +
+          '_modificacion_proyecto_curricular_' +
+          this.basicform.value.codigo_snies +
+          '_' +
+          this.basicform.value.nombre_proyecto;
+        file.key = 'soporte_' + file.IdDocumento;
+      }
+
       this.newNuxeoService.uploadFiles(files).subscribe(
-        (responseNux: any[]) => {
-          if (Object.keys(responseNux).length === files.length) {
-            files.forEach((file: { nombre: any }) => {
-              // Se restringe carga a un archivo
-              let f = responseNux.find((res) => res.res.Nombre == file.nombre);
-              resolve(f.res.Id);
-            });
-          }
-        },
+        (responseNux: any[]) =>
+          this.resolveModificationUpload(files, responseNux, resolve),
         (error) => {
           reject(error);
         },
       );
     });
+  }
+
+  private resolveModificationUpload(
+    files: any[],
+    responseNux: any[],
+    resolve: (value: any) => void,
+  ): void {
+    if (Object.keys(responseNux).length !== files.length) {
+      return;
+    }
+
+    files.forEach((file: { nombre: any }) => {
+      // Se restringe carga a un archivo
+      const uploadedFile = this.findModificationUpload(
+        responseNux,
+        file.nombre,
+      );
+      resolve(uploadedFile.res.Id);
+    });
+  }
+
+  private findModificationUpload(responseNux: any[], nombre: any): any {
+    return responseNux.find((response) => response.res.Nombre == nombre);
   }
 
   putinformacionbasica() {
