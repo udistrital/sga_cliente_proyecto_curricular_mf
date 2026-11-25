@@ -4,10 +4,8 @@ import { RequestManager } from '../managers/requestManager';
 @Injectable({
   providedIn: 'root',
 })
-
 export class ParametrosService {
-
-  constructor(private requestManager: RequestManager) {
+  constructor(private readonly requestManager: RequestManager) {
     this.requestManager.setPath('PARAMETROS_SERVICE');
   }
 
@@ -21,12 +19,12 @@ export class ParametrosService {
     return this.requestManager.post(endpoint, element);
   }
 
-  put(endpoint: any, element: { Id: any; }) {
+  put(endpoint: any, element: { Id: any }) {
     this.requestManager.setPath('PARAMETROS_SERVICE');
     return this.requestManager.put(endpoint, element);
   }
 
-  delete(endpoint: any, element: { Id: any; }) {
+  delete(endpoint: any, element: { Id: any }) {
     this.requestManager.setPath('PARAMETROS_SERVICE');
     return this.requestManager.delete(endpoint, element.Id);
   }

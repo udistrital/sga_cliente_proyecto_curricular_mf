@@ -17,8 +17,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ProyectoCurricularService {
   constructor(
-    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
-    private translate: TranslateService,
+    private readonly sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
+    private readonly translate: TranslateService,
   ) {}
 
   getProyectosAcademicos() {

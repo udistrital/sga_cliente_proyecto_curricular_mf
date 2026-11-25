@@ -77,15 +77,15 @@ export class RegistroProyectoAcademicoComponent {
   idDocumento!: number;
 
   constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    private translate: TranslateService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<ListRegistroProyectoAcademicoComponent>,
-    private sanitization: DomSanitizer,
-    private newNuxeoService: NewNuxeoService,
-    private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
-    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
+    private readonly elementRef: ElementRef<HTMLElement>,
+    private readonly translate: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public readonly data: any,
+    public readonly dialogRef: MatDialogRef<ListRegistroProyectoAcademicoComponent>,
+    private readonly sanitization: DomSanitizer,
+    private readonly newNuxeoService: NewNuxeoService,
+    private readonly formBuilder: FormBuilder,
+    private readonly snackBar: MatSnackBar,
+    private readonly sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
   ) {
     this.resoluform = formBuilder.group({
       resolucion: ['', Validators.required],
@@ -269,9 +269,7 @@ export class RegistroProyectoAcademicoComponent {
             } catch {
               Swal.close();
               this.snackBar.open(
-                this.translate.instant(
-                  'historial_registro.registro_no_creado',
-                ),
+                this.translate.instant('historial_registro.registro_no_creado'),
                 '',
                 { duration: 3000, panelClass: ['error-snackbar'] },
               );

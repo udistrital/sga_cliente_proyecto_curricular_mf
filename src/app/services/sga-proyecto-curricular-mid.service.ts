@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { RequestManager } from '../managers/requestManager';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SgaProyectoCurricularMidService {
-  constructor(
-    private requestManager: RequestManager
-  ) {
+  constructor(private readonly requestManager: RequestManager) {
     this.requestManager.setPath('SGA_PROYECTO_CURRICULAR_MID');
   }
 
