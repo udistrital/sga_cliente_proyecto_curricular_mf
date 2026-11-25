@@ -1194,10 +1194,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
           dangerMode: true,
           showCancelButton: true,
         };
-        Swal.fire(opt1).then((willDelete: any) => {
-          if (willDelete.value) {
-          }
-        });
+        Swal.fire(opt1).then((willDelete: any) => {});
       }
     } catch (err) {
       this.isLoading = false; // Ocultar indicador de carga

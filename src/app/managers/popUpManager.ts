@@ -114,9 +114,6 @@ export class PopUpManager {
       preConfirm: () => {
         const results: any = {};
         form.ids.forEach((id) => {
-          const element = <HTMLInputElement>(
-            Swal.getPopup()!.querySelector('#' + id)
-          );
           //  results[id] = element.value;
         });
         return results;

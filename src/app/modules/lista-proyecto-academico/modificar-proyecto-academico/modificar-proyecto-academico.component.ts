@@ -1035,10 +1035,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
                     showCancelButton: true,
                     target: 'mat-dialog-container:last-of-type',
                   };
-                  Swal.fire(opt1).then((willDelete: any) => {
-                    if (willDelete.value) {
-                    }
-                  });
+                  Swal.fire(opt1).then((willDelete: any) => {});
                 }
               });
           }
@@ -1054,10 +1051,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
           showCancelButton: true,
           target: 'mat-dialog-container:last-of-type',
         };
-        Swal.fire(opt1).then((willDelete: any) => {
-          if (willDelete.value) {
-          }
-        });
+        Swal.fire(opt1).then((willDelete: any) => {});
       }
     } else {
       const opt1: any = {
@@ -1069,10 +1063,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
         showCancelButton: true,
         target: 'mat-dialog-container:last-of-type',
       };
-      Swal.fire(opt1).then((willDelete: any) => {
-        if (willDelete.value) {
-        }
-      });
+      Swal.fire(opt1).then((willDelete: any) => {});
     }
   }
 
@@ -1250,10 +1241,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
                     dangerMode: true,
                     showCancelButton: true,
                   };
-                  Swal.fire(opt1).then((willDelete: any) => {
-                    if (willDelete.value) {
-                    }
-                  });
+                  Swal.fire(opt1).then((willDelete: any) => {});
                 }
               });
           }
@@ -1267,10 +1255,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
           dangerMode: true,
           showCancelButton: true,
         };
-        Swal.fire(opt1).then((willDelete: any) => {
-          if (willDelete.value) {
-          }
-        });
+        Swal.fire(opt1).then((willDelete: any) => {});
       }
     } else {
       if (this.resoluform.valid) {
@@ -1398,10 +1383,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
                     dangerMode: true,
                     showCancelButton: true,
                   };
-                  Swal.fire(opt1).then((willDelete: any) => {
-                    if (willDelete.value) {
-                    }
-                  });
+                  Swal.fire(opt1).then((willDelete: any) => {});
                 }
               });
           }
@@ -1415,10 +1397,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
           dangerMode: true,
           showCancelButton: true,
         };
-        Swal.fire(opt1).then((willDelete: any) => {
-          if (willDelete.value) {
-          }
-        });
+        Swal.fire(opt1).then((willDelete: any) => {});
       }
     }
   }
@@ -1511,10 +1490,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
                   dangerMode: true,
                   showCancelButton: true,
                 };
-                Swal.fire(opt1).then((willDelete: any) => {
-                  if (willDelete.value) {
-                  }
-                });
+                Swal.fire(opt1).then((willDelete: any) => {});
               }
             });
         }
@@ -1528,10 +1504,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
         dangerMode: true,
         showCancelButton: true,
       };
-      Swal.fire(opt1).then((willDelete: any) => {
-        if (willDelete.value) {
-        }
-      });
+      Swal.fire(opt1).then((willDelete: any) => {});
     }
   }
 }

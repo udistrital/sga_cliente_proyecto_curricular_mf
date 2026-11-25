@@ -362,9 +362,14 @@
                         type="button"
                         class="link icono"
                         (click)="onDeleteEmphasys(row)"
-                        [attr.aria-label]="'consultaproyecto.desactivar' | translate"
+                        [attr.aria-label]="
+                          'consultaproyecto.desactivar' | translate
+                        "
                       >
-                        <mat-icon aria-hidden="true" fontIcon="delete_outline"></mat-icon>
+                        <mat-icon
+                          aria-hidden="true"
+                          fontIcon="delete_outline"
+                        ></mat-icon>
                       </button>
                     </mat-cell>
                   </ng-container>
@@ -567,19 +572,17 @@
                 </div>
                 <div class="form-col1">
                   <div class="form-field">
-                    <label class="label label-p">{{
+                    <span class="label label-p">{{
                       "proyecto.fecha_calculada_vencimiento" | translate
-                    }}</label>
-                    <label class="label">{{
-                      fecha_calculada_vencimiento
-                    }}</label>
+                    }}</span>
+                    <span class="label">{{ fecha_calculada_vencimiento }}</span>
                   </div>
                 </div>
                 <div class="form-col1">
                   <div class="form-field">
-                    <label class="label" style="display: block">{{
+                    <span class="label" style="display: block">{{
                       "proyecto.text_document" | translate
-                    }}</label>
+                    }}</span>
                     <button
                       class="boton-archivo"
                       mat-button
@@ -603,9 +606,9 @@
                       }}</mat-error>
                     }
                     @if (fileResolucion) {
-                      <label style="display: block"
+                      <span style="display: block"
                         >{{ "GLOBAL.archivo_seleccionado" | translate }}:
-                        {{ fileResolucion.name }}</label
+                        {{ fileResolucion.name }}</span
                       >
                     }
                   </div>
@@ -675,9 +678,9 @@
                 </div>
                 <div class="form-col2">
                   <div class="form-field">
-                    <label class="label">{{
+                    <span class="label">{{
                       "proyecto.text_document_acto" | translate
-                    }}</label>
+                    }}</span>
                     <button
                       mat-flat-button
                       color="accent"
@@ -701,9 +704,9 @@
                       }}</mat-error>
                     }
                     @if (fileActoAdministrativo) {
-                      <label style="display: block"
+                      <span style="display: block"
                         >{{ "GLOBAL.archivo_seleccionado" | translate }}:
-                        {{ fileActoAdministrativo.name }}</label
+                        {{ fileActoAdministrativo.name }}</span
                       >
                     }
                   </div>
@@ -862,67 +865,67 @@
 
 <!-- Indicador de carga SVG -->
 <div class="loading-indicator" [hidden]="!isLoading">
-    <svg
-      class="loading-svg"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 200 200"
+  <svg
+    class="loading-svg"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 200 200"
+  >
+    <rect
+      fill="#03678F"
+      stroke="#03678F"
+      stroke-width="15"
+      width="30"
+      height="30"
+      x="25"
+      y="50"
     >
-      <rect
-        fill="#03678F"
-        stroke="#03678F"
-        stroke-width="15"
-        width="30"
-        height="30"
-        x="25"
-        y="50"
-      >
-        <animate
-          attributeName="y"
-          calcMode="spline"
-          dur="2"
-          values="50;120;50;"
-          keySplines=".5 0 .5 1;.5 0 .5 1"
-          repeatCount="indefinite"
-          begin="-.4"
-        ></animate>
-      </rect>
-      <rect
-        fill="#03678F"
-        stroke="#03678F"
-        stroke-width="15"
-        width="30"
-        height="30"
-        x="85"
-        y="50"
-      >
-        <animate
-          attributeName="y"
-          calcMode="spline"
-          dur="2"
-          values="50;120;50;"
-          keySplines=".5 0 .5 1;.5 0 .5 1"
-          repeatCount="indefinite"
-          begin="-.2"
-        ></animate>
-      </rect>
-      <rect
-        fill="#03678F"
-        stroke="#03678F"
-        stroke-width="15"
-        width="30"
-        height="30"
-        x="145"
-        y="50"
-      >
-        <animate
-          attributeName="y"
-          calcMode="spline"
-          dur="2"
-          values="50;120;50;"
-          keySplines=".5 0 .5 1;.5 0 .5 1"
-          repeatCount="indefinite"
-          begin="0"
-        ></animate>
-      </rect>
-    </svg>
-  </div>
+      <animate
+        attributeName="y"
+        calcMode="spline"
+        dur="2"
+        values="50;120;50;"
+        keySplines=".5 0 .5 1;.5 0 .5 1"
+        repeatCount="indefinite"
+        begin="-.4"
+      ></animate>
+    </rect>
+    <rect
+      fill="#03678F"
+      stroke="#03678F"
+      stroke-width="15"
+      width="30"
+      height="30"
+      x="85"
+      y="50"
+    >
+      <animate
+        attributeName="y"
+        calcMode="spline"
+        dur="2"
+        values="50;120;50;"
+        keySplines=".5 0 .5 1;.5 0 .5 1"
+        repeatCount="indefinite"
+        begin="-.2"
+      ></animate>
+    </rect>
+    <rect
+      fill="#03678F"
+      stroke="#03678F"
+      stroke-width="15"
+      width="30"
+      height="30"
+      x="145"
+      y="50"
+    >
+      <animate
+        attributeName="y"
+        calcMode="spline"
+        dur="2"
+        values="50;120;50;"
+        keySplines=".5 0 .5 1;.5 0 .5 1"
+        repeatCount="indefinite"
+        begin="0"
+      ></animate>
+    </rect>
+  </svg>
+</div>

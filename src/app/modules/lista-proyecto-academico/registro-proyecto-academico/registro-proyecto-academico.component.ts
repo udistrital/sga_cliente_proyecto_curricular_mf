@@ -331,10 +331,7 @@ export class RegistroProyectoAcademicoComponent {
         dangerMode: true,
         showCancelButton: true,
       };
-      this.showDialogAlert(opt1).then((willDelete: any) => {
-        if (willDelete.value) {
-        }
-      });
+      this.showDialogAlert(opt1).then((willDelete: any) => {});
     }
   }
 }
