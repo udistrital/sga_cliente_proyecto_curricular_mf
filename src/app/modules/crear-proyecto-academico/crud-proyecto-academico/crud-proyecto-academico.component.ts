@@ -673,7 +673,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       .get('dependencia_tipo_dependencia/?query=TipoDependenciaId:2')
       .subscribe(
         (res: any) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
             this.facultad = res.map((data: any) => data.DependenciaId);
             this._changeDetectorRef.detectChanges();
@@ -702,7 +702,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       .get(`asignacion_espacio_fisico_dependencia?query=DependenciaId:${idFacultad},EspacioFisicoId__TipoEspacioFisicoId__CodigoAbreviacion:TIPO_2&limit=0`)
       .subscribe(
         (res: any) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
             this.espacio_fisico = res.map((data: any) => data.EspacioFisicoId);
           }
@@ -726,9 +726,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (res) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
-            this.area = <any>res.Data;
+            this.area = res.Data;
             this._changeDetectorRef.detectChanges();
           }
         },
@@ -748,9 +748,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       .get('parametro?query=TipoParametroId:7,Activo:true&limit=0')
       .subscribe(
         (res) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
-            this.unidad = <any>res.Data;
+            this.unidad = res.Data;
             this._changeDetectorRef.detectChanges();
           }
         },
@@ -770,9 +770,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       .get('enfasis/?query=Activo:true&limit=-1')
       .subscribe(
         (res) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
-            this.enfasis = <any>res;
+            this.enfasis = res;
             this._changeDetectorRef.detectChanges();
           }
         },
@@ -790,9 +790,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   loadnivel() {
     this.proyectoacademicoService.get('nivel_formacion').subscribe(
       (res) => {
-        const r = <any>res;
+        const r = res;
         if (res !== null && r.Type !== 'error') {
-          this.nivel = <any>res;
+          this.nivel = res;
           this._changeDetectorRef.detectChanges();
         }
       },
@@ -810,9 +810,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
   loadmetodologia() {
     this.proyectoacademicoService.get('metodologia').subscribe(
       (res) => {
-        const r = <any>res;
+        const r = res;
         if (res !== null && r.Type !== 'error') {
-          this.metodo = <any>res;
+          this.metodo = res;
           this._changeDetectorRef.detectChanges();
         }
       },
@@ -849,9 +849,9 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (res) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
-            this.nucleo = <any>res.Data;
+            this.nucleo = res.Data;
             this._changeDetectorRef.detectChanges();
           }
         },
@@ -869,7 +869,7 @@ export class CrudProyectoAcademicoComponent implements OnInit, OnDestroy {
     if (codigo != '') {
       this.dependenciasService.get('proyecto_acad_snies/' + codigo).subscribe(
         (res: any) => {
-          const r = <any>res;
+          const r = res;
           if (this.isObjectEmpty(res.proyecto_snies)) {
             const opt: any = {
               title: this.translate.instant('proyecto.proyecto_no_encontrado'),

@@ -117,8 +117,8 @@ export class ListRegistroProyectoAcademicoComponent {
       },
     ];
     this.newNuxeoService.get(filesToGet).subscribe(
-      (response) => {
-        const filesResponse = <any>response;
+      (response: any) => {
+        const filesResponse = response;
         if (Object.keys(filesResponse).length === filesToGet.length) {
           filesToGet.forEach((file: any) => {
             const url = filesResponse[0].url;

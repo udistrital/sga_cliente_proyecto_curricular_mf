@@ -100,7 +100,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
     ];
     this.newNuxeoService.get(filesToGet).subscribe(
       (response: any) => {
-        const filesResponse = <any>response;
+        const filesResponse = response;
         if (Object.keys(filesResponse).length === filesToGet.length) {
           filesToGet.forEach((file: any) => {
             const url = filesResponse[0].url;
@@ -170,7 +170,7 @@ export class ConsultaProyectoAcademicoComponent implements OnInit {
       .get(`asignacion_espacio_fisico_dependencia?query=DependenciaId:${idFacultad},EspacioFisicoId__TipoEspacioFisicoId__CodigoAbreviacion:TIPO_2&limit=0`)
       .subscribe(
         (res: any) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== "error") {
             this.espacio = res.map((data: any) => data.EspacioFisicoId);
 

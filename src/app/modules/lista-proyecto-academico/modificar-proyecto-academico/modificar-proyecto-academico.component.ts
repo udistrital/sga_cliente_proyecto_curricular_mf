@@ -487,8 +487,8 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
       },
     ];
     this.newNuxeoService.get(filesToGet).subscribe(
-      (response) => {
-        const filesResponse = <any>response;
+      (response: any) => {
+        const filesResponse = response;
         if (Object.keys(filesResponse).length === filesToGet.length) {
           filesToGet.forEach((file: any) => {
             const url = filesResponse[0].url;
@@ -515,7 +515,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
         ),
       );
       if (res !== null && res.Type !== 'error') {
-        this.enfasis = <any>res;
+        this.enfasis = res;
         this.changeDetectorRef.detectChanges();
       }
     } catch (error: any) {
@@ -658,7 +658,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
       .get('dependencia_tipo_dependencia/?query=TipoDependenciaId:2')
       .subscribe(
         (res: any) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
             this.facultad = res.map((data: any) => data.DependenciaId);
             const facultadSeleccionada = this.facultad.find(
@@ -687,7 +687,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
       .get(`asignacion_espacio_fisico_dependencia?query=DependenciaId:${idFacultad},EspacioFisicoId__TipoEspacioFisicoId__CodigoAbreviacion:TIPO_2&limit=0`)
       .subscribe(
         (res: any) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
             this.espacio = res.map((data: any) => data.EspacioFisicoId);
 
@@ -713,9 +713,9 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
   loadnivel() {
     this.proyectoacademicoService.get('nivel_formacion').subscribe(
       (res) => {
-        const r = <any>res;
+        const r = res;
         if (res !== null && r.Type !== 'error') {
-          this.nivel = <any>res;
+          this.nivel = res;
           this.nivel.forEach((niv: any) => {
             if (niv.Id === Number(this.data.idnivel)) {
               this.opcionSeleccionadoNivel = niv;
@@ -738,9 +738,9 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
   loadmetodologia() {
     this.proyectoacademicoService.get('metodologia').subscribe(
       (res) => {
-        const r = <any>res;
+        const r = res;
         if (res !== null && r.Type !== 'error') {
-          this.metodo = <any>res;
+          this.metodo = res;
           this.metodo.forEach((met: any) => {
             if (met.Id === Number(this.data.idmetodo)) {
               this.opcionSeleccionadoMeto = met;
@@ -765,9 +765,9 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
       .get('parametro?query=TipoParametroId:7,Activo:true&limit=0')
       .subscribe(
         (res) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
-            this.unidad = <any>res.Data;
+            this.unidad = res.Data;
             this.unidad.forEach((uni: any) => {
               if (uni.Id === Number(this.data.idunidad)) {
                 this.opcionSeleccionadoUnidad = uni;
@@ -794,9 +794,9 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
       )
       .subscribe(
         (res) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
-            this.area = <any>res.Data;
+            this.area = res.Data;
             this.area.forEach((are: any) => {
               if (are.Id === Number(this.data.idarea)) {
                 this.opcionSeleccionadoArea = are;
@@ -823,9 +823,9 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
       )
       .subscribe(
         (res) => {
-          const r = <any>res;
+          const r = res;
           if (res !== null && r.Type !== 'error') {
-            this.nucleo = <any>res.Data;
+            this.nucleo = res.Data;
             this.nucleo.forEach((nuc: any) => {
               if (nuc.Id === Number(this.data.idnucleo)) {
                 this.opcionSeleccionadoNucleo = nuc;
@@ -1464,7 +1464,7 @@ export class ModificarProyectoAcademicoComponent implements OnInit {
         },
       };
       const opt: any = {
-        title: this.translate.instant('GLOBAL.asignar'),
+        title: this.translate.instant('editarproyecto.asignar_coordinado'),
         text: this.translate.instant('editarproyecto.seguro_continuar_asignar'),
         icon: 'warning',
         buttons: true,
