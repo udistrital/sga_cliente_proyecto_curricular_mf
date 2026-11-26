@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnyService {
-  private httpOptions: any;
+  private readonly httpOptions: any;
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
     const acces_token = window.localStorage.getItem('access_token');
     if (acces_token !== null) {
       this.httpOptions = {
@@ -76,7 +78,7 @@ export class AnyService {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
       console.error(
-        `Backend returned code ${error.status}, ` + `body was: ${error.error}`
+        `Backend returned code ${error.status}, ` + `body was: ${error.error}`,
       );
     }
     // return an observable with a user-facing error message

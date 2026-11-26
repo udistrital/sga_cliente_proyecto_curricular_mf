@@ -17,7 +17,7 @@
   <!-- Form  basic -->
   <form class="form-horizontal" *ngSwitchCase="'basic'">
     <fieldset>
-      <legend align="{{ normalform.alineacion_titulo }}">
+      <legend [style.text-align]="normalform.alineacion_titulo">
         <small>{{ normalform.titulo }}</small>
       </legend>
       <div class="row">
@@ -171,7 +171,7 @@
     </fieldset>
     <br />
     <!-- Botones de form con acción de botones -->
-    <div align="center">
+    <div style="text-align: center">
       <button
         class="btn btn-success btn-tiny"
         (click)="validForm()"
@@ -194,7 +194,7 @@
   <!-- Form grid -->
   <form class="form-horizontal" *ngSwitchCase="'grid'">
     <fieldset>
-      <legend align="{{ normalform.alineacion_titulo }}">
+      <legend [style.text-align]="normalform.alineacion_titulo">
         <small>{{ normalform.titulo }}</small>
       </legend>
       <div
@@ -340,7 +340,7 @@
       </div>
     </fieldset>
     <br />
-    <div align="center">
+    <div style="text-align: center">
       <button
         class="btn btn-success btn-tiny"
         (click)="validForm()"
@@ -504,7 +504,7 @@
               (change)="onChange($event, c)"
             />
             <div class="{{ c.clase }}">
-              <mat-card size="small">
+              <mat-card appearance="outlined" size="small">
                 <mat-card-content>
                   <img class="carousel-image" src="{{ c.img }}" alt="imagen" />
                 </mat-card-content>
@@ -516,7 +516,7 @@
     </div>
     <br />
     <!-- Botones de form con accaión de botones -->
-    <div align="center">
+    <div style="text-align: center">
       <button
         class="btn btn-success btn-tiny"
         (click)="validForm()"
@@ -537,7 +537,7 @@
 
   <!-- Form  mini -->
   <form class="form-horizontal" *ngSwitchCase="'mini'">
-    <mat-card>
+    <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title>
           {{ normalform.titulo }}
@@ -818,10 +818,6 @@
               <mat-label
                 >{{ c.requerido ? "* " + c.label : c.label }}:</mat-label
               >
-              <!-- <input matInput type="text" class="inputAuto"
-                                            [placeholder]="c.valor?c.key?c.valor[c.key]?c.valor[c.key]:(c.valor|json):c.placeholder:c.placeholder"
-                                            aria-label="Number" [matAutocomplete]="auto" [disabled]="c.deshabilitar"
-                                            (keyup)="searchTerm$.next({text: $event.target.value, path: c.path, query: c.query, field: c, keyToFilter: c.keyToFilter})"> -->
               <mat-autocomplete
                 autoActiveFirstOption
                 #auto="matAutocomplete"
@@ -848,7 +844,7 @@
                 {{ c.requerido ? "* " + c.label : c.label }}
               </label>
 
-              <mat-card>
+              <mat-card appearance="outlined">
                 <mat-card-header> Tiny MCE </mat-card-header>
                 <mat-card-content>
                   <ngx-tiny-mce

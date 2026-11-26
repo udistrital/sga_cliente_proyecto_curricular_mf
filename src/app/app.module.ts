@@ -1,19 +1,28 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { MatError, MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegistroProyectoAcademicoComponent } from './modules/lista-proyecto-academico/registro-proyecto-academico/registro-proyecto-academico.component';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from 'src/environments/environment';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListRegistroProyectoAcademicoComponent } from './modules/lista-proyecto-academico/list-registro-proyecto-academico/list-registro-proyecto-academico.component';
 import { ConsultaProyectoAcademicoComponent } from './modules/lista-proyecto-academico/consulta-proyecto-academico/consulta-proyecto-academico.component';
@@ -24,8 +33,8 @@ import { NewNuxeoService } from './services/new_nuxeo.service';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { ListProyectoAcademicoComponent } from './modules/lista-proyecto-academico/list-proyecto-academico.component/list-proyecto-academico.component.component';
 import { CrudProyectoAcademicoComponent } from './modules/crear-proyecto-academico/crud-proyecto-academico/crud-proyecto-academico.component';
 import { ModificarProyectoAcademicoComponent } from './modules/lista-proyecto-academico/modificar-proyecto-academico/modificar-proyecto-academico.component';
@@ -35,23 +44,28 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { TercerosService } from './services/terceros.service copy';
 import { ParametrosService } from './services/parametros.service';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ListEnfasisComponent } from './modules/crear-proyecto-academico/list-enfasis/list-enfasis.component';
 import { ListEnfasisService } from './services/list_enfasis.service';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { CrudEnfasisComponent } from './modules/crear-proyecto-academico/crud-enfasis/crud-enfasis.component';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import { RequestService } from './services/request.service';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatExpansionModule} from '@angular/material/expansion';
-import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { SpinnerUtilModule } from 'spinner-util';
+import { MatMenuModule } from '@angular/material/menu';
 import { DependenciasService } from './services/dependencias.service';
+import { SpinnerHttpInterceptor } from './services/spinner-http.interceptor';
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, environment.apiUrl+'assets/i18n/', '.json');
+  return new TranslateHttpLoader(
+    http,
+    environment.apiUrl + 'assets/i18n/',
+    '.json',
+  );
 }
 
 @NgModule({
@@ -65,8 +79,10 @@ export function createTranslateLoader(http: HttpClient) {
     ModificarProyectoAcademicoComponent,
     ListEnfasisComponent,
     CrudEnfasisComponent,
-    DynamicFormComponent
+    DynamicFormComponent,
   ],
+  exports: [MatDialogModule],
+  bootstrap: [AppComponent],
   imports: [
     MatSnackBarModule,
     MatAutocompleteModule,
@@ -78,7 +94,6 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     FormsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -88,7 +103,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatDatepickerModule,
     MatProgressSpinnerModule,
     MatNativeDateModule,
-    MatTableModule, 
+    MatTableModule,
     MatPaginatorModule,
     MatDialogModule,
     CommonModule,
@@ -103,18 +118,19 @@ export function createTranslateLoader(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
     }),
-  ],
-  exports:[
-    MatDialogModule,
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
-    { provide: HTTP_INTERCEPTORS, useClass: SpinnerUtilInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerHttpInterceptor,
+      multi: true,
+    },
     DocumentoService,
     OikosService,
     AnyService,
@@ -124,8 +140,8 @@ export function createTranslateLoader(http: HttpClient) {
     TercerosService,
     ParametrosService,
     ListEnfasisService,
-    RequestService
+    RequestService,
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,29 +1,20 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
-import { ProyectoAcademicoInstitucion } from 'src/app/models/proyecto_academico_institucion';
+import { TranslateService } from '@ngx-translate/core';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';
 import { ConsultaProyectoAcademicoComponent } from '../consulta-proyecto-academico/consulta-proyecto-academico.component';
 import { ModificarProyectoAcademicoComponent } from '../modificar-proyecto-academico/modificar-proyecto-academico.component';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProyectoCurricularService } from 'src/app/services/proyecto-curricular.service';
-import {
-  DetalleProyectoAcademico,
-  Enfasi,
-  Proyecto,
-  ProyectoAcademico,
-} from 'src/app/models/api/sga_proyecto_curricular_mid/proyecto_curricular.models';
-import { RowProyecto } from 'src/app/models/proyecto_academico/proyecto_academico.models';
+import { Proyecto } from 'src/app/models/api/sga_proyecto_curricular_mid/proyecto_curricular.models';
 import { ApiResponse } from 'src/app/models/api-response.interface';
 import { firstValueFrom } from 'rxjs';
-
+import { Permission } from './list.proyecto-academico.constants';
 
 const TRANSLATIONS = {
   INHABILITAR: {
@@ -44,6 +35,7 @@ const TRANSLATIONS = {
   selector: 'app-list-proyecto-academico.component',
   templateUrl: './list-proyecto-academico.component.component.html',
   styleUrls: ['./list-proyecto-academico.component.component.scss'],
+  standalone: false,
 })
 export class ListProyectoAcademicoComponent implements OnInit {
   displayedColumns: string[] = [
@@ -66,22 +58,66 @@ export class ListProyectoAcademicoComponent implements OnInit {
   idproyecto: any;
   coordinador: any = null;
   existe_registro_alta_calidad: boolean = false;
-
+  menuPermisos: any[] = [];
   listaDatos: any[] = [];
 
   constructor(
-    private translate: TranslateService,
-    private proyectoacademicoService: ProyectoAcademicoService,
-    private proyectoCurricularService: ProyectoCurricularService,
-    public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private readonly translate: TranslateService,
+    private readonly proyectoacademicoService: ProyectoAcademicoService,
+    private readonly proyectoCurricularService: ProyectoCurricularService,
+    public readonly dialog: MatDialog,
+    private readonly snackBar: MatSnackBar,
   ) {
+    this.permisos();
+  }
+
+  ngOnInit(): void {
     this.loadproyectos();
-    // this.loadData();
+  }
+
+  get canInhabilitar(): boolean {
+    return this.buscarPermisoLectura(this.menuPermisos, Permission.INHABILITAR);
+  }
+
+  get canEditar(): boolean {
+    return this.buscarPermisoLectura(this.menuPermisos, Permission.EDITAR);
+  }
+
+  get canLectura(): boolean {
+    return this.buscarPermisoLectura(this.menuPermisos, Permission.LECTURA);
+  }
+
+  private buscarPermisoLectura(
+    listaPermisos: any[],
+    permisoBuscado: string,
+  ): boolean {
+    // Agrega este log para depuración
+    if (!listaPermisos || listaPermisos.length === 0) {
+      return false;
+    }
+
+    return listaPermisos.some((permiso: any) => {
+      if (permiso.Nombre === permisoBuscado) {
+        return true;
+      }
+
+      if (permiso.Opciones && permiso.Opciones.length > 0) {
+        return this.buscarPermisoLectura(permiso.Opciones, permisoBuscado);
+      }
+
+      return false;
+    });
+  }
+
+  permisos() {
+    const menuInfo = localStorage.getItem('menu');
+    this.menuPermisos = menuInfo ? JSON.parse(atob(menuInfo)) : null;
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value
+      .trim()
+      .toLowerCase();
     this.dataSource.filter = filterValue;
 
     this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
@@ -100,7 +136,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
   async loadData(): Promise<void> {
     try {
       const res = await firstValueFrom(
-        this.proyectoCurricularService.getProyectosAcademicos()
+        this.proyectoCurricularService.getProyectosAcademicos(),
       );
       this.dataSource = new MatTableDataSource(res);
       setTimeout(() => {
@@ -158,7 +194,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => { });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   openDialogModificar(id: number, proyectoData: any): void {
@@ -224,7 +260,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
         activo: proyectoData.activo,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => { });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   filterPredicate(data: string, filter: string): boolean {
@@ -237,13 +273,11 @@ export class ListProyectoAcademicoComponent implements OnInit {
     this.translate.use(language);
   }
 
-  ngOnInit() { }
-
   async loadproyectos() {
     try {
-      const res = await firstValueFrom( 
-        this.proyectoCurricularService.getProyectosAcademicos()
-       );
+      const res = await firstValueFrom(
+        this.proyectoCurricularService.getProyectosAcademicos(),
+      );
       res.sort((a, b) => {
         const dateA = new Date(a.ProyectoAcademico.FechaModificacion);
         const dateB = new Date(b.ProyectoAcademico.FechaModificacion);
@@ -256,23 +290,22 @@ export class ListProyectoAcademicoComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.filterPredicate = (data: any, filter: string) =>
         this.filterPredicate(data.ProyectoAcademico.Nombre, filter);
-      
-    } catch (error:any) {
+    } catch (error: any) {
       Swal.fire({
-          icon: 'error',
-          title: this.translate.instant('GLOBAL.error'),
-          text: error.message || this.translate.instant('GLOBAL.error_message'),
-          confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
-        });
+        icon: 'error',
+        title: this.translate.instant('GLOBAL.error'),
+        text: error.message || this.translate.instant('GLOBAL.error_message'),
+        confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
+      });
     }
   }
 
   async obteneridporid_consulta(id: number) {
     try {
       const res = await firstValueFrom(
-        this.proyectoCurricularService.getProyectoAcademicoPorId(id)
+        this.proyectoCurricularService.getProyectoAcademicoPorId(id),
       );
-      if (res != null){
+      if (res != null) {
         try {
           const proyectoConsultaData = {
             codigo: res.ProyectoAcademico.Codigo,
@@ -297,12 +330,10 @@ export class ListProyectoAcademicoComponent implements OnInit {
           };
 
           this.openDialogConsulta(id, proyectoConsultaData);
-
-          } catch (error) {
-            console.info(error);
-          }
+        } catch (error) {
+          console.info(error);
+        }
       }
-
     } catch (error: any) {
       Swal.fire({
         icon: 'error',
@@ -311,7 +342,6 @@ export class ListProyectoAcademicoComponent implements OnInit {
         confirmButtonText: this.translate.instant('GLOBAL.aceptar'),
       });
     }
-    
   }
 
   async obteneridporid_modificar(id: number) {
@@ -324,14 +354,18 @@ export class ListProyectoAcademicoComponent implements OnInit {
     const coordinador = await this.consultacoordinador(id);
 
     try {
-      const res = await firstValueFrom( 
-        this.proyectoCurricularService.getProyectoAcademicoPorId(id)
+      const res = await firstValueFrom(
+        this.proyectoCurricularService.getProyectoAcademicoPorId(id),
       );
       if (!res) throw new Error('No se encontró el proyecto');
 
       try {
-        const registroCalificado = res.Registro?.find(r => r.TipoRegistroId.CodigoAbreviacion === 'REGACR');
-        const registroAltaCalidad = res.Registro?.find(r => r.TipoRegistroId.CodigoAbreviacion === 'REGREN');
+        const registroCalificado = res.Registro?.find(
+          (r) => r.TipoRegistroId.CodigoAbreviacion === 'REGACR',
+        );
+        const registroAltaCalidad = res.Registro?.find(
+          (r) => r.TipoRegistroId.CodigoAbreviacion === 'REGREN',
+        );
 
         const parseVigencia = (texto: string) => {
           if (!texto) return { meses: '', anos: '' };
@@ -339,12 +373,18 @@ export class ListProyectoAcademicoComponent implements OnInit {
           const anosMatch = texto.match(/Años:(\d+)/);
           return {
             meses: mesesMatch ? mesesMatch[1] : '',
-            anos: anosMatch ? anosMatch[1] : ''
+            anos: anosMatch ? anosMatch[1] : '',
           };
         };
 
-        const vigenciaCalificado = parseVigencia(registroCalificado?.VigenciaActoAdministrativo || '');
-        const vigenciaAlta = parseVigencia(registroAltaCalidad?.VigenciaActoAdministrativo || res.VigenciaActoAdministrativoAltaCalidad || '');
+        const vigenciaCalificado = parseVigencia(
+          registroCalificado?.VigenciaActoAdministrativo || '',
+        );
+        const vigenciaAlta = parseVigencia(
+          registroAltaCalidad?.VigenciaActoAdministrativo ||
+            res.VigenciaActoAdministrativoAltaCalidad ||
+            '',
+        );
 
         const datosProyecto = {
           codigo: res.ProyectoAcademico.Codigo,
@@ -373,20 +413,36 @@ export class ListProyectoAcademicoComponent implements OnInit {
           competencias: res.ProyectoAcademico.Competencias,
           idarea: res.ProyectoAcademico.AreaConocimientoId,
           idnucleo: res.ProyectoAcademico.NucleoBaseId,
-          resolucion_acreditacion: registroCalificado ? registroCalificado.NumeroActoAdministrativo : '',
+          resolucion_acreditacion: registroCalificado
+            ? registroCalificado.NumeroActoAdministrativo
+            : '',
           iddependencia: res.ProyectoAcademico.DependenciaId,
-          resolucion_acreditacion_ano: registroCalificado ? registroCalificado.AnoActoAdministrativoId : '',
-          fecha_creacion_resolucion: registroCalificado ? new Date(registroCalificado.FechaCreacionActoAdministrativo) : null,
+          resolucion_acreditacion_ano: registroCalificado
+            ? registroCalificado.AnoActoAdministrativoId
+            : '',
+          fecha_creacion_resolucion: registroCalificado
+            ? new Date(registroCalificado.FechaCreacionActoAdministrativo)
+            : null,
           vigencia_resolucion_meses: vigenciaCalificado.meses,
           vigencia_resolucion_anos: vigenciaCalificado.anos,
-          id_documento_registor_calificado: registroCalificado ? registroCalificado.EnlaceActo : '',
+          id_documento_registor_calificado: registroCalificado
+            ? registroCalificado.EnlaceActo
+            : '',
           numero_acto: res.ProyectoAcademico.NumeroActoAdministrativo,
           ano_acto: res.ProyectoAcademico.AnoActoAdministrativo,
           existe_registro_alta_calidad: Boolean(res.TieneRegistroAltaCalidad),
-          resolucion_alta_calidad: registroAltaCalidad ? registroAltaCalidad.NumeroActoAdministrativo : res.NumeroActoAdministrativoAltaCalidad,
-          resolucion_alta_calidad_ano: registroAltaCalidad ? registroAltaCalidad.AnoActoAdministrativoId : res.AnoActoAdministrativoIdAltaCalidad,
-          fecha_creacion_resolucion_alta_calidad: registroAltaCalidad ? new Date(registroAltaCalidad.FechaCreacionActoAdministrativo) : new Date(res.FechaCreacionActoAdministrativoAltaCalidad),
-          id_documento_alta_calidad: registroAltaCalidad ? registroAltaCalidad.EnlaceActo : res.EnlaceActoAdministrativoAltaCalidad,
+          resolucion_alta_calidad: registroAltaCalidad
+            ? registroAltaCalidad.NumeroActoAdministrativo
+            : res.NumeroActoAdministrativoAltaCalidad,
+          resolucion_alta_calidad_ano: registroAltaCalidad
+            ? registroAltaCalidad.AnoActoAdministrativoId
+            : res.AnoActoAdministrativoIdAltaCalidad,
+          fecha_creacion_resolucion_alta_calidad: registroAltaCalidad
+            ? new Date(registroAltaCalidad.FechaCreacionActoAdministrativo)
+            : new Date(res.FechaCreacionActoAdministrativoAltaCalidad),
+          id_documento_alta_calidad: registroAltaCalidad
+            ? registroAltaCalidad.EnlaceActo
+            : res.EnlaceActoAdministrativoAltaCalidad,
           id_documento_acto: res.ProyectoAcademico.EnlaceActoAdministrativo,
           vigencia_resolucion_meses_alta_calidad: vigenciaAlta.meses,
           vigencia_resolucion_anos_alta_calidad: vigenciaAlta.anos,
@@ -400,8 +456,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
       } catch (error) {
         console.info(error);
       }
-      
-    } catch (error:any) {
+    } catch (error: any) {
       Swal.fire({
         icon: 'error',
         title: error.status + '',
@@ -435,10 +490,10 @@ export class ListProyectoAcademicoComponent implements OnInit {
 
   async consultacoordinador(id: number): Promise<any> {
     try {
-      const res : any = await firstValueFrom( 
+      const res: any = await firstValueFrom(
         this.proyectoacademicoService.get(
-          `proyecto_academico_rol_tercero_dependencia/?query=ProyectoAcademicoInstitucionId.Id:${id}`
-        )
+          `proyecto_academico_rol_tercero_dependencia/?query=ProyectoAcademicoInstitucionId.Id:${id}`,
+        ),
       );
 
       if (res !== null && res.Type !== 'error') {
@@ -473,7 +528,8 @@ export class ListProyectoAcademicoComponent implements OnInit {
 
     Swal.fire(opt).then((result: any) => {
       if (result.isConfirmed) {
-        this.proyectoCurricularService.cambiarHabilidadProyecto(row)
+        this.proyectoCurricularService
+          .cambiarHabilidadProyecto(row)
           .then((res: ApiResponse<any>) => {
             this.handleResponseInhabilitar(res, translationKey);
           })
@@ -484,7 +540,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
               {
                 duration: 6000,
                 panelClass: ['error-snackbar'],
-              }
+              },
             );
           });
       }
@@ -493,7 +549,7 @@ export class ListProyectoAcademicoComponent implements OnInit {
 
   private handleResponseInhabilitar(
     res: ApiResponse<any>,
-    translationKey: any
+    translationKey: any,
   ) {
     if (res.Success) {
       this.loadproyectos();

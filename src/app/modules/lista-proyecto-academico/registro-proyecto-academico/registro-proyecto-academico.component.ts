@@ -1,19 +1,20 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogModule,
-} from '@angular/material/dialog';
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Output,
+} from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
-import { Subscription } from 'rxjs';
+import moment from 'moment';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { InstitucionEnfasis } from 'src/app/models/institucion_enfasis';
 import { NuevoRegistro } from 'src/app/models/nuevo_registro';
 import { RegistroCalificadoAcreditacion } from 'src/app/models/registro_calificado_acreditacion';
 import { TipoRegistro } from 'src/app/models/tipo_registro';
-import { DocumentoService } from 'src/app/services/documento.service';
 import { NewNuxeoService } from 'src/app/services/new_nuxeo.service';
 // @ts-ignore
 import Swal from 'sweetalert2/dist/sweetalert2';
@@ -25,8 +26,9 @@ import { SgaProyectoCurricularMidService } from 'src/app/services/sga-proyecto-c
   selector: 'app-registro-proyecto-academico',
   templateUrl: './registro-proyecto-academico.component.html',
   styleUrls: ['./registro-proyecto-academico.component.scss'],
+  standalone: false,
 })
-export class RegistroProyectoAcademicoComponent implements OnInit {
+export class RegistroProyectoAcademicoComponent {
   settings: any;
 
   resoluform: any;
@@ -69,14 +71,15 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
   idDocumento!: number;
 
   constructor(
-    private translate: TranslateService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<ListRegistroProyectoAcademicoComponent>,
-    private sanitization: DomSanitizer,
-    private newNuxeoService: NewNuxeoService,
-    private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
-    private sgaProyectoCurricularMidService: SgaProyectoCurricularMidService
+    private readonly elementRef: ElementRef<HTMLElement>,
+    private readonly translate: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public readonly data: any,
+    public readonly dialogRef: MatDialogRef<ListRegistroProyectoAcademicoComponent>,
+    private readonly sanitization: DomSanitizer,
+    private readonly newNuxeoService: NewNuxeoService,
+    private readonly formBuilder: FormBuilder,
+    private readonly snackBar: MatSnackBar,
+    private readonly sgaProyectoCurricularMidService: SgaProyectoCurricularMidService,
   ) {
     this.resoluform = formBuilder.group({
       resolucion: ['', Validators.required],
@@ -92,7 +95,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
       this.fecha_creacion,
       this.resoluform.value.ano_vigencia,
       this.resoluform.value.mes_vigencia,
-      0
+      0,
     );
     this.fecha_calculada_vencimiento = this.fecha_vencimiento_mostrar;
   }
@@ -101,7 +104,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
     date: Date,
     years: number,
     months: number,
-    days: number
+    days: number,
   ): Date {
     const convertDate = moment(date)
       .add(years, 'year')
@@ -115,9 +118,6 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
   useLanguage(language: string) {
     this.translate.use(language);
   }
-  ngOnInit() {}
-
-  registroproyecto() {}
 
   cleanURL(oldURL: string): SafeResourceUrl {
     return this.sanitization.bypassSecurityTrustUrl(oldURL);
@@ -136,41 +136,62 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         this.snackBar.open(
           this.translate.instant('ERROR.formato_documento_pdf'),
           '',
-          { duration: 3000, panelClass: ['error-snackbar'] }
+          { duration: 3000, panelClass: ['error-snackbar'] },
         );
       }
     }
   }
 
-  uploadFilesCreacionRegistro(files: any) {
-    return new Promise((resolve, reject) => {
-      files.forEach((file: any) => {
-        (file.Id = file.nombre),
-          (file.nombre =
-            'soporte_' +
-            file.IdDocumento +
-            '_actualizacion_registro_proyecto_' +
-            this.data.IdProyecto +
-            '_tipo_registro_' +
-            Number(this.data.tipo_registro));
-        // file.key = file.Id;
-        file.key = 'soporte_' + file.IdDocumento;
-      });
-      this.newNuxeoService.uploadFiles(files).subscribe(
-        (responseNux: any[]) => {
-          if (Object.keys(responseNux).length === files.length) {
-            files.forEach((file: any) => {
-              this.uidDocumento = file.uid;
-              let f = responseNux.find((res) => res.res.Nombre == file.nombre);
-              this.idDocumento = f.res.Id;
-            });
-            resolve(true);
-          }
-        },
-        (error) => {
-          reject(error);
-        }
+  async uploadFilesCreacionRegistro(files: any[]): Promise<void> {
+    for (const file of files) {
+      this.prepareRegistrationFile(file);
+    }
+
+    const responseNux = await firstValueFrom(
+      this.newNuxeoService.uploadFiles(files),
+    );
+    if (responseNux.length !== files.length) {
+      throw new Error('Nuxeo devolvió una cantidad inesperada de archivos');
+    }
+
+    this.assignUploadedRegistrationFiles(files, responseNux);
+  }
+
+  private prepareRegistrationFile(file: any): void {
+    file.Id = file.nombre;
+    file.nombre =
+      'soporte_' +
+      file.IdDocumento +
+      '_actualizacion_registro_proyecto_' +
+      this.data.IdProyecto +
+      '_tipo_registro_' +
+      Number(this.data.tipo_registro);
+    file.key = 'soporte_' + file.IdDocumento;
+  }
+
+  private assignUploadedRegistrationFiles(
+    files: any[],
+    responseNux: any[],
+  ): void {
+    for (const file of files) {
+      const uploadedFile = responseNux.find(
+        (response) => response?.res?.Nombre === file.nombre,
       );
+      if (!uploadedFile?.res) {
+        throw new Error(`Nuxeo no devolvió el archivo ${file.nombre}`);
+      }
+
+      this.uidDocumento = file.uid;
+      this.idDocumento = uploadedFile.res.Id;
+    }
+  }
+
+  private showDialogAlert(options: any): Promise<any> {
+    return Swal.fire({
+      ...options,
+      target:
+        this.elementRef.nativeElement.closest('mat-dialog-container') ??
+        document.body,
     });
   }
 
@@ -178,7 +199,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
     date: Date,
     years: number,
     months: number,
-    days: number
+    days: number,
   ): Date {
     const convertDate = moment(date)
       .add(years, 'year')
@@ -195,7 +216,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         this.fecha_creacion,
         this.resoluform.value.ano_vigencia,
         this.resoluform.value.mes_vigencia,
-        0
+        0,
       );
 
       this.registro_nuevo = {
@@ -224,26 +245,39 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
       const opt: any = {
         title: this.translate.instant('GLOBAL.crear'),
         text: this.translate.instant(
-          'historial_registro.seguro_continuar_registrar'
+          'historial_registro.seguro_continuar_registrar',
         ),
         icon: 'warning',
         buttons: true,
         dangerMode: true,
         showCancelButton: true,
+        target:
+          this.elementRef.nativeElement.closest('mat-dialog-container') ??
+          document.body,
       };
-      Swal.fire(opt)
+      this.showDialogAlert(opt)
         .then(async (willCreate: any) => {
           if (willCreate.value) {
-            await this.uploadFilesCreacionRegistro([this.fileDocumento]);
+            try {
+              await this.uploadFilesCreacionRegistro([this.fileDocumento]);
+            } catch {
+              Swal.close();
+              this.snackBar.open(
+                this.translate.instant('historial_registro.registro_no_creado'),
+                '',
+                { duration: 3000, panelClass: ['error-snackbar'] },
+              );
+              return;
+            }
             this.registro_nuevo.EnlaceActo = this.idDocumento + '';
             this.sgaProyectoCurricularMidService
               .post(
                 'proyecto-academico/' + String(this.data.endpoint),
-                this.registro_nuevo
+                this.registro_nuevo,
               )
               .subscribe((res: any) => {
                 if (res.succes) {
-                  Swal.fire({
+                  this.showDialogAlert({
                     icon: 'error',
                     title: res.Code,
                     text: this.translate.instant('ERROR.' + res.Code),
@@ -251,33 +285,32 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
                   });
                   this.snackBar.open(
                     this.translate.instant(
-                      'historial_registro.registro_no_creado'
+                      'historial_registro.registro_no_creado',
                     ),
                     '',
-                    { duration: 3000, panelClass: ['error-snackbar'] }
+                    { duration: 3000, panelClass: ['error-snackbar'] },
                   );
                 } else {
                   const opt1: any = {
                     title: this.translate.instant('historial_registro.creado'),
                     text: this.translate.instant(
-                      'historial_registro.registro_creado'
+                      'historial_registro.registro_creado',
                     ),
                     icon: 'success',
                     buttons: true,
                     dangerMode: true,
                     showCancelButton: true,
-                  }; Swal.fire(opt1)
-                    .then((willDelete: any) => {
-                      if (willDelete.value) {
-                      }
-                    });
-                  this.dialogRef.close();
+                    target: 'mat-dialog-container',
+                  };
+                  this.showDialogAlert(opt1).then(() => {
+                    this.dialogRef.close();
+                  });
                 }
               });
           }
         })
         .catch((res: any) => {
-          Swal.fire({
+          this.showDialogAlert({
             icon: 'error',
             title: res.Code,
             text: this.translate.instant('ERROR.' + res.Code),
@@ -286,7 +319,7 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
           this.snackBar.open(
             this.translate.instant('historial_registro.registro_no_creado'),
             '',
-            { duration: 3000, panelClass: ['error-snackbar'] }
+            { duration: 3000, panelClass: ['error-snackbar'] },
           );
         });
     } else {
@@ -297,12 +330,8 @@ export class RegistroProyectoAcademicoComponent implements OnInit {
         buttons: true,
         dangerMode: true,
         showCancelButton: true,
-      }; Swal.fire(opt1)
-        .then((willDelete: any) => {
-          if (willDelete.value) {
-
-          }
-        });
+      };
+      this.showDialogAlert(opt1).then((willDelete: any) => {});
     }
   }
 }
